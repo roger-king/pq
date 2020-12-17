@@ -1,8 +1,8 @@
 """games and questions
 
-Revision ID: 05cc08bb283f
+Revision ID: 3692275abc73
 Revises: 
-Create Date: 2020-12-13 13:05:49.963569
+Create Date: 2020-12-17 18:32:16.272067
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = '05cc08bb283f'
+revision = '3692275abc73'
 down_revision = None
 branch_labels = None
 depends_on = None

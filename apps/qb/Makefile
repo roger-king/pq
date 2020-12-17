@@ -3,7 +3,7 @@ setup:
 	poetry install
 
 start:
-	poetry run uvicorn src.main:app --reload
+	poetry run uvicorn app.main:app --reload
 
 migrate:
 	poetry run alembic upgrade head
