@@ -17,7 +17,7 @@ class Question(Base):
     game_id = Column(Integer, ForeignKey("games.id"))
     q = Column(String, nullable=False, unique=True)
     answer = Column(String, nullable=False)
-    options = Column(MutableDict.as_mutable(JSONB), nullable=False, default=[])
+    options = Column(JSONB, nullable=False, default=[])
     created_by = Column(String, nullable=False)
     created_at = Column(DateTime(timezone=False), server_default=func.now())
     updated_at = Column(DateTime(timezone=False), onupdate=func.now())

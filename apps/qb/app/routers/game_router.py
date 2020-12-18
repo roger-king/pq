@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.routers.middlewares import get_db
 from app.models.game import GameSchema, CreateGameInput
 from app.models.question import QuestionSchema, CreateQuestionInput
-from app.services.question_service import find_questions_by_game_id, create_question
+from app.services.question_service import find_questions_by_game_id, bulk_create_question
 from app.services.game_service import (
     create_game,
     find_all_games,
@@ -45,11 +45,11 @@ async def find_game_questions(
 
 
 @router.post(
-    "/games/{id}/questions", tags=["game", "question"], response_model=QuestionSchema
+    "/games/{id}/questions", tags=["game", "question"], response_model=List[QuestionSchema]
 )
 async def create_game_question(
-    id: int, input: CreateQuestionInput, db: Session = Depends(get_db),
+    id: int, input: List[CreateQuestionInput], db: Session = Depends(get_db),
 ):
-    input.game_id = id
-    question = create_question(db, input)
+    question = bulk_create_question(db, input)
+    print(question)
     return question

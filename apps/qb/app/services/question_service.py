@@ -14,6 +14,17 @@ def create_question(db: Session, input: CreateQuestionInput):
 
 
 @handle_sql_error
+def bulk_create_question(db: Session, input: List[CreateQuestionInput]):
+    questions = []
+    for inp in input:
+        questions.append(Question(**inp.dict()))
+
+    db.add_all(questions)
+    db.commit()
+    return questions
+
+
+@handle_sql_error
 def update_questions_options(db: Session, id: int, options: List[dict]):
     question = db.query(Question).filter_by(id=id).update({"options": options})
     db.commit()
