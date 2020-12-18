@@ -51,5 +51,4 @@ async def create_game_question(
     id: int, input: List[CreateQuestionInput], db: Session = Depends(get_db),
 ):
     question = bulk_create_question(db, input)
-    print(question)
     return question
