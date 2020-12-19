@@ -18,6 +18,7 @@ class Game(Base):
     code = Column(String, nullable=False, unique=True)
     host_code = Column(String, nullable=False, unique=True)
     is_over = Column(Boolean, nullable=False, default=False)
+    is_started = Column(Boolean, nullable=False, default=False)
     start_time = Column(DateTime(timezone=False), server_default=func.now())
     created_by = Column(String, nullable=False)
     created_at = Column(DateTime(timezone=False), server_default=func.now())
@@ -29,6 +30,8 @@ class Game(Base):
             "id": self.id,
             "name": str(self.name),
             "code": self.code,
+            "is_over": self.is_over,
+            "is_started": self.is_started,
             "host_code": self.host_code,
             "start_time": self.start_time,
             "created_by": self.created_by,
@@ -36,20 +39,24 @@ class Game(Base):
 
 
 def generate_code(size=12, chars=string.ascii_uppercase + string.digits) -> str:
-    return ''.join(random.choice(chars) for _ in range(size))
+    return "".join(random.choice(chars) for _ in range(size))
+
 
 @event.listens_for(Game, "before_insert")
 def before_insert(mapper, connect, target):
     if not target.code:
         target.host_code = generate_code()
-    
+
     if not target.code:
         target.code = generate_code()
+
 
 class GameBase(BaseModel):
     name: str
     code: str
     host_code: str
+    is_over: bool
+    is_started: bool
     created_by: str
     start_time: datetime
     created_at: datetime
@@ -62,6 +69,10 @@ class GameSchema(GameBase):
 
     class Config:
         orm_mode = True
+
+
+class JoinGameSchema(GameSchema):
+    is_host: bool
 
 
 class CreateGameInput(BaseModel):

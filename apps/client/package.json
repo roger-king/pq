@@ -17,6 +17,7 @@
         "axios": "^0.20.0",
         "cookie": "^0.4.1",
         "cookie-parser": "^1.4.5",
+        "dexie": "^3.0.3",
         "dotenv": "^8.2.0",
         "grommet": "^2.15.0",
         "grommet-icons": "^4.5.0",

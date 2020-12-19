@@ -2,13 +2,17 @@ from fastapi import APIRouter, Depends
 from typing import List
 from sqlalchemy.orm import Session
 from app.routers.middlewares import get_db
-from app.models.game import GameSchema, CreateGameInput
+from app.models.game import GameSchema, JoinGameSchema, CreateGameInput
 from app.models.question import QuestionSchema, CreateQuestionInput
-from app.services.question_service import find_questions_by_game_id, bulk_create_question
+from app.services.question_service import (
+    find_questions_by_game_id,
+    bulk_create_question,
+)
 from app.services.game_service import (
     create_game,
     find_all_games,
     find_one_game,
+    join_game,
 )
 
 router = APIRouter()
@@ -32,6 +36,27 @@ async def find_all(
     return games
 
 
+@router.put("/games/{code}/join", tags=["game", "join"], response_model=JoinGameSchema)
+async def find_all(
+    code: str, db: Session = Depends(get_db),
+):
+    game = join_game(db, code)
+    is_host = True if game.host_code == code else False
+    print(is_host)
+    return JoinGameSchema(
+        id=game.id,
+        name=game.name,
+        host_code=game.host_code,
+        code=game.code,
+        is_over=game.is_over,
+        is_started=game.is_started,
+        created_by=game.created_by,
+        start_time=game.start_time,
+        created_at=game.created_at,
+        is_host=is_host,
+    )
+
+
 @router.get(
     "/games/{id}/questions",
     tags=["game", "question"],
@@ -45,7 +70,9 @@ async def find_game_questions(
 
 
 @router.post(
-    "/games/{id}/questions", tags=["game", "question"], response_model=List[QuestionSchema]
+    "/games/{id}/questions",
+    tags=["game", "question"],
+    response_model=List[QuestionSchema],
 )
 async def create_game_question(
     id: int, input: List[CreateQuestionInput], db: Session = Depends(get_db),

@@ -1,5 +1,6 @@
 import string
 import random
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from app.utils.decorators import handle_sql_error, handle_validation_error
 from app.models.game import Game, CreateGameInput
@@ -36,6 +37,11 @@ def find_all_games(
 @handle_sql_error
 def find_one_game(db: Session, id: int):
     return db.query(Game).filter_by(id=id).first()
+
+
+@handle_sql_error
+def join_game(db: Session, code: str):
+    return db.query(Game).filter(or_(Game.host_code == code, Game.code == code)).first()
 
 
 @handle_sql_error
