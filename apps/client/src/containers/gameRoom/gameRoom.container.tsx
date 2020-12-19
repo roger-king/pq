@@ -3,6 +3,7 @@ import { Box, Heading } from 'grommet';
 import { useQuery } from 'react-query';
 import Axios from 'axios';
 import { API_URL } from '../../constants';
+import { HostView } from './hostview.container';
 
 export interface GameRoomContainerProps {
   code: string;
@@ -21,7 +22,7 @@ export const GameRoomContainer: React.FC<GameRoomContainerProps> = ({ code }: Ga
   return (
     <Box>
       <Heading>{code}</Heading>
-      {data?.data.is_host && 'host'}
+      {data?.data.is_host && <HostView code={code} is_started={data.data.is_started} />}
     </Box>
   );
 };

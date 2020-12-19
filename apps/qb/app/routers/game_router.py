@@ -13,6 +13,7 @@ from app.services.game_service import (
     find_all_games,
     find_one_game,
     join_game,
+    start_game
 )
 
 router = APIRouter()
@@ -37,12 +38,12 @@ async def find_all(
 
 
 @router.put("/games/{code}/join", tags=["game", "join"], response_model=JoinGameSchema)
-async def find_all(
+async def join(
     code: str, db: Session = Depends(get_db),
 ):
     game = join_game(db, code)
     is_host = True if game.host_code == code else False
-    print(is_host)
+    # TODO: add player if not host
     return JoinGameSchema(
         id=game.id,
         name=game.name,
@@ -55,6 +56,15 @@ async def find_all(
         created_at=game.created_at,
         is_host=is_host,
     )
+
+
+@router.put("/games/{code}/start", tags=["game", "start"], response_model=bool)
+async def start(
+    code: str, db: Session = Depends(get_db),
+):
+    game = start_game(db, code)
+
+    return True
 
 
 @router.get(
