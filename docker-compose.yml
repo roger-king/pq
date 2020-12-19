@@ -2,11 +2,13 @@ version: "3.1"
 
 volumes:
   db: {}
+  cache: {}
 
 services:
   db:
     image: postgres:11.2
     container_name: db
+    hostname: "db"
     restart: always
     environment:
       POSTGRES_USER: appuser
@@ -16,3 +18,22 @@ services:
       - db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+  redis:
+    image: redis:6.0-rc1
+    container_name: cache
+    hostname: "cache"
+    volumes:
+      - cache:/data
+    ports:
+      - "6379:6379"
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    container_name: queue
+    hostname: "queue"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    labels:
+      NAME: "queue"
+    # volumes:
+    #   - ./db/rabbitmq-isolated.conf:/etc/rabbitmq/rabbitmq.config
