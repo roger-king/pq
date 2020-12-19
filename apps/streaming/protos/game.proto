@@ -1,0 +1,36 @@
+syntax = "proto3"
+package pq.streaming.games;
+option go_package="gamespb";
+
+message StartGame {
+    int64 gameId = 1;
+}
+
+message NextQuestion {
+    int64 gameId = 1;
+}
+
+message GameCreated {}
+
+message QuestionOption {
+    enum OptionKey {
+        A = 0;
+        B = 1;
+        C = 2;
+        D = 3;
+    }
+    
+    OptionKey key = 1;
+    string value = 1;
+}
+
+message Question {
+    int64 id = 0;
+    string q = 1;
+    repeated QuestionOption options = 2;
+}
+
+service Game {
+    rpc Start(StartGame) returns (stream Question) {}
+    rpc Next(NextQuestion) returns (stream Question) {};
+}

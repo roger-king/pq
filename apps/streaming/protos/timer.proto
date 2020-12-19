@@ -1,0 +1,14 @@
+syntax = "proto3";
+package pq.streaming.games.timer;
+option go_package="server";
+
+message Countdown {
+    int64 time = 1;
+}
+
+message TimerRequest {}
+
+
+service Timer {
+    rpc Start(TimerRequest) returns (stream Countdown) {}
+}
