@@ -11,3 +11,6 @@ DB_USER = os.getenv("DB_USER", "appuser")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "appuser")
 DB_PORT = os.getenv("DB_PORT", "5432")
 DB_HOST = os.getenv("DB_HOST", "localhost")
+
+# QUEUE
+QUEUE_HOST = os.getenv("QUEUE_HOST", "localhost")
