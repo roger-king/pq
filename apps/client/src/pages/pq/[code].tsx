@@ -8,7 +8,7 @@ export const GameRoom: React.FC = () => {
   const { code } = router.query;
 
   return (
-    <Box>
+    <Box fill>
       <GameRoomContainer code={code as string} />
     </Box>
   );
