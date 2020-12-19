@@ -37,3 +37,11 @@ services:
       NAME: "queue"
     # volumes:
     #   - ./db/rabbitmq-isolated.conf:/etc/rabbitmq/rabbitmq.config
+  envoy:
+    image: envoyproxy/envoy-dev:c3e4a00ed3fcb7d07fbe6c8c655a2f4949a67da3
+    container_name: proxy
+    ports:
+      - "9901:9901"
+      - "9001:9001"
+    volumes:
+      - ./.infra/envoy.yaml:/etc/envoy/envoy.yaml
