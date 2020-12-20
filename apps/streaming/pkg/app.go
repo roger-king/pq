@@ -10,9 +10,38 @@ import (
 	"google.golang.org/grpc"
 )
 
-type timerServer struct{}
 
-func (*timerServer) Start(req *server.TimerRequest, stream server.Timer_StartServer) error {
+type Connection struct {
+	stream server.Broadcast_CreateStreamServer
+	id     string
+	active bool
+	error  chan error
+}
+type broadcastServer struct {
+	Connections []*Connection
+}
+
+func (s *broadcastServer) CreateStream(req *server.Connection, stream server.Broadcast_CreateStreamServer) error {
+	conn := &Connection{
+		stream: stream,
+		id:     req.User.Id,
+		active: true,
+		error:  make(chan error),
+	}
+
+	log.Printf("User is connected: %s", req.User.DisplayName)
+
+	s.Connections = append(s.Connections, conn)
+	err := stream.Send(&server.Message{})
+
+	if err != nil {
+		return err
+	}
+
+	return <-conn.error
+}
+
+func (*broadcastServer) StartTimer(req *server.TimerRequest, stream server.Broadcast_StartTimerServer) error {
 	log.Print("Got a start")
 	countdown := 60
 
@@ -46,7 +75,7 @@ func (a *App) Start() (net.Listener, *grpc.Server) {
 	}
 
 	s := grpc.NewServer()
-	server.RegisterTimerServer(s, &timerServer{})
+	server.RegisterBroadcastServer(s, &broadcastServer{})
 
 	return lis, s
 }

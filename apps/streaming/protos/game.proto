@@ -30,6 +30,8 @@ message Question {
     repeated QuestionOption options = 2;
 }
 
+
+
 service Game {
     rpc Start(StartGame) returns (stream Question) {}
     rpc Next(NextQuestion) returns (stream Question) {};

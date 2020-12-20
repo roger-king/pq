@@ -8,10 +8,11 @@ import { capitalize } from '../../utils/format';
 import { Game, Question } from '../../@types';
 import { API_URL } from '../../constants';
 import { QuestionList } from '../questions/list.container';
-import { TimerClient } from '../../grpc/TimerServiceClientPb';
-import { TimerRequest } from '../../grpc/timer_pb';
 
-const client = new TimerClient('http://localhost:9001');
+import { BroadcastClient } from '../../grpc/BroadcastServiceClientPb';
+import { Connection, TimerRequest, User } from '../../grpc/broadcast_pb';
+
+const client = new BroadcastClient('http://localhost:9001');
 export interface HostViewProps {
   game: Game;
 }
@@ -49,6 +50,7 @@ export const HostLobbyView: React.FC<HostViewProps> = ({ game }: HostViewProps) 
 
 export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps) => {
   const { id, code, is_started, created_by } = game;
+  const [connected, setConnected] = useState(false);
   const [timer, setTimer] = useState(60);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
@@ -57,19 +59,44 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
     return d;
   });
 
-  const startTimer = () => {
-    const timerRequest = new TimerRequest();
-    const stream = client.start(timerRequest, {});
+  const connectToBroadcastServer = () => {
+    const user = new User();
+    user.setDisplayName(created_by);
+    user.setId(created_by);
+    user.setIsHost(true);
+
+    const connection = new Connection();
+    connection.setGameId(code);
+    connection.setActive(true);
+    connection.setUser(user);
+
+    const stream = client.createStream(connection, {});
     stream.on('data', async function (response: any) {
+      setConnected(true);
+    });
+  };
+
+  const startTimer = () => {
+    const timer = new TimerRequest();
+    const stream = client.startTimer(timer, {});
+
+    stream.on('data', function (response: any) {
       const { time } = response.toObject();
       setTimer(time);
     });
   };
 
+  useEffect(() => {
+    if (!connected) {
+      connectToBroadcastServer();
+    }
+  }, []);
+
   if (questions) {
     const { q, options } = questions.data[currentQuestion];
     return (
       <Box fill background="brand" align="center" justify="center">
+        {connected && 'CONNECTED'}
         <Heading color={timer <= 10 ? 'red' : 'white'}>{timer}</Heading>
         <Box width="80%" gap="medium">
           <Text alignSelf="start">

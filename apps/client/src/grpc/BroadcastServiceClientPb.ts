@@ -13,10 +13,10 @@
 
 import * as grpcWeb from 'grpc-web';
 
-import * as timer_pb from './timer_pb';
+import * as broadcast_pb from './broadcast_pb';
 
 
-export class TimerClient {
+export class BroadcastClient {
   client_: grpcWeb.AbstractClientBase;
   hostname_: string;
   credentials_: null | { [index: string]: string; };
@@ -35,23 +35,42 @@ export class TimerClient {
     this.options_ = options;
   }
 
-  methodInfoStart = new grpcWeb.AbstractClientBase.MethodInfo(
-    timer_pb.Countdown,
-    (request: timer_pb.TimerRequest) => {
+  methodInfoCreateStream = new grpcWeb.AbstractClientBase.MethodInfo(
+    broadcast_pb.Message,
+    (request: broadcast_pb.Connection) => {
       return request.serializeBinary();
     },
-    timer_pb.Countdown.deserializeBinary
+    broadcast_pb.Message.deserializeBinary
   );
 
-  start(
-    request: timer_pb.TimerRequest,
+  createStream(
+    request: broadcast_pb.Connection,
     metadata?: grpcWeb.Metadata) {
     return this.client_.serverStreaming(
       this.hostname_ +
-        '/pq.streaming.games.timer.Timer/Start',
+        '/pq.streaming.games.timer.Broadcast/CreateStream',
       request,
       metadata || {},
-      this.methodInfoStart);
+      this.methodInfoCreateStream);
+  }
+
+  methodInfoStartTimer = new grpcWeb.AbstractClientBase.MethodInfo(
+    broadcast_pb.Countdown,
+    (request: broadcast_pb.TimerRequest) => {
+      return request.serializeBinary();
+    },
+    broadcast_pb.Countdown.deserializeBinary
+  );
+
+  startTimer(
+    request: broadcast_pb.TimerRequest,
+    metadata?: grpcWeb.Metadata) {
+    return this.client_.serverStreaming(
+      this.hostname_ +
+        '/pq.streaming.games.timer.Broadcast/StartTimer',
+      request,
+      metadata || {},
+      this.methodInfoStartTimer);
   }
 
 }
