@@ -3,7 +3,7 @@ import { Box, Heading, Text } from 'grommet';
 import { useQuery } from 'react-query';
 import Axios from 'axios';
 
-import { HostView } from './hostview.container';
+import { HostLobbyView, HostInGameView } from './host.container';
 import { JoinedGame } from '../../@types';
 import { API_URL } from '../../constants';
 export interface GameRoomContainerProps {
@@ -20,13 +20,33 @@ export const GameRoomContainer: React.FC<GameRoomContainerProps> = ({ code }: Ga
     return <Box>Loading...</Box>;
   }
 
+  // TODO: add redirect if not valid code.
   if (gameData) {
     const { data } = gameData;
-    return <Box fill>{data.is_host && <HostView game={{ ...data }} />}</Box>;
+
+    if (data.is_host) {
+      if (data.is_started) {
+        // Show Host Started View
+        return (
+          <Box fill>
+            <HostInGameView game={{ ...data }} />
+          </Box>
+        );
+      }
+
+      return (
+        <Box fill>
+          <HostLobbyView game={{ ...data }} />
+        </Box>
+      );
+    }
+
+    // Default to show participant view - This view will handle both started and not started.
+    return <Box fill>{data.is_host && <HostLobbyView game={{ ...data }} />}</Box>;
   }
 
   return (
-    <Box fill>
+    <Box fill background="brand">
       <Heading>{code}</Heading>
       <Text> Something went wrong getting game information. We are working on it.</Text>
     </Box>

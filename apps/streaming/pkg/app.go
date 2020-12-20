@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"time"
 
 	"github.com/roger-king/pq/streaming/pkg/server"
 	"google.golang.org/grpc"
@@ -12,6 +13,21 @@ import (
 type timerServer struct{}
 
 func (*timerServer) Start(req *server.TimerRequest, stream server.Timer_StartServer) error {
+	log.Print("Got a start")
+	countdown := 60
+
+	for countdown != 0 {
+		countdown--
+		log.Printf("Starting counddown: %v", countdown)
+		time.Sleep(time.Second * 1)
+
+		err := stream.Send(&server.Countdown{Time: int64(countdown)})
+
+		if err != nil {
+			fmt.Errorf("Failed to send countdown: %v", err)
+		}
+	}
+
 	return nil
 }
 
