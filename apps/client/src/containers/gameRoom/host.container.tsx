@@ -78,6 +78,7 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
 
   const startTimer = () => {
     const timer = new TimerRequest();
+    timer.setGameId(code);
     const stream = client.startTimer(timer, {});
 
     stream.on('data', function (response: any) {

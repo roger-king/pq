@@ -476,7 +476,7 @@ proto.pq.streaming.games.timer.TimerRequest.prototype.toObject = function(opt_in
  */
 proto.pq.streaming.games.timer.TimerRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-
+    gameId: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -513,6 +513,10 @@ proto.pq.streaming.games.timer.TimerRequest.deserializeBinaryFromReader = functi
     }
     var field = reader.getFieldNumber();
     switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setGameId(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -542,6 +546,31 @@ proto.pq.streaming.games.timer.TimerRequest.prototype.serializeBinary = function
  */
 proto.pq.streaming.games.timer.TimerRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
+  f = message.getGameId();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string game_id = 1;
+ * @return {string}
+ */
+proto.pq.streaming.games.timer.TimerRequest.prototype.getGameId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.pq.streaming.games.timer.TimerRequest} returns this
+ */
+proto.pq.streaming.games.timer.TimerRequest.prototype.setGameId = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 

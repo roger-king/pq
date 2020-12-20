@@ -4,16 +4,24 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
+	"sync"
 	"time"
 
 	"github.com/roger-king/pq/streaming/pkg/server"
 	"google.golang.org/grpc"
+	glog "google.golang.org/grpc/grpclog"
 )
 
+var grpcLog glog.LoggerV2
+
+func init() {
+	grpcLog = glog.NewLoggerV2(os.Stdout, os.Stdout, os.Stdout)
+}
 
 type Connection struct {
 	stream server.Broadcast_CreateStreamServer
-	id     string
+	gameID string
 	active bool
 	error  chan error
 }
@@ -24,7 +32,7 @@ type broadcastServer struct {
 func (s *broadcastServer) CreateStream(req *server.Connection, stream server.Broadcast_CreateStreamServer) error {
 	conn := &Connection{
 		stream: stream,
-		id:     req.User.Id,
+		gameID: req.GameId,
 		active: true,
 		error:  make(chan error),
 	}
@@ -41,22 +49,40 @@ func (s *broadcastServer) CreateStream(req *server.Connection, stream server.Bro
 	return <-conn.error
 }
 
-func (*broadcastServer) StartTimer(req *server.TimerRequest, stream server.Broadcast_StartTimerServer) error {
-	log.Print("Got a start")
-	countdown := 60
+func (s *broadcastServer) StartTimer(req *server.TimerRequest, stream server.Broadcast_StartTimerServer) error {
+	wait := sync.WaitGroup{}
+	done := make(chan int)
 
-	for countdown != 0 {
-		countdown--
-		log.Printf("Starting counddown: %v", countdown)
-		time.Sleep(time.Second * 1)
+	for _, conn := range s.Connections {
+		wait.Add(1)
 
-		err := stream.Send(&server.Countdown{Time: int64(countdown)})
+		go func(req *server.TimerRequest, stream server.Broadcast_StartTimerServer) {
+			defer wait.Done()
 
-		if err != nil {
-			fmt.Errorf("Failed to send countdown: %v", err)
-		}
+			if conn.active && req.GameId == conn.gameID {
+				countdown := 60
+
+				for countdown != 0 {
+					countdown--
+					log.Printf("Starting counddown: %v", countdown)
+					time.Sleep(time.Second * 1)
+					err := stream.Send(&server.Countdown{Time: int64(countdown)})
+			
+					if err != nil {
+						fmt.Errorf("Failed to send countdown: %v", err)
+					}
+				}
+			}
+		}(req, stream)
+
 	}
 
+	go func() {
+		wait.Wait()
+		close(done)
+	}()
+
+	<-done
 	return nil
 }
 

@@ -47,6 +47,9 @@ export namespace Countdown {
 }
 
 export class TimerRequest extends jspb.Message {
+  getGameId(): string;
+  setGameId(value: string): TimerRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): TimerRequest.AsObject;
   static toObject(includeInstance: boolean, msg: TimerRequest): TimerRequest.AsObject;
@@ -57,6 +60,7 @@ export class TimerRequest extends jspb.Message {
 
 export namespace TimerRequest {
   export type AsObject = {
+    gameId: string,
   }
 }
 

@@ -12,7 +12,9 @@ message Countdown {
     int64 time = 1;
 }
 
-message TimerRequest {}
+message TimerRequest {
+    string game_id = 1;
+}
 
 message Connection {
     string game_id = 1;
