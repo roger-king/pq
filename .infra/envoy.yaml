@@ -1,7 +1,7 @@
 admin:
   access_log_path: /tmp/admin_access.log
   address:
-    socket_address: { address: 127.0.0.1, port_value: 9901 }
+    socket_address: { address: 0.0.0.0, port_value: 9901 }
 
 static_resources:
   listeners:
@@ -41,7 +41,7 @@ static_resources:
   clusters:
     - name: game_streamer_service
       connect_timeout: 0.25s
-      type: logical_dns
+      type: LOGICAL_DNS
       http2_protocol_options: {}
       lb_policy: ROUND_ROBIN
       load_assignment:
@@ -51,5 +51,5 @@ static_resources:
               - endpoint:
                   address:
                     socket_address:
-                      address: 0.0.0.0
+                      address: host.docker.internal
                       port_value: 9000
