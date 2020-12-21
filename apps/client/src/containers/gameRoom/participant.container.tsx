@@ -14,18 +14,16 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }) => {
   const [connected, setConnected] = useState<boolean>(false);
   const [timer, setTimer] = useState<number>(60);
   const { created_by, code } = game;
+  const user = new User();
+  user.setDisplayName('test');
+  user.setId('test');
+  user.setIsHost(false);
+  const connection = new Connection();
+  connection.setGameId(code);
+  connection.setActive(true);
+  connection.setUser(user);
 
   const connectToBroadcastServer = () => {
-    const user = new User();
-    user.setDisplayName('test');
-    user.setId('test');
-    user.setIsHost(false);
-
-    const connection = new Connection();
-    connection.setGameId(code);
-    connection.setActive(true);
-    connection.setUser(user);
-
     const stream = client.createStream(connection, {});
     stream.on('data', async function (response: any) {
       const { time, question } = response.toObject();
@@ -41,6 +39,11 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }) => {
     if (!connected) {
       connectToBroadcastServer();
     }
+
+    return () => {
+      console.log('disconnecting     ');
+      client.disconnect(connection, {});
+    };
   }, []);
 
   // TODO: adding is_started check for participants

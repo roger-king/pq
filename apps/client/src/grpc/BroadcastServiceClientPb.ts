@@ -54,6 +54,46 @@ export class BroadcastClient {
       this.methodInfoCreateStream);
   }
 
+  methodInfoDisconnect = new grpcWeb.AbstractClientBase.MethodInfo(
+    broadcast_pb.DisconnectResponse,
+    (request: broadcast_pb.Connection) => {
+      return request.serializeBinary();
+    },
+    broadcast_pb.DisconnectResponse.deserializeBinary
+  );
+
+  disconnect(
+    request: broadcast_pb.Connection,
+    metadata: grpcWeb.Metadata | null): Promise<broadcast_pb.DisconnectResponse>;
+
+  disconnect(
+    request: broadcast_pb.Connection,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: broadcast_pb.DisconnectResponse) => void): grpcWeb.ClientReadableStream<broadcast_pb.DisconnectResponse>;
+
+  disconnect(
+    request: broadcast_pb.Connection,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: broadcast_pb.DisconnectResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/pq.streaming.games.timer.Broadcast/Disconnect',
+        request,
+        metadata || {},
+        this.methodInfoDisconnect,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/pq.streaming.games.timer.Broadcast/Disconnect',
+    request,
+    metadata || {},
+    this.methodInfoDisconnect);
+  }
+
   methodInfoStartTimer = new grpcWeb.AbstractClientBase.MethodInfo(
     broadcast_pb.Countdown,
     (request: broadcast_pb.TimerRequest) => {

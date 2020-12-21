@@ -174,6 +174,20 @@ export namespace Message {
   }
 }
 
+export class DisconnectResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DisconnectResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: DisconnectResponse): DisconnectResponse.AsObject;
+  static serializeBinaryToWriter(message: DisconnectResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DisconnectResponse;
+  static deserializeBinaryFromReader(message: DisconnectResponse, reader: jspb.BinaryReader): DisconnectResponse;
+}
+
+export namespace DisconnectResponse {
+  export type AsObject = {
+  }
+}
+
 export class NextQuestionResponse extends jspb.Message {
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): NextQuestionResponse.AsObject;

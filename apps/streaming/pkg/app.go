@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net"
@@ -22,6 +23,7 @@ func init() {
 type Connection struct {
 	stream server.Broadcast_CreateStreamServer
 	gameID string
+	userID string
 	active bool
 	isHost bool
 	error  chan error
@@ -35,6 +37,7 @@ func (s *broadcastServer) CreateStream(req *server.Connection, stream server.Bro
 	conn := &Connection{
 		stream: stream,
 		gameID: req.GameId,
+		userID: req.User.Id,
 		isHost: req.User.IsHost,
 		active: true,
 		error:  make(chan error),
@@ -113,9 +116,8 @@ func (s *broadcastServer) StartTimer(req *server.TimerRequest, stream server.Bro
 func (s *broadcastServer) NextQuestion(req *server.Question, stream server.Broadcast_NextQuestionServer) error {
 	wait := sync.WaitGroup{}
 	done := make(chan int)
-	log.Print("Testing")
+
 	if conns, ok := s.Connections[req.GameId]; ok {
-		log.Print("Found the game")
 		for _, conn := range conns {
 			wait.Add(1)
 			go func(req *server.Question, stream server.Broadcast_NextQuestionServer) {
@@ -143,6 +145,25 @@ func (s *broadcastServer) NextQuestion(req *server.Question, stream server.Broad
 
 	<-done
 	return nil
+}
+
+func (s *broadcastServer) Disconnect(ctx context.Context, conn *server.Connection) (*server.DisconnectResponse, error) {
+	log.Print("Disconnecting User:")
+	var connToRemove int
+	connections := s.Connections[conn.GameId]
+	for i, c := range connections {
+		if c.userID == conn.User.Id {
+			connToRemove = i;
+			break;
+		}
+	}
+
+	connections[connToRemove] = connections[len(connections)-1] // Copy last element to index i.
+	connections[len(connections)-1] = nil
+	s.Connections[conn.GameId] = connections[:len(connections)-1]
+
+	log.Print(s.Connections[conn.GameId])
+	return &server.DisconnectResponse{}, nil
 }
 
 

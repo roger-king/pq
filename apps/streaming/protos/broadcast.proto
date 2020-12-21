@@ -47,10 +47,12 @@ message Message {
     Question question = 2;
 }
 
+message DisconnectResponse{}
 message NextQuestionResponse{}
 
 service Broadcast {
     rpc CreateStream(Connection) returns (stream Message) {}
+    rpc Disconnect(Connection) returns (DisconnectResponse) {}
     rpc StartTimer(TimerRequest) returns (stream Countdown) {}
     rpc NextQuestion(Question) returns (stream NextQuestionResponse) {}
 }
