@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Heading, Text } from 'grommet';
-import { Clipboard, Next, Play } from 'grommet-icons';
+import { Clipboard, Play } from 'grommet-icons';
 import { useMutation, useQuery } from 'react-query';
 import Axios from 'axios';
 
@@ -9,10 +9,10 @@ import { Game, Question } from '../../@types';
 import { API_URL } from '../../constants';
 import { QuestionList } from '../questions/list.container';
 
-import { BroadcastClient } from '../../grpc/BroadcastServiceClientPb';
 import { Connection, TimerRequest, User } from '../../grpc/broadcast_pb';
+import { useBroadcastClient } from '../../hooks/useGrpcClient';
+import { StreamConnection } from '../streamingConnection/streamingConnection.container';
 
-const client = new BroadcastClient('http://localhost:9001');
 export interface HostViewProps {
   game: Game;
 }
@@ -49,16 +49,16 @@ export const HostLobbyView: React.FC<HostViewProps> = ({ game }: HostViewProps) 
 };
 
 export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps) => {
-  const { id, code, is_started, created_by } = game;
-  const [connected, setConnected] = useState(false);
+  const client = useBroadcastClient();
+  const { id, code, created_by } = game;
   const [timer, setTimer] = useState(60);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
-  const { data: questions, isLoading } = useQuery<{ data: Question[] }>(`game_${id}_questions`, async () => {
+  const { data: questions } = useQuery<{ data: Question[] }>(`game_${id}_questions`, async () => {
     const d = Axios.get(`${API_URL}/games/${id}/questions`);
     return d;
   });
-
+  const [connected, setConnected] = useState<boolean>(false);
   const connectToBroadcastServer = () => {
     const user = new User();
     user.setDisplayName(created_by);
@@ -72,6 +72,7 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
 
     const stream = client.createStream(connection, {});
     stream.on('data', async function (response: any) {
+      const { time } = response.toObject();
       setConnected(true);
     });
   };
@@ -79,10 +80,12 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
   const startTimer = () => {
     const timer = new TimerRequest();
     timer.setGameId(code);
+    timer.setIsHost(true);
     const stream = client.startTimer(timer, {});
 
     stream.on('data', function (response: any) {
       const { time } = response.toObject();
+      console.log(time);
       setTimer(time);
     });
   };
@@ -97,7 +100,11 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
     const { q, options } = questions.data[currentQuestion];
     return (
       <Box fill background="brand" align="center" justify="center">
-        {connected && 'CONNECTED'}
+        {/* TODO: refactor to single connection component */}
+        <Box direction="row" gap="small" align="center" justify="center">
+          <Box background={connected ? 'green' : 'red'} style={{ borderRadius: '50px' }} width="15px" height="15px" />
+          <Text>{connected ? 'Connected' : 'Not Connected'}</Text>
+        </Box>
         <Heading color={timer <= 10 ? 'red' : 'white'}>{timer}</Heading>
         <Box width="80%" gap="medium">
           <Text alignSelf="start">

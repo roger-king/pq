@@ -476,7 +476,8 @@ proto.pq.streaming.games.timer.TimerRequest.prototype.toObject = function(opt_in
  */
 proto.pq.streaming.games.timer.TimerRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    gameId: jspb.Message.getFieldWithDefault(msg, 1, "")
+    gameId: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    isHost: jspb.Message.getBooleanFieldWithDefault(msg, 2, false)
   };
 
   if (includeInstance) {
@@ -517,6 +518,10 @@ proto.pq.streaming.games.timer.TimerRequest.deserializeBinaryFromReader = functi
       var value = /** @type {string} */ (reader.readString());
       msg.setGameId(value);
       break;
+    case 2:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsHost(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -553,6 +558,13 @@ proto.pq.streaming.games.timer.TimerRequest.serializeBinaryToWriter = function(m
       f
     );
   }
+  f = message.getIsHost();
+  if (f) {
+    writer.writeBool(
+      2,
+      f
+    );
+  }
 };
 
 
@@ -571,6 +583,24 @@ proto.pq.streaming.games.timer.TimerRequest.prototype.getGameId = function() {
  */
 proto.pq.streaming.games.timer.TimerRequest.prototype.setGameId = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional bool is_host = 2;
+ * @return {boolean}
+ */
+proto.pq.streaming.games.timer.TimerRequest.prototype.getIsHost = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 2, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.pq.streaming.games.timer.TimerRequest} returns this
+ */
+proto.pq.streaming.games.timer.TimerRequest.prototype.setIsHost = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 2, value);
 };
 
 
@@ -817,7 +847,7 @@ proto.pq.streaming.games.timer.Message.prototype.toObject = function(opt_include
  */
 proto.pq.streaming.games.timer.Message.toObject = function(includeInstance, msg) {
   var f, obj = {
-
+    time: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -854,6 +884,10 @@ proto.pq.streaming.games.timer.Message.deserializeBinaryFromReader = function(ms
     }
     var field = reader.getFieldNumber();
     switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setTime(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -883,6 +917,31 @@ proto.pq.streaming.games.timer.Message.prototype.serializeBinary = function() {
  */
 proto.pq.streaming.games.timer.Message.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
+  f = message.getTime();
+  if (f !== 0) {
+    writer.writeInt64(
+      1,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int64 time = 1;
+ * @return {number}
+ */
+proto.pq.streaming.games.timer.Message.prototype.getTime = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.pq.streaming.games.timer.Message} returns this
+ */
+proto.pq.streaming.games.timer.Message.prototype.setTime = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
 };
 
 

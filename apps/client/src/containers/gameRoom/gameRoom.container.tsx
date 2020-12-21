@@ -6,6 +6,7 @@ import Axios from 'axios';
 import { HostLobbyView, HostInGameView } from './host.container';
 import { JoinedGame } from '../../@types';
 import { API_URL } from '../../constants';
+import { ParticipantView } from './participant.container';
 export interface GameRoomContainerProps {
   code: string;
 }
@@ -23,7 +24,6 @@ export const GameRoomContainer: React.FC<GameRoomContainerProps> = ({ code }: Ga
   // TODO: add redirect if not valid code.
   if (gameData) {
     const { data } = gameData;
-
     if (data.is_host) {
       if (data.is_started) {
         // Show Host Started View
@@ -42,7 +42,11 @@ export const GameRoomContainer: React.FC<GameRoomContainerProps> = ({ code }: Ga
     }
 
     // Default to show participant view - This view will handle both started and not started.
-    return <Box fill>{data.is_host && <HostLobbyView game={{ ...data }} />}</Box>;
+    return (
+      <Box fill>
+        <ParticipantView game={{ ...data }} />
+      </Box>
+    );
   }
 
   return (

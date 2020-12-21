@@ -50,6 +50,9 @@ export class TimerRequest extends jspb.Message {
   getGameId(): string;
   setGameId(value: string): TimerRequest;
 
+  getIsHost(): boolean;
+  setIsHost(value: boolean): TimerRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): TimerRequest.AsObject;
   static toObject(includeInstance: boolean, msg: TimerRequest): TimerRequest.AsObject;
@@ -61,6 +64,7 @@ export class TimerRequest extends jspb.Message {
 export namespace TimerRequest {
   export type AsObject = {
     gameId: string,
+    isHost: boolean,
   }
 }
 
@@ -93,6 +97,9 @@ export namespace Connection {
 }
 
 export class Message extends jspb.Message {
+  getTime(): number;
+  setTime(value: number): Message;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Message.AsObject;
   static toObject(includeInstance: boolean, msg: Message): Message.AsObject;
@@ -103,6 +110,7 @@ export class Message extends jspb.Message {
 
 export namespace Message {
   export type AsObject = {
+    time: number,
   }
 }
 

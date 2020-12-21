@@ -14,6 +14,7 @@ message Countdown {
 
 message TimerRequest {
     string game_id = 1;
+    bool is_host = 2;
 }
 
 message Connection {
@@ -22,7 +23,9 @@ message Connection {
     bool active = 3;
 }
 
-message Message {}
+message Message {
+    int64 time = 1;
+}
 
 service Broadcast {
     rpc CreateStream(Connection) returns (stream Message) {}

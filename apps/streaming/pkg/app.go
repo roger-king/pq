@@ -23,6 +23,7 @@ type Connection struct {
 	stream server.Broadcast_CreateStreamServer
 	gameID string
 	active bool
+	isHost bool
 	error  chan error
 }
 type broadcastServer struct {
@@ -33,6 +34,7 @@ func (s *broadcastServer) CreateStream(req *server.Connection, stream server.Bro
 	conn := &Connection{
 		stream: stream,
 		gameID: req.GameId,
+		isHost: req.User.IsHost,
 		active: true,
 		error:  make(chan error),
 	}
@@ -55,22 +57,35 @@ func (s *broadcastServer) StartTimer(req *server.TimerRequest, stream server.Bro
 
 	for _, conn := range s.Connections {
 		wait.Add(1)
-
+		log.Print(conn.stream)
 		go func(req *server.TimerRequest, stream server.Broadcast_StartTimerServer) {
 			defer wait.Done()
+			log.Printf("Starting counddown: %v", conn.gameID)
+			if conn.active && req.GameId == conn.gameID  {
 
-			if conn.active && req.GameId == conn.gameID {
 				countdown := 60
 
 				for countdown != 0 {
 					countdown--
-					log.Printf("Starting counddown: %v", countdown)
 					time.Sleep(time.Second * 1)
-					err := stream.Send(&server.Countdown{Time: int64(countdown)})
-			
-					if err != nil {
-						fmt.Errorf("Failed to send countdown: %v", err)
-					}
+					
+					// if !req.IsHost {
+					// 	err := stream.Send(&server.Countdown{Time: int64(countdown)})
+						
+					// 	if err != nil {
+					// 		fmt.Errorf("Failed to send countdown: %v", err)
+					// 	}
+					// }
+					 // TODO: look into a better way than using a global message.
+					 err := conn.stream.Send(&server.Message{Time: int64(countdown)})
+					 if req.IsHost {
+						// ToDO: look into why the connection stream doesnt send to the host too.
+						stream.Send(&server.Countdown{Time: int64(countdown)})
+					 }
+
+					 if err != nil {
+						 fmt.Errorf("Failed to send countdown: %v", err)
+					 }
 				}
 			}
 		}(req, stream)
