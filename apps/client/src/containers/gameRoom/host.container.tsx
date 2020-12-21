@@ -11,14 +11,14 @@ import { QuestionList } from '../questions/list.container';
 
 import { Connection, TimerRequest, User } from '../../grpc/broadcast_pb';
 import { useBroadcastClient } from '../../hooks/useGrpcClient';
-import { StreamConnection } from '../streamingConnection/streamingConnection.container';
+import { ConnectionStatus } from '../../components/connectionStatus';
 
 export interface HostViewProps {
   game: Game;
 }
 
 export const HostLobbyView: React.FC<HostViewProps> = ({ game }: HostViewProps) => {
-  const { id, code, is_started, created_by } = game;
+  const { id, code, created_by } = game;
 
   const [start] = useMutation(async ({ hostCode }: { hostCode: string }) => {
     await Axios.put(`${API_URL}/games/${hostCode}/start`);
@@ -100,11 +100,7 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
     const { q, options } = questions.data[currentQuestion];
     return (
       <Box fill background="brand" align="center" justify="center">
-        {/* TODO: refactor to single connection component */}
-        <Box direction="row" gap="small" align="center" justify="center">
-          <Box background={connected ? 'green' : 'red'} style={{ borderRadius: '50px' }} width="15px" height="15px" />
-          <Text>{connected ? 'Connected' : 'Not Connected'}</Text>
-        </Box>
+        <ConnectionStatus connected={connected} />
         <Heading color={timer <= 10 ? 'red' : 'white'}>{timer}</Heading>
         <Box width="80%" gap="medium">
           <Text alignSelf="start">

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Text } from 'grommet';
-import { StreamConnection } from '../streamingConnection/streamingConnection.container';
 import { Game } from '../../@types';
-import { Connection, TimerRequest, User } from '../../grpc/broadcast_pb';
+import { Connection, User } from '../../grpc/broadcast_pb';
 import { useBroadcastClient } from '../../hooks/useGrpcClient';
+import { ConnectionStatus } from '../../components/connectionStatus';
 
 export interface ParticipantViewProps {
   game: Game;
@@ -42,10 +42,7 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }) => {
 
   return (
     <Box fill background="brand" align="center" justify="center">
-      <Box direction="row" gap="small" align="center" justify="center">
-        <Box background={connected ? 'green' : 'red'} style={{ borderRadius: '50px' }} width="15px" height="15px" />
-        <Text>{connected ? 'Connected' : 'Not Connected'}</Text>
-      </Box>
+      <ConnectionStatus connected={connected} />
       <Text>{timer}</Text>
     </Box>
   );
