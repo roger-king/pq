@@ -8,4 +8,4 @@ A place to store the technical and product documentation for PQ.
 
 # Other
 
-- [Broadcasting](./broadcast.md)
+- [Broadcasting](./broadcasting.md)
