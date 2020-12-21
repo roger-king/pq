@@ -27,9 +27,10 @@ type Connection struct {
 	error  chan error
 }
 type broadcastServer struct {
-	Connections []*Connection
+	Connections map[string][]*Connection
 }
 
+// TODO: add a remove connection
 func (s *broadcastServer) CreateStream(req *server.Connection, stream server.Broadcast_CreateStreamServer) error {
 	conn := &Connection{
 		stream: stream,
@@ -41,7 +42,13 @@ func (s *broadcastServer) CreateStream(req *server.Connection, stream server.Bro
 
 	log.Printf("User is connected: %s", req.User.DisplayName)
 
-	s.Connections = append(s.Connections, conn)
+	if currentConns, ok := s.Connections[req.GameId]; ok {
+		s.Connections[req.GameId] = append(currentConns, conn)
+	} else {
+		s.Connections = make(map[string][]*Connection)
+		s.Connections[req.GameId] = []*Connection{conn}
+	}
+
 	err := stream.Send(&server.Message{})
 
 	if err != nil {
@@ -55,41 +62,78 @@ func (s *broadcastServer) StartTimer(req *server.TimerRequest, stream server.Bro
 	wait := sync.WaitGroup{}
 	done := make(chan int)
 
-	for _, conn := range s.Connections {
-		wait.Add(1)
-		log.Print(conn.stream)
-		go func(req *server.TimerRequest, stream server.Broadcast_StartTimerServer) {
-			defer wait.Done()
-			log.Printf("Starting counddown: %v", conn.gameID)
-			if conn.active && req.GameId == conn.gameID  {
-
-				countdown := 60
-
-				for countdown != 0 {
-					countdown--
-					time.Sleep(time.Second * 1)
-					
-					// if !req.IsHost {
-					// 	err := stream.Send(&server.Countdown{Time: int64(countdown)})
+	if conns, ok := s.Connections[req.GameId]; ok {
+		for _, conn := range conns {
+			wait.Add(1)
+			log.Print(conn.stream)
+			go func(req *server.TimerRequest, stream server.Broadcast_StartTimerServer) {
+				defer wait.Done()
+				log.Printf("Starting counddown: %v", conn.gameID)
+				if conn.active && req.GameId == conn.gameID  {
+	
+					countdown := 60
+	
+					for countdown != 0 {
+						countdown--
+						time.Sleep(time.Second * 1)
 						
-					// 	if err != nil {
-					// 		fmt.Errorf("Failed to send countdown: %v", err)
-					// 	}
-					// }
-					 // TODO: look into a better way than using a global message.
-					 err := conn.stream.Send(&server.Message{Time: int64(countdown)})
-					 if req.IsHost {
-						// ToDO: look into why the connection stream doesnt send to the host too.
-						stream.Send(&server.Countdown{Time: int64(countdown)})
-					 }
-
-					 if err != nil {
-						 fmt.Errorf("Failed to send countdown: %v", err)
-					 }
+						// if !req.IsHost {
+						// 	err := stream.Send(&server.Countdown{Time: int64(countdown)})
+							
+						// 	if err != nil {
+						// 		fmt.Errorf("Failed to send countdown: %v", err)
+						// 	}
+						// }
+						 // TODO: look into a better way than using a global message.
+						 err := conn.stream.Send(&server.Message{Time: int64(countdown)})
+						 if req.IsHost {
+							// ToDO: look into why the connection stream doesnt send to the host too.
+							stream.Send(&server.Countdown{Time: int64(countdown)})
+						 }
+	
+						 if err != nil {
+							 fmt.Errorf("Failed to send countdown: %v", err)
+						 }
+					}
 				}
-			}
-		}(req, stream)
+			}(req, stream)
+	
+		}
+	}
 
+	go func() {
+		wait.Wait()
+		close(done)
+	}()
+
+	<-done
+	return nil
+}
+
+func (s *broadcastServer) NextQuestion(req *server.Question, stream server.Broadcast_NextQuestionServer) error {
+	wait := sync.WaitGroup{}
+	done := make(chan int)
+	log.Print("Testing")
+	if conns, ok := s.Connections[req.GameId]; ok {
+		log.Print("Found the game")
+		for _, conn := range conns {
+			wait.Add(1)
+			go func(req *server.Question, stream server.Broadcast_NextQuestionServer) {
+				defer wait.Done()
+				if conn.active {
+					log.Print("Sending question to participants")
+					err := conn.stream.Send(&server.Message{Question: &server.Question{
+						Q: req.Q,
+						Options: req.Options,
+					}})
+
+					if err != nil {
+						fmt.Errorf("Failed to send countdown: %v", err)
+					}
+				}
+			}(req, stream)
+
+		}
 	}
 
 	go func() {

@@ -28,8 +28,11 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }) => {
 
     const stream = client.createStream(connection, {});
     stream.on('data', async function (response: any) {
-      const { time } = response.toObject();
-      setTimer(time);
+      const { time, question } = response.toObject();
+      console.log('QUESTION: ', question);
+      if (time && timer <= 60) {
+        setTimer(time);
+      }
       setConnected(true);
     });
   };
@@ -40,6 +43,7 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }) => {
     }
   }, []);
 
+  // TODO: adding is_started check for participants
   return (
     <Box fill background="brand" align="center" justify="center">
       <ConnectionStatus connected={connected} />

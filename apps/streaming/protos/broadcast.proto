@@ -23,11 +23,34 @@ message Connection {
     bool active = 3;
 }
 
+enum OptionKey {
+    A = 0;
+    B = 1;
+    C = 2;
+    D = 3;
+}
+
+message QuestionOption {
+    OptionKey key = 1;
+    string title = 2;
+}
+
+message Question {
+    int64 id = 1;
+    string q = 2;
+    string game_id = 3;
+    repeated QuestionOption options = 4;
+}
+
 message Message {
     int64 time = 1;
+    Question question = 2;
 }
+
+message NextQuestionResponse{}
 
 service Broadcast {
     rpc CreateStream(Connection) returns (stream Message) {}
     rpc StartTimer(TimerRequest) returns (stream Countdown) {}
+    rpc NextQuestion(Question) returns (stream NextQuestionResponse) {}
 }

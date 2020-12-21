@@ -9,7 +9,14 @@ import { Game, Question } from '../../@types';
 import { API_URL } from '../../constants';
 import { QuestionList } from '../questions/list.container';
 
-import { Connection, TimerRequest, User } from '../../grpc/broadcast_pb';
+import {
+  Connection,
+  TimerRequest,
+  User,
+  Question as QuestionRequest,
+  QuestionOption,
+  OptionKey,
+} from '../../grpc/broadcast_pb';
 import { useBroadcastClient } from '../../hooks/useGrpcClient';
 import { ConnectionStatus } from '../../components/connectionStatus';
 
@@ -85,16 +92,44 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
 
     stream.on('data', function (response: any) {
       const { time } = response.toObject();
-      console.log(time);
       setTimer(time);
     });
+  };
+
+  const nextQuestion = () => {
+    const q = questions && questions.data[currentQuestion];
+
+    if (q) {
+      const nextQuestion = new QuestionRequest();
+      const options = q.options.map((o) => {
+        const questionOptions = new QuestionOption();
+        questionOptions.setKey(OptionKey[o.key]);
+        questionOptions.setTitle(o.title);
+        return questionOptions;
+      });
+      nextQuestion.setGameId(code);
+      nextQuestion.setQ(q.q);
+      nextQuestion.setOptionsList(options);
+
+      const stream = client.nextQuestion(nextQuestion, {});
+      console.log('Sending question');
+      stream.on('data', async function (response: any) {
+        console.log(response);
+      });
+    }
   };
 
   useEffect(() => {
     if (!connected) {
       connectToBroadcastServer();
     }
-  }, []);
+
+    // Fix this
+    if (questions && currentQuestion === 0) {
+      console.log('Question sending');
+      nextQuestion();
+    }
+  }, [questions]);
 
   if (questions) {
     const { q, options } = questions.data[currentQuestion];

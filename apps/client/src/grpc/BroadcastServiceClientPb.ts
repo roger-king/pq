@@ -73,5 +73,24 @@ export class BroadcastClient {
       this.methodInfoStartTimer);
   }
 
+  methodInfoNextQuestion = new grpcWeb.AbstractClientBase.MethodInfo(
+    broadcast_pb.NextQuestionResponse,
+    (request: broadcast_pb.Question) => {
+      return request.serializeBinary();
+    },
+    broadcast_pb.NextQuestionResponse.deserializeBinary
+  );
+
+  nextQuestion(
+    request: broadcast_pb.Question,
+    metadata?: grpcWeb.Metadata) {
+    return this.client_.serverStreaming(
+      this.hostname_ +
+        '/pq.streaming.games.timer.Broadcast/NextQuestion',
+      request,
+      metadata || {},
+      this.methodInfoNextQuestion);
+  }
+
 }
 

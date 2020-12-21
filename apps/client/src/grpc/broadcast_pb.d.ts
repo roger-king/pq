@@ -96,9 +96,68 @@ export namespace Connection {
   }
 }
 
+export class QuestionOption extends jspb.Message {
+  getKey(): OptionKey;
+  setKey(value: OptionKey): QuestionOption;
+
+  getTitle(): string;
+  setTitle(value: string): QuestionOption;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): QuestionOption.AsObject;
+  static toObject(includeInstance: boolean, msg: QuestionOption): QuestionOption.AsObject;
+  static serializeBinaryToWriter(message: QuestionOption, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): QuestionOption;
+  static deserializeBinaryFromReader(message: QuestionOption, reader: jspb.BinaryReader): QuestionOption;
+}
+
+export namespace QuestionOption {
+  export type AsObject = {
+    key: OptionKey,
+    title: string,
+  }
+}
+
+export class Question extends jspb.Message {
+  getId(): number;
+  setId(value: number): Question;
+
+  getQ(): string;
+  setQ(value: string): Question;
+
+  getGameId(): string;
+  setGameId(value: string): Question;
+
+  getOptionsList(): Array<QuestionOption>;
+  setOptionsList(value: Array<QuestionOption>): Question;
+  clearOptionsList(): Question;
+  addOptions(value?: QuestionOption, index?: number): QuestionOption;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): Question.AsObject;
+  static toObject(includeInstance: boolean, msg: Question): Question.AsObject;
+  static serializeBinaryToWriter(message: Question, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Question;
+  static deserializeBinaryFromReader(message: Question, reader: jspb.BinaryReader): Question;
+}
+
+export namespace Question {
+  export type AsObject = {
+    id: number,
+    q: string,
+    gameId: string,
+    optionsList: Array<QuestionOption.AsObject>,
+  }
+}
+
 export class Message extends jspb.Message {
   getTime(): number;
   setTime(value: number): Message;
+
+  getQuestion(): Question | undefined;
+  setQuestion(value?: Question): Message;
+  hasQuestion(): boolean;
+  clearQuestion(): Message;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Message.AsObject;
@@ -111,6 +170,27 @@ export class Message extends jspb.Message {
 export namespace Message {
   export type AsObject = {
     time: number,
+    question?: Question.AsObject,
   }
 }
 
+export class NextQuestionResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): NextQuestionResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: NextQuestionResponse): NextQuestionResponse.AsObject;
+  static serializeBinaryToWriter(message: NextQuestionResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): NextQuestionResponse;
+  static deserializeBinaryFromReader(message: NextQuestionResponse, reader: jspb.BinaryReader): NextQuestionResponse;
+}
+
+export namespace NextQuestionResponse {
+  export type AsObject = {
+  }
+}
+
+export enum OptionKey { 
+  A = 0,
+  B = 1,
+  C = 2,
+  D = 3,
+}
