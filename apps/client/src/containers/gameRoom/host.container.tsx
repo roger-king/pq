@@ -135,7 +135,7 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
       console.log('Question sending');
       nextQuestion();
     }
-  }, [questions, connectToBroadcastServer, connected, currentQuestion, nextQuestion]);
+  }, []);
 
   if (questions) {
     const { q, options } = questions.data[currentQuestion];
