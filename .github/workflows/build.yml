@@ -25,3 +25,4 @@ jobs:
         run: |
           docker --version
           docker build -f apps/client/Dockerfile -t client .
+          docker images
