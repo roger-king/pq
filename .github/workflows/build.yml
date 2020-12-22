@@ -23,5 +23,5 @@ jobs:
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-        docker --version
-        docker build -f apps/client/Dockerfile -t client .
+          docker --version
+          docker build -f apps/client/Dockerfile -t client .
