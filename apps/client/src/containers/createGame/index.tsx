@@ -1,1 +1,1 @@
-
+export * from './createGame.container';
