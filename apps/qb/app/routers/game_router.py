@@ -58,13 +58,13 @@ async def join(
     )
 
 
-@router.put("/games/{code}/start", tags=["game", "start"], response_model=bool)
+@router.put("/games/{code}/start", tags=["game", "start"], response_model=GameSchema)
 async def start(
     code: str, db: Session = Depends(get_db),
 ):
     game = start_game(db, code)
 
-    return True
+    return game
 
 
 @router.get(

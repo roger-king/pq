@@ -13,7 +13,7 @@ export interface GameRoomContainerProps {
 }
 
 export const GameRoomContainer: React.FC<GameRoomContainerProps> = ({ code }: GameRoomContainerProps) => {
-  const { data: gameData, isLoading } = useQuery<{ data: JoinedGame }>('game', async () => {
+  const { data: gameData, isLoading } = useQuery<{ data: JoinedGame }>(`game_${code}`, async () => {
     const d = Axios.put(`${API_URL}/games/${code}/join`);
     return d;
   });

@@ -48,7 +48,8 @@ def join_game(db: Session, code: str):
 def start_game(db: Session, code: str):
     db.query(Game).filter_by(host_code=code).update({"is_started": True})
     db.commit()
-    return True
+    g = db.query(Game).filter_by(host_code=code).first()
+    return g
 
 
 @handle_sql_error

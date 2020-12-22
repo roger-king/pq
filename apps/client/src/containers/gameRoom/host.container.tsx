@@ -6,6 +6,7 @@ import Axios from 'axios';
 
 import { capitalize } from '../../utils/format';
 import { Game, Question } from '../../@types';
+import { queryCache } from '../../layouts';
 import { API_URL } from '../../constants';
 import { QuestionList } from '../questions/list.container';
 
@@ -25,12 +26,18 @@ export interface HostViewProps {
 }
 
 export const HostLobbyView: React.FC<HostViewProps> = ({ game }: HostViewProps) => {
-  const { id, code, created_by } = game; // eslint-disable-line
-
-  const [start] = useMutation(async ({ hostCode }: { hostCode: string }) => {
-    await Axios.put(`${API_URL}/games/${hostCode}/start`);
-    // Update OnSuccess here
-  });
+  const { id, code, created_by, host_code } = game; // eslint-disable-line
+  const [start] = useMutation(
+    async ({ hostCode }: { hostCode: string }) => {
+      await Axios.put(`${API_URL}/games/${hostCode}/start`);
+    },
+    {
+      onSuccess: () => {
+        console.log('Success');
+        queryCache.invalidateQueries(`game_${host_code}`);
+      },
+    },
+  );
 
   return (
     <Box fill>
@@ -45,7 +52,7 @@ export const HostLobbyView: React.FC<HostViewProps> = ({ game }: HostViewProps) 
           </Box>
           <Button icon={<Clipboard />} />
         </Box>
-        <Button label="Start PQ" onClick={() => start({ hostCode: code })} primary size="large" />
+        <Button label="Start PQ" onClick={() => start({ hostCode: host_code })} primary size="large" />
       </Box>
       <Box align="center" justify="center">
         <Heading>Questions:</Heading>
