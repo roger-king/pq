@@ -1,8 +1,6 @@
 import React, { ComponentType } from 'react';
 import { Box, Grid, Heading, ResponsiveContext } from 'grommet';
 
-import { Head } from 'next/document';
-import { Header } from '../components/header/header.component';
 import { Root } from './index';
 import { ProtectedRouteProps } from './protected';
 

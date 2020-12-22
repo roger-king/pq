@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { API_URL } from '../constants';
 
 export const AUTH_COOKIE_KEY = 'auth_doc_sess';
@@ -28,7 +28,14 @@ export async function handleAuthSSR(req: any): Promise<boolean> {
   return false;
 }
 
-export function decodeToken(token: string) {
+export function decodeToken(
+  token: string,
+):
+  | string
+  | {
+      [key: string]: any;
+    }
+  | null {
   return jwt.decode(token);
 }
 

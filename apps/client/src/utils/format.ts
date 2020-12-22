@@ -5,7 +5,7 @@ export const capitalize = (s: string): string => {
 /**
  * Add space between camelCase text.
  */
-export const unCamelCase = (str: string, caps = false) => {
+export const unCamelCase = (str: string, caps = false): string => {
   const spacedString = str.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])/g, '$1 $2');
 
   if (caps) {

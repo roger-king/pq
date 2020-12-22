@@ -9,7 +9,7 @@ export interface QuestionListProps {
   gameId: number;
 }
 
-export const QuestionList: React.FC<QuestionListProps> = ({ gameId }) => {
+export const QuestionList: React.FC<QuestionListProps> = ({ gameId }: QuestionListProps) => {
   const { data: questions, isLoading } = useQuery<{ data: Question[] }>(`game_${gameId}_questions`, async () => {
     const d = Axios.get(`${API_URL}/games/${gameId}/questions`);
     return d;

@@ -91,6 +91,12 @@
       }
     },
     "rules": {
+      "react/jsx-props-no-spreading": [
+        "error",
+        {
+          "custom": "ignore"
+        }
+      ],
       "prettier/prettier": "error",
       "import/prefer-default-export": 0,
       "no-console": "off",

@@ -1,3 +1,4 @@
+// eslint-disable
 import * as jspb from 'google-protobuf';
 
 export class User extends jspb.Message {

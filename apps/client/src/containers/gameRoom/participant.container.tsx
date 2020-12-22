@@ -9,11 +9,11 @@ export interface ParticipantViewProps {
   game: Game;
 }
 
-export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }) => {
+export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: ParticipantViewProps) => {
   const client = useBroadcastClient();
   const [connected, setConnected] = useState<boolean>(false);
   const [timer, setTimer] = useState<number>(60);
-  const { created_by, code } = game;
+  const { created_by, code } = game; // eslint-disable
   const user = new User();
   user.setDisplayName('test');
   user.setId('test');

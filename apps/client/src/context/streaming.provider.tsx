@@ -3,7 +3,10 @@ import { BroadcastClient } from '../grpc/BroadcastServiceClientPb';
 
 export const GRPCContext = React.createContext<{ client: BroadcastClient }>({ client: new BroadcastClient('') });
 
-export const GRPCProvider: React.FC<PropsWithChildren<{ host: string }>> = ({ children, host }) => {
+export const GRPCProvider: React.FC<PropsWithChildren<{ host: string }>> = ({
+  children,
+  host,
+}: PropsWithChildren<{ host: string }>) => {
   const client = new BroadcastClient(host);
   return <GRPCContext.Provider value={{ client }}>{children}</GRPCContext.Provider>;
 };

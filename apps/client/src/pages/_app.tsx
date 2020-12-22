@@ -4,18 +4,19 @@ import { AppContextType } from 'next/dist/next-server/lib/utils';
 import { Router } from 'next/router';
 import { Root } from '../layouts';
 
+// eslint-disable-next-line
 class _App extends App {
-  // TODO: Fix this to optimize the page renders
+  // eslint-disable-next-line
   static async getInitialProps(appContext: AppContextType<Router>) {
     const appProps = await App.getInitialProps(appContext);
     return { ...appProps };
   }
 
-  render() {
+  render(): JSX.Element {
     const { Component, pageProps } = this.props;
     return (
       <Root>
-        <Component {...pageProps} />
+        <Component {...pageProps} /> {/* eslint-disable-line */}
       </Root>
     );
   }

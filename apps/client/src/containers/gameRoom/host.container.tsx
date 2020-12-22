@@ -25,7 +25,7 @@ export interface HostViewProps {
 }
 
 export const HostLobbyView: React.FC<HostViewProps> = ({ game }: HostViewProps) => {
-  const { id, code, created_by } = game;
+  const { id, code, created_by } = game; // eslint-disable-line
 
   const [start] = useMutation(async ({ hostCode }: { hostCode: string }) => {
     await Axios.put(`${API_URL}/games/${hostCode}/start`);
@@ -57,7 +57,7 @@ export const HostLobbyView: React.FC<HostViewProps> = ({ game }: HostViewProps) 
 
 export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps) => {
   const client = useBroadcastClient();
-  const { id, code, created_by } = game;
+  const { id, code, created_by } = game; //eslint-disable-line
   const [timer, setTimer] = useState(60);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
@@ -78,17 +78,16 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
     connection.setUser(user);
 
     const stream = client.createStream(connection, {});
-    stream.on('data', async function (response: any) {
-      const { time } = response.toObject();
+    stream.on('data', function () {
       setConnected(true);
     });
   };
 
   const startTimer = () => {
-    const timer = new TimerRequest();
-    timer.setGameId(code);
-    timer.setIsHost(true);
-    const stream = client.startTimer(timer, {});
+    const timerRequest = new TimerRequest();
+    timerRequest.setGameId(code);
+    timerRequest.setIsHost(true);
+    const stream = client.startTimer(timerRequest, {});
 
     stream.on('data', function (response: any) {
       const { time } = response.toObject();
@@ -100,20 +99,20 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
     const q = questions && questions.data[currentQuestion];
 
     if (q) {
-      const nextQuestion = new QuestionRequest();
+      const nextQuestionRequest = new QuestionRequest();
       const options = q.options.map((o) => {
         const questionOptions = new QuestionOption();
         questionOptions.setKey(OptionKey[o.key]);
         questionOptions.setTitle(o.title);
         return questionOptions;
       });
-      nextQuestion.setGameId(code);
-      nextQuestion.setQ(q.q);
-      nextQuestion.setOptionsList(options);
+      nextQuestionRequest.setGameId(code);
+      nextQuestionRequest.setQ(q.q);
+      nextQuestionRequest.setOptionsList(options);
 
-      const stream = client.nextQuestion(nextQuestion, {});
+      const stream = client.nextQuestion(nextQuestionRequest, {});
       console.log('Sending question');
-      stream.on('data', async function (response: any) {
+      stream.on('data', function (response: any) {
         console.log(response);
       });
     }
@@ -129,7 +128,7 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
       console.log('Question sending');
       nextQuestion();
     }
-  }, [questions]);
+  }, [questions, connectToBroadcastServer, connected, currentQuestion, nextQuestion]);
 
   if (questions) {
     const { q, options } = questions.data[currentQuestion];

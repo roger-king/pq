@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Box, Button, Heading, Text, Form, FormField, ResponsiveContext } from 'grommet';
 
 import { useRouter } from 'next/router';
 import { withMainLayout } from '../layouts/main';
 
-const IndexPage: React.FC<{}> = (props: {}) => {
+const IndexPage: React.FC = () => {
   const size = useContext(ResponsiveContext);
   const router = useRouter();
   const widthSize = size.includes('small') ? '100%' : '50%';

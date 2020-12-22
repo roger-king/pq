@@ -8,7 +8,7 @@ import { theme } from '../constants';
 import { GRPCProvider } from '../context/streaming.provider';
 
 const queryCache = new QueryCache();
-
+// eslint-disable-next-line
 export const Root = (props: PropsWithChildren<{}>) => {
   const { children } = props;
 

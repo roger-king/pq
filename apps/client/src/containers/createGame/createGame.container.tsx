@@ -30,6 +30,7 @@ export const CreateGameContainer: React.FC = () => {
 
     const qPayload = questions.map((q) => {
       let answer;
+      // eslint-disable-next-line
       for (let i = 0; i < q.options.length; i++) {
         if (q.options[i].answer) {
           answer = abcd[i];
@@ -66,9 +67,10 @@ export const CreateGameContainer: React.FC = () => {
       </Box>
       {questions.map((q, i) => (
         <QuestionForm
+          // eslint-disable-next-line
           key={`question-form-${i}`}
           q={q.q}
-          qOnChange={(e) => {
+          qOnChange={(e): void => {
             const newQuestions = questions;
             newQuestions[i].q = e.target.value;
             setQuestions([...newQuestions]);
@@ -76,26 +78,23 @@ export const CreateGameContainer: React.FC = () => {
           options={q.options.map((o, oi) => ({
             isAnswer: o.answer,
             title: o.title,
-            titleOnChange: (e) => {
+            titleOnChange: (e): void => {
               const newQuestions = questions;
               newQuestions[i].options[oi].title = e.target.value;
               setQuestions([...newQuestions]);
             },
             currentIndex: oi,
-            answerOnChange: (e) => {
+            answerOnChange: (e): void => {
               const index = Number(e.target.value);
               const newQuestions = questions;
-              newQuestions[i].options.map((no, noi) => {
-                if (noi === index) {
-                  no.answer = e.target.checked;
-                } else {
-                  no.answer = false;
-                }
+              newQuestions[i].options.forEach((no, noi) => {
+                // eslint-disable-next-line
+                no.answer = noi === index ? e.target.checked : false;
               });
               setQuestions([...newQuestions]);
             },
             showRemove: q.options.length > 2,
-            remove: () => {
+            remove: (): void => {
               const newQuestions = questions;
               if (newQuestions[i].options.length > 1) {
                 newQuestions[i].options.splice(oi, 1);

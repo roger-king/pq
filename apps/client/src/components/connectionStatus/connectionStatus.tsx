@@ -5,7 +5,7 @@ export interface ConnectionStatusProps {
   connected: boolean;
 }
 
-export const ConnectionStatus: React.FC<ConnectionStatusProps> = ({ connected }) => {
+export const ConnectionStatus: React.FC<ConnectionStatusProps> = ({ connected }: ConnectionStatusProps) => {
   return (
     <Box direction="row" gap="small" align="center" justify="center">
       <Box background={connected ? 'green' : 'red'} style={{ borderRadius: '50px' }} width="15px" height="15px" />
