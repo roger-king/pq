@@ -191,61 +191,6 @@ func (x *Countdown) GetTime() int64 {
 	return 0
 }
 
-type TimerRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	GameId string `protobuf:"bytes,1,opt,name=game_id,json=gameId,proto3" json:"game_id,omitempty"`
-	IsHost bool   `protobuf:"varint,2,opt,name=is_host,json=isHost,proto3" json:"is_host,omitempty"`
-}
-
-func (x *TimerRequest) Reset() {
-	*x = TimerRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_broadcast_proto_msgTypes[2]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *TimerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*TimerRequest) ProtoMessage() {}
-
-func (x *TimerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_broadcast_proto_msgTypes[2]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use TimerRequest.ProtoReflect.Descriptor instead.
-func (*TimerRequest) Descriptor() ([]byte, []int) {
-	return file_broadcast_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *TimerRequest) GetGameId() string {
-	if x != nil {
-		return x.GameId
-	}
-	return ""
-}
-
-func (x *TimerRequest) GetIsHost() bool {
-	if x != nil {
-		return x.IsHost
-	}
-	return false
-}
-
 type Connection struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -259,7 +204,7 @@ type Connection struct {
 func (x *Connection) Reset() {
 	*x = Connection{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_broadcast_proto_msgTypes[3]
+		mi := &file_broadcast_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -272,7 +217,7 @@ func (x *Connection) String() string {
 func (*Connection) ProtoMessage() {}
 
 func (x *Connection) ProtoReflect() protoreflect.Message {
-	mi := &file_broadcast_proto_msgTypes[3]
+	mi := &file_broadcast_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -285,7 +230,7 @@ func (x *Connection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Connection.ProtoReflect.Descriptor instead.
 func (*Connection) Descriptor() ([]byte, []int) {
-	return file_broadcast_proto_rawDescGZIP(), []int{3}
+	return file_broadcast_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *Connection) GetGameId() string {
@@ -321,7 +266,7 @@ type QuestionOption struct {
 func (x *QuestionOption) Reset() {
 	*x = QuestionOption{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_broadcast_proto_msgTypes[4]
+		mi := &file_broadcast_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -334,7 +279,7 @@ func (x *QuestionOption) String() string {
 func (*QuestionOption) ProtoMessage() {}
 
 func (x *QuestionOption) ProtoReflect() protoreflect.Message {
-	mi := &file_broadcast_proto_msgTypes[4]
+	mi := &file_broadcast_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -347,7 +292,7 @@ func (x *QuestionOption) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use QuestionOption.ProtoReflect.Descriptor instead.
 func (*QuestionOption) Descriptor() ([]byte, []int) {
-	return file_broadcast_proto_rawDescGZIP(), []int{4}
+	return file_broadcast_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *QuestionOption) GetKey() OptionKey {
@@ -371,14 +316,13 @@ type Question struct {
 
 	Id      int64             `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Q       string            `protobuf:"bytes,2,opt,name=q,proto3" json:"q,omitempty"`
-	GameId  string            `protobuf:"bytes,3,opt,name=game_id,json=gameId,proto3" json:"game_id,omitempty"`
 	Options []*QuestionOption `protobuf:"bytes,4,rep,name=options,proto3" json:"options,omitempty"`
 }
 
 func (x *Question) Reset() {
 	*x = Question{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_broadcast_proto_msgTypes[5]
+		mi := &file_broadcast_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -391,7 +335,7 @@ func (x *Question) String() string {
 func (*Question) ProtoMessage() {}
 
 func (x *Question) ProtoReflect() protoreflect.Message {
-	mi := &file_broadcast_proto_msgTypes[5]
+	mi := &file_broadcast_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -404,7 +348,7 @@ func (x *Question) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Question.ProtoReflect.Descriptor instead.
 func (*Question) Descriptor() ([]byte, []int) {
-	return file_broadcast_proto_rawDescGZIP(), []int{5}
+	return file_broadcast_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *Question) GetId() int64 {
@@ -417,13 +361,6 @@ func (x *Question) GetId() int64 {
 func (x *Question) GetQ() string {
 	if x != nil {
 		return x.Q
-	}
-	return ""
-}
-
-func (x *Question) GetGameId() string {
-	if x != nil {
-		return x.GameId
 	}
 	return ""
 }
@@ -447,7 +384,7 @@ type Message struct {
 func (x *Message) Reset() {
 	*x = Message{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_broadcast_proto_msgTypes[6]
+		mi := &file_broadcast_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -460,7 +397,7 @@ func (x *Message) String() string {
 func (*Message) ProtoMessage() {}
 
 func (x *Message) ProtoReflect() protoreflect.Message {
-	mi := &file_broadcast_proto_msgTypes[6]
+	mi := &file_broadcast_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -473,7 +410,7 @@ func (x *Message) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Message.ProtoReflect.Descriptor instead.
 func (*Message) Descriptor() ([]byte, []int) {
-	return file_broadcast_proto_rawDescGZIP(), []int{6}
+	return file_broadcast_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Message) GetTime() int64 {
@@ -488,6 +425,69 @@ func (x *Message) GetQuestion() *Question {
 		return x.Question
 	}
 	return nil
+}
+
+type StartQuestion struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Question *Question `protobuf:"bytes,1,opt,name=question,proto3" json:"question,omitempty"`
+	IsHost   bool      `protobuf:"varint,2,opt,name=is_host,json=isHost,proto3" json:"is_host,omitempty"`
+	GameId   string    `protobuf:"bytes,3,opt,name=game_id,json=gameId,proto3" json:"game_id,omitempty"`
+}
+
+func (x *StartQuestion) Reset() {
+	*x = StartQuestion{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_broadcast_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *StartQuestion) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StartQuestion) ProtoMessage() {}
+
+func (x *StartQuestion) ProtoReflect() protoreflect.Message {
+	mi := &file_broadcast_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StartQuestion.ProtoReflect.Descriptor instead.
+func (*StartQuestion) Descriptor() ([]byte, []int) {
+	return file_broadcast_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *StartQuestion) GetQuestion() *Question {
+	if x != nil {
+		return x.Question
+	}
+	return nil
+}
+
+func (x *StartQuestion) GetIsHost() bool {
+	if x != nil {
+		return x.IsHost
+	}
+	return false
+}
+
+func (x *StartQuestion) GetGameId() string {
+	if x != nil {
+		return x.GameId
+	}
+	return ""
 }
 
 type DisconnectResponse struct {
@@ -528,44 +528,6 @@ func (*DisconnectResponse) Descriptor() ([]byte, []int) {
 	return file_broadcast_proto_rawDescGZIP(), []int{7}
 }
 
-type NextQuestionResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-}
-
-func (x *NextQuestionResponse) Reset() {
-	*x = NextQuestionResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_broadcast_proto_msgTypes[8]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *NextQuestionResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*NextQuestionResponse) ProtoMessage() {}
-
-func (x *NextQuestionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_broadcast_proto_msgTypes[8]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use NextQuestionResponse.ProtoReflect.Descriptor instead.
-func (*NextQuestionResponse) Descriptor() ([]byte, []int) {
-	return file_broadcast_proto_rawDescGZIP(), []int{8}
-}
-
 var File_broadcast_proto protoreflect.FileDescriptor
 
 var file_broadcast_proto_rawDesc = []byte{
@@ -579,44 +541,45 @@ var file_broadcast_proto_rawDesc = []byte{
 	0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x08, 0x52, 0x06, 0x69, 0x73, 0x48, 0x6f, 0x73, 0x74, 0x22,
 	0x1f, 0x0a, 0x09, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x64, 0x6f, 0x77, 0x6e, 0x12, 0x12, 0x0a, 0x04,
 	0x74, 0x69, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04, 0x74, 0x69, 0x6d, 0x65,
-	0x22, 0x40, 0x0a, 0x0c, 0x54, 0x69, 0x6d, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x12, 0x17, 0x0a, 0x07, 0x67, 0x61, 0x6d, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x06, 0x67, 0x61, 0x6d, 0x65, 0x49, 0x64, 0x12, 0x17, 0x0a, 0x07, 0x69, 0x73, 0x5f,
-	0x68, 0x6f, 0x73, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x06, 0x69, 0x73, 0x48, 0x6f,
-	0x73, 0x74, 0x22, 0x71, 0x0a, 0x0a, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e,
-	0x12, 0x17, 0x0a, 0x07, 0x67, 0x61, 0x6d, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x06, 0x67, 0x61, 0x6d, 0x65, 0x49, 0x64, 0x12, 0x32, 0x0a, 0x04, 0x75, 0x73, 0x65,
-	0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x70, 0x71, 0x2e, 0x73, 0x74, 0x72,
-	0x65, 0x61, 0x6d, 0x69, 0x6e, 0x67, 0x2e, 0x67, 0x61, 0x6d, 0x65, 0x73, 0x2e, 0x74, 0x69, 0x6d,
-	0x65, 0x72, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x04, 0x75, 0x73, 0x65, 0x72, 0x12, 0x16, 0x0a,
-	0x06, 0x61, 0x63, 0x74, 0x69, 0x76, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x08, 0x52, 0x06, 0x61,
-	0x63, 0x74, 0x69, 0x76, 0x65, 0x22, 0x5d, 0x0a, 0x0e, 0x51, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f,
-	0x6e, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x35, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x0e, 0x32, 0x23, 0x2e, 0x70, 0x71, 0x2e, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d,
-	0x69, 0x6e, 0x67, 0x2e, 0x67, 0x61, 0x6d, 0x65, 0x73, 0x2e, 0x74, 0x69, 0x6d, 0x65, 0x72, 0x2e,
-	0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x4b, 0x65, 0x79, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14,
-	0x0a, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74,
-	0x69, 0x74, 0x6c, 0x65, 0x22, 0x85, 0x01, 0x0a, 0x08, 0x51, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f,
-	0x6e, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x69,
-	0x64, 0x12, 0x0c, 0x0a, 0x01, 0x71, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x01, 0x71, 0x12,
-	0x17, 0x0a, 0x07, 0x67, 0x61, 0x6d, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x06, 0x67, 0x61, 0x6d, 0x65, 0x49, 0x64, 0x12, 0x42, 0x0a, 0x07, 0x6f, 0x70, 0x74, 0x69,
-	0x6f, 0x6e, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x70, 0x71, 0x2e, 0x73,
-	0x74, 0x72, 0x65, 0x61, 0x6d, 0x69, 0x6e, 0x67, 0x2e, 0x67, 0x61, 0x6d, 0x65, 0x73, 0x2e, 0x74,
-	0x69, 0x6d, 0x65, 0x72, 0x2e, 0x51, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x4f, 0x70, 0x74,
-	0x69, 0x6f, 0x6e, 0x52, 0x07, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0x5d, 0x0a, 0x07,
-	0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x69, 0x6d, 0x65, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04, 0x74, 0x69, 0x6d, 0x65, 0x12, 0x3e, 0x0a, 0x08, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x22, 0x2e,
+	0x22, 0x71, 0x0a, 0x0a, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x17,
+	0x0a, 0x07, 0x67, 0x61, 0x6d, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x06, 0x67, 0x61, 0x6d, 0x65, 0x49, 0x64, 0x12, 0x32, 0x0a, 0x04, 0x75, 0x73, 0x65, 0x72, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x70, 0x71, 0x2e, 0x73, 0x74, 0x72, 0x65, 0x61,
+	0x6d, 0x69, 0x6e, 0x67, 0x2e, 0x67, 0x61, 0x6d, 0x65, 0x73, 0x2e, 0x74, 0x69, 0x6d, 0x65, 0x72,
+	0x2e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x04, 0x75, 0x73, 0x65, 0x72, 0x12, 0x16, 0x0a, 0x06, 0x61,
+	0x63, 0x74, 0x69, 0x76, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x08, 0x52, 0x06, 0x61, 0x63, 0x74,
+	0x69, 0x76, 0x65, 0x22, 0x5d, 0x0a, 0x0e, 0x51, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x4f,
+	0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x35, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x0e, 0x32, 0x23, 0x2e, 0x70, 0x71, 0x2e, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x69, 0x6e,
+	0x67, 0x2e, 0x67, 0x61, 0x6d, 0x65, 0x73, 0x2e, 0x74, 0x69, 0x6d, 0x65, 0x72, 0x2e, 0x4f, 0x70,
+	0x74, 0x69, 0x6f, 0x6e, 0x4b, 0x65, 0x79, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05,
+	0x74, 0x69, 0x74, 0x6c, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x69, 0x74,
+	0x6c, 0x65, 0x22, 0x6c, 0x0a, 0x08, 0x51, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x0e,
+	0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x69, 0x64, 0x12, 0x0c,
+	0x0a, 0x01, 0x71, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x01, 0x71, 0x12, 0x42, 0x0a, 0x07,
+	0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x28, 0x2e,
 	0x70, 0x71, 0x2e, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x69, 0x6e, 0x67, 0x2e, 0x67, 0x61, 0x6d,
 	0x65, 0x73, 0x2e, 0x74, 0x69, 0x6d, 0x65, 0x72, 0x2e, 0x51, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f,
-	0x6e, 0x52, 0x08, 0x71, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x14, 0x0a, 0x12, 0x44,
-	0x69, 0x73, 0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x22, 0x16, 0x0a, 0x14, 0x4e, 0x65, 0x78, 0x74, 0x51, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f,
-	0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2a, 0x27, 0x0a, 0x09, 0x4f, 0x70, 0x74,
+	0x6e, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73,
+	0x22, 0x5d, 0x0a, 0x07, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x74,
+	0x69, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04, 0x74, 0x69, 0x6d, 0x65, 0x12,
+	0x3e, 0x0a, 0x08, 0x71, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x22, 0x2e, 0x70, 0x71, 0x2e, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x69, 0x6e, 0x67,
+	0x2e, 0x67, 0x61, 0x6d, 0x65, 0x73, 0x2e, 0x74, 0x69, 0x6d, 0x65, 0x72, 0x2e, 0x51, 0x75, 0x65,
+	0x73, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x08, 0x71, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x22,
+	0x81, 0x01, 0x0a, 0x0d, 0x53, 0x74, 0x61, 0x72, 0x74, 0x51, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f,
+	0x6e, 0x12, 0x3e, 0x0a, 0x08, 0x71, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x70, 0x71, 0x2e, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x69,
+	0x6e, 0x67, 0x2e, 0x67, 0x61, 0x6d, 0x65, 0x73, 0x2e, 0x74, 0x69, 0x6d, 0x65, 0x72, 0x2e, 0x51,
+	0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x08, 0x71, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f,
+	0x6e, 0x12, 0x17, 0x0a, 0x07, 0x69, 0x73, 0x5f, 0x68, 0x6f, 0x73, 0x74, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x08, 0x52, 0x06, 0x69, 0x73, 0x48, 0x6f, 0x73, 0x74, 0x12, 0x17, 0x0a, 0x07, 0x67, 0x61,
+	0x6d, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x67, 0x61, 0x6d,
+	0x65, 0x49, 0x64, 0x22, 0x14, 0x0a, 0x12, 0x44, 0x69, 0x73, 0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63,
+	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2a, 0x27, 0x0a, 0x09, 0x4f, 0x70, 0x74,
 	0x69, 0x6f, 0x6e, 0x4b, 0x65, 0x79, 0x12, 0x05, 0x0a, 0x01, 0x41, 0x10, 0x00, 0x12, 0x05, 0x0a,
 	0x01, 0x42, 0x10, 0x01, 0x12, 0x05, 0x0a, 0x01, 0x43, 0x10, 0x02, 0x12, 0x05, 0x0a, 0x01, 0x44,
-	0x10, 0x03, 0x32, 0x93, 0x03, 0x0a, 0x09, 0x42, 0x72, 0x6f, 0x61, 0x64, 0x63, 0x61, 0x73, 0x74,
+	0x10, 0x03, 0x32, 0xa5, 0x02, 0x0a, 0x09, 0x42, 0x72, 0x6f, 0x61, 0x64, 0x63, 0x61, 0x73, 0x74,
 	0x12, 0x5b, 0x0a, 0x0c, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d,
 	0x12, 0x24, 0x2e, 0x70, 0x71, 0x2e, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x69, 0x6e, 0x67, 0x2e,
 	0x67, 0x61, 0x6d, 0x65, 0x73, 0x2e, 0x74, 0x69, 0x6d, 0x65, 0x72, 0x2e, 0x43, 0x6f, 0x6e, 0x6e,
@@ -629,20 +592,13 @@ var file_broadcast_proto_rawDesc = []byte{
 	0x6e, 0x1a, 0x2c, 0x2e, 0x70, 0x71, 0x2e, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x69, 0x6e, 0x67,
 	0x2e, 0x67, 0x61, 0x6d, 0x65, 0x73, 0x2e, 0x74, 0x69, 0x6d, 0x65, 0x72, 0x2e, 0x44, 0x69, 0x73,
 	0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
-	0x00, 0x12, 0x5d, 0x0a, 0x0a, 0x53, 0x74, 0x61, 0x72, 0x74, 0x54, 0x69, 0x6d, 0x65, 0x72, 0x12,
-	0x26, 0x2e, 0x70, 0x71, 0x2e, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x69, 0x6e, 0x67, 0x2e, 0x67,
-	0x61, 0x6d, 0x65, 0x73, 0x2e, 0x74, 0x69, 0x6d, 0x65, 0x72, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x72,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x23, 0x2e, 0x70, 0x71, 0x2e, 0x73, 0x74, 0x72,
-	0x65, 0x61, 0x6d, 0x69, 0x6e, 0x67, 0x2e, 0x67, 0x61, 0x6d, 0x65, 0x73, 0x2e, 0x74, 0x69, 0x6d,
-	0x65, 0x72, 0x2e, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x64, 0x6f, 0x77, 0x6e, 0x22, 0x00, 0x30, 0x01,
-	0x12, 0x66, 0x0a, 0x0c, 0x4e, 0x65, 0x78, 0x74, 0x51, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e,
-	0x12, 0x22, 0x2e, 0x70, 0x71, 0x2e, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x69, 0x6e, 0x67, 0x2e,
-	0x67, 0x61, 0x6d, 0x65, 0x73, 0x2e, 0x74, 0x69, 0x6d, 0x65, 0x72, 0x2e, 0x51, 0x75, 0x65, 0x73,
-	0x74, 0x69, 0x6f, 0x6e, 0x1a, 0x2e, 0x2e, 0x70, 0x71, 0x2e, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d,
-	0x69, 0x6e, 0x67, 0x2e, 0x67, 0x61, 0x6d, 0x65, 0x73, 0x2e, 0x74, 0x69, 0x6d, 0x65, 0x72, 0x2e,
-	0x4e, 0x65, 0x78, 0x74, 0x51, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x30, 0x01, 0x42, 0x08, 0x5a, 0x06, 0x73, 0x65, 0x72, 0x76,
-	0x65, 0x72, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x00, 0x12, 0x57, 0x0a, 0x05, 0x53, 0x74, 0x61, 0x72, 0x74, 0x12, 0x27, 0x2e, 0x70, 0x71, 0x2e,
+	0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x69, 0x6e, 0x67, 0x2e, 0x67, 0x61, 0x6d, 0x65, 0x73, 0x2e,
+	0x74, 0x69, 0x6d, 0x65, 0x72, 0x2e, 0x53, 0x74, 0x61, 0x72, 0x74, 0x51, 0x75, 0x65, 0x73, 0x74,
+	0x69, 0x6f, 0x6e, 0x1a, 0x21, 0x2e, 0x70, 0x71, 0x2e, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x69,
+	0x6e, 0x67, 0x2e, 0x67, 0x61, 0x6d, 0x65, 0x73, 0x2e, 0x74, 0x69, 0x6d, 0x65, 0x72, 0x2e, 0x4d,
+	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x00, 0x30, 0x01, 0x42, 0x08, 0x5a, 0x06, 0x73, 0x65,
+	0x72, 0x76, 0x65, 0x72, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -658,37 +614,35 @@ func file_broadcast_proto_rawDescGZIP() []byte {
 }
 
 var file_broadcast_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_broadcast_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_broadcast_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_broadcast_proto_goTypes = []interface{}{
-	(OptionKey)(0),               // 0: pq.streaming.games.timer.OptionKey
-	(*User)(nil),                 // 1: pq.streaming.games.timer.User
-	(*Countdown)(nil),            // 2: pq.streaming.games.timer.Countdown
-	(*TimerRequest)(nil),         // 3: pq.streaming.games.timer.TimerRequest
-	(*Connection)(nil),           // 4: pq.streaming.games.timer.Connection
-	(*QuestionOption)(nil),       // 5: pq.streaming.games.timer.QuestionOption
-	(*Question)(nil),             // 6: pq.streaming.games.timer.Question
-	(*Message)(nil),              // 7: pq.streaming.games.timer.Message
-	(*DisconnectResponse)(nil),   // 8: pq.streaming.games.timer.DisconnectResponse
-	(*NextQuestionResponse)(nil), // 9: pq.streaming.games.timer.NextQuestionResponse
+	(OptionKey)(0),             // 0: pq.streaming.games.timer.OptionKey
+	(*User)(nil),               // 1: pq.streaming.games.timer.User
+	(*Countdown)(nil),          // 2: pq.streaming.games.timer.Countdown
+	(*Connection)(nil),         // 3: pq.streaming.games.timer.Connection
+	(*QuestionOption)(nil),     // 4: pq.streaming.games.timer.QuestionOption
+	(*Question)(nil),           // 5: pq.streaming.games.timer.Question
+	(*Message)(nil),            // 6: pq.streaming.games.timer.Message
+	(*StartQuestion)(nil),      // 7: pq.streaming.games.timer.StartQuestion
+	(*DisconnectResponse)(nil), // 8: pq.streaming.games.timer.DisconnectResponse
 }
 var file_broadcast_proto_depIdxs = []int32{
 	1, // 0: pq.streaming.games.timer.Connection.user:type_name -> pq.streaming.games.timer.User
 	0, // 1: pq.streaming.games.timer.QuestionOption.key:type_name -> pq.streaming.games.timer.OptionKey
-	5, // 2: pq.streaming.games.timer.Question.options:type_name -> pq.streaming.games.timer.QuestionOption
-	6, // 3: pq.streaming.games.timer.Message.question:type_name -> pq.streaming.games.timer.Question
-	4, // 4: pq.streaming.games.timer.Broadcast.CreateStream:input_type -> pq.streaming.games.timer.Connection
-	4, // 5: pq.streaming.games.timer.Broadcast.Disconnect:input_type -> pq.streaming.games.timer.Connection
-	3, // 6: pq.streaming.games.timer.Broadcast.StartTimer:input_type -> pq.streaming.games.timer.TimerRequest
-	6, // 7: pq.streaming.games.timer.Broadcast.NextQuestion:input_type -> pq.streaming.games.timer.Question
-	7, // 8: pq.streaming.games.timer.Broadcast.CreateStream:output_type -> pq.streaming.games.timer.Message
+	4, // 2: pq.streaming.games.timer.Question.options:type_name -> pq.streaming.games.timer.QuestionOption
+	5, // 3: pq.streaming.games.timer.Message.question:type_name -> pq.streaming.games.timer.Question
+	5, // 4: pq.streaming.games.timer.StartQuestion.question:type_name -> pq.streaming.games.timer.Question
+	3, // 5: pq.streaming.games.timer.Broadcast.CreateStream:input_type -> pq.streaming.games.timer.Connection
+	3, // 6: pq.streaming.games.timer.Broadcast.Disconnect:input_type -> pq.streaming.games.timer.Connection
+	7, // 7: pq.streaming.games.timer.Broadcast.Start:input_type -> pq.streaming.games.timer.StartQuestion
+	6, // 8: pq.streaming.games.timer.Broadcast.CreateStream:output_type -> pq.streaming.games.timer.Message
 	8, // 9: pq.streaming.games.timer.Broadcast.Disconnect:output_type -> pq.streaming.games.timer.DisconnectResponse
-	2, // 10: pq.streaming.games.timer.Broadcast.StartTimer:output_type -> pq.streaming.games.timer.Countdown
-	9, // 11: pq.streaming.games.timer.Broadcast.NextQuestion:output_type -> pq.streaming.games.timer.NextQuestionResponse
-	8, // [8:12] is the sub-list for method output_type
-	4, // [4:8] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	6, // 10: pq.streaming.games.timer.Broadcast.Start:output_type -> pq.streaming.games.timer.Message
+	8, // [8:11] is the sub-list for method output_type
+	5, // [5:8] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_broadcast_proto_init() }
@@ -722,18 +676,6 @@ func file_broadcast_proto_init() {
 			}
 		}
 		file_broadcast_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TimerRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_broadcast_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Connection); i {
 			case 0:
 				return &v.state
@@ -745,7 +687,7 @@ func file_broadcast_proto_init() {
 				return nil
 			}
 		}
-		file_broadcast_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_broadcast_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*QuestionOption); i {
 			case 0:
 				return &v.state
@@ -757,7 +699,7 @@ func file_broadcast_proto_init() {
 				return nil
 			}
 		}
-		file_broadcast_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_broadcast_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Question); i {
 			case 0:
 				return &v.state
@@ -769,8 +711,20 @@ func file_broadcast_proto_init() {
 				return nil
 			}
 		}
-		file_broadcast_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+		file_broadcast_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Message); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_broadcast_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*StartQuestion); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -793,18 +747,6 @@ func file_broadcast_proto_init() {
 				return nil
 			}
 		}
-		file_broadcast_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*NextQuestionResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -812,7 +754,7 @@ func file_broadcast_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_broadcast_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   9,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -841,8 +783,7 @@ const _ = grpc.SupportPackageIsVersion6
 type BroadcastClient interface {
 	CreateStream(ctx context.Context, in *Connection, opts ...grpc.CallOption) (Broadcast_CreateStreamClient, error)
 	Disconnect(ctx context.Context, in *Connection, opts ...grpc.CallOption) (*DisconnectResponse, error)
-	StartTimer(ctx context.Context, in *TimerRequest, opts ...grpc.CallOption) (Broadcast_StartTimerClient, error)
-	NextQuestion(ctx context.Context, in *Question, opts ...grpc.CallOption) (Broadcast_NextQuestionClient, error)
+	Start(ctx context.Context, in *StartQuestion, opts ...grpc.CallOption) (Broadcast_StartClient, error)
 }
 
 type broadcastClient struct {
@@ -894,12 +835,12 @@ func (c *broadcastClient) Disconnect(ctx context.Context, in *Connection, opts .
 	return out, nil
 }
 
-func (c *broadcastClient) StartTimer(ctx context.Context, in *TimerRequest, opts ...grpc.CallOption) (Broadcast_StartTimerClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_Broadcast_serviceDesc.Streams[1], "/pq.streaming.games.timer.Broadcast/StartTimer", opts...)
+func (c *broadcastClient) Start(ctx context.Context, in *StartQuestion, opts ...grpc.CallOption) (Broadcast_StartClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_Broadcast_serviceDesc.Streams[1], "/pq.streaming.games.timer.Broadcast/Start", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &broadcastStartTimerClient{stream}
+	x := &broadcastStartClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -909,49 +850,17 @@ func (c *broadcastClient) StartTimer(ctx context.Context, in *TimerRequest, opts
 	return x, nil
 }
 
-type Broadcast_StartTimerClient interface {
-	Recv() (*Countdown, error)
+type Broadcast_StartClient interface {
+	Recv() (*Message, error)
 	grpc.ClientStream
 }
 
-type broadcastStartTimerClient struct {
+type broadcastStartClient struct {
 	grpc.ClientStream
 }
 
-func (x *broadcastStartTimerClient) Recv() (*Countdown, error) {
-	m := new(Countdown)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func (c *broadcastClient) NextQuestion(ctx context.Context, in *Question, opts ...grpc.CallOption) (Broadcast_NextQuestionClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_Broadcast_serviceDesc.Streams[2], "/pq.streaming.games.timer.Broadcast/NextQuestion", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &broadcastNextQuestionClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type Broadcast_NextQuestionClient interface {
-	Recv() (*NextQuestionResponse, error)
-	grpc.ClientStream
-}
-
-type broadcastNextQuestionClient struct {
-	grpc.ClientStream
-}
-
-func (x *broadcastNextQuestionClient) Recv() (*NextQuestionResponse, error) {
-	m := new(NextQuestionResponse)
+func (x *broadcastStartClient) Recv() (*Message, error) {
+	m := new(Message)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -962,8 +871,7 @@ func (x *broadcastNextQuestionClient) Recv() (*NextQuestionResponse, error) {
 type BroadcastServer interface {
 	CreateStream(*Connection, Broadcast_CreateStreamServer) error
 	Disconnect(context.Context, *Connection) (*DisconnectResponse, error)
-	StartTimer(*TimerRequest, Broadcast_StartTimerServer) error
-	NextQuestion(*Question, Broadcast_NextQuestionServer) error
+	Start(*StartQuestion, Broadcast_StartServer) error
 }
 
 // UnimplementedBroadcastServer can be embedded to have forward compatible implementations.
@@ -976,11 +884,8 @@ func (*UnimplementedBroadcastServer) CreateStream(*Connection, Broadcast_CreateS
 func (*UnimplementedBroadcastServer) Disconnect(context.Context, *Connection) (*DisconnectResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Disconnect not implemented")
 }
-func (*UnimplementedBroadcastServer) StartTimer(*TimerRequest, Broadcast_StartTimerServer) error {
-	return status.Errorf(codes.Unimplemented, "method StartTimer not implemented")
-}
-func (*UnimplementedBroadcastServer) NextQuestion(*Question, Broadcast_NextQuestionServer) error {
-	return status.Errorf(codes.Unimplemented, "method NextQuestion not implemented")
+func (*UnimplementedBroadcastServer) Start(*StartQuestion, Broadcast_StartServer) error {
+	return status.Errorf(codes.Unimplemented, "method Start not implemented")
 }
 
 func RegisterBroadcastServer(s *grpc.Server, srv BroadcastServer) {
@@ -1026,45 +931,24 @@ func _Broadcast_Disconnect_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Broadcast_StartTimer_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(TimerRequest)
+func _Broadcast_Start_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(StartQuestion)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(BroadcastServer).StartTimer(m, &broadcastStartTimerServer{stream})
+	return srv.(BroadcastServer).Start(m, &broadcastStartServer{stream})
 }
 
-type Broadcast_StartTimerServer interface {
-	Send(*Countdown) error
+type Broadcast_StartServer interface {
+	Send(*Message) error
 	grpc.ServerStream
 }
 
-type broadcastStartTimerServer struct {
+type broadcastStartServer struct {
 	grpc.ServerStream
 }
 
-func (x *broadcastStartTimerServer) Send(m *Countdown) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func _Broadcast_NextQuestion_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(Question)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(BroadcastServer).NextQuestion(m, &broadcastNextQuestionServer{stream})
-}
-
-type Broadcast_NextQuestionServer interface {
-	Send(*NextQuestionResponse) error
-	grpc.ServerStream
-}
-
-type broadcastNextQuestionServer struct {
-	grpc.ServerStream
-}
-
-func (x *broadcastNextQuestionServer) Send(m *NextQuestionResponse) error {
+func (x *broadcastStartServer) Send(m *Message) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -1084,13 +968,8 @@ var _Broadcast_serviceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 		{
-			StreamName:    "StartTimer",
-			Handler:       _Broadcast_StartTimer_Handler,
-			ServerStreams: true,
-		},
-		{
-			StreamName:    "NextQuestion",
-			Handler:       _Broadcast_NextQuestion_Handler,
+			StreamName:    "Start",
+			Handler:       _Broadcast_Start_Handler,
 			ServerStreams: true,
 		},
 	},

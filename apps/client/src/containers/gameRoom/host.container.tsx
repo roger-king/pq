@@ -12,7 +12,7 @@ import { QuestionList } from '../questions/list.container';
 
 import {
   Connection,
-  TimerRequest,
+  StartQuestion,
   User,
   Question as QuestionRequest,
   QuestionOption,
@@ -90,11 +90,25 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
     });
   };
 
-  const startTimer = () => {
-    const timerRequest = new TimerRequest();
-    timerRequest.setGameId(code);
-    timerRequest.setIsHost(true);
-    const stream = client.startTimer(timerRequest, {});
+  const start = () => {
+    const q = questions && questions.data[currentQuestion];
+    const req = new StartQuestion();
+    if (q) {
+      req.setGameId(code);
+      req.setIsHost(true);
+
+      const questionReq = new QuestionRequest();
+      const options = q.options.map((o) => {
+        const questionOptions = new QuestionOption();
+        questionOptions.setKey(OptionKey[o.key]);
+        questionOptions.setTitle(o.title);
+        return questionOptions;
+      });
+      questionReq.setQ(q.q);
+      questionReq.setOptionsList(options);
+      req.setQuestion(questionReq);
+    }
+    const stream = client.start(req, {});
 
     stream.on('data', function (response: any) {
       const { time } = response.toObject();
@@ -102,38 +116,9 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
     });
   };
 
-  const nextQuestion = () => {
-    const q = questions && questions.data[currentQuestion];
-
-    if (q) {
-      const nextQuestionRequest = new QuestionRequest();
-      const options = q.options.map((o) => {
-        const questionOptions = new QuestionOption();
-        questionOptions.setKey(OptionKey[o.key]);
-        questionOptions.setTitle(o.title);
-        return questionOptions;
-      });
-      nextQuestionRequest.setGameId(code);
-      nextQuestionRequest.setQ(q.q);
-      nextQuestionRequest.setOptionsList(options);
-
-      const stream = client.nextQuestion(nextQuestionRequest, {});
-      console.log('Sending question');
-      stream.on('data', function (response: any) {
-        console.log(response);
-      });
-    }
-  };
-
   useEffect(() => {
     if (!connected) {
       connectToBroadcastServer();
-    }
-
-    // Fix this
-    if (questions && currentQuestion === 0) {
-      console.log('Question sending');
-      nextQuestion();
     }
   }, []);
 
@@ -174,7 +159,7 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
               />
             )}
             {timer === 0 && isComplete && <Button label="Finish" onClick={() => console.log('done')} primary />}
-            {timer <= 60 && !isComplete && <Button label="Play" icon={<Play />} onClick={() => startTimer()} primary />}
+            {timer <= 60 && !isComplete && <Button label="Play" icon={<Play />} onClick={() => start()} primary />}
           </Box>
         </Box>
       </Box>

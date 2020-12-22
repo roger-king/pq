@@ -1,5 +1,6 @@
-// eslint-disable
-import * as jspb from 'google-protobuf';
+import * as jspb from 'google-protobuf'
+
+
 
 export class User extends jspb.Message {
   getId(): string;
@@ -21,10 +22,10 @@ export class User extends jspb.Message {
 
 export namespace User {
   export type AsObject = {
-    id: string;
-    displayName: string;
-    isHost: boolean;
-  };
+    id: string,
+    displayName: string,
+    isHost: boolean,
+  }
 }
 
 export class Countdown extends jspb.Message {
@@ -41,30 +42,8 @@ export class Countdown extends jspb.Message {
 
 export namespace Countdown {
   export type AsObject = {
-    time: number;
-  };
-}
-
-export class TimerRequest extends jspb.Message {
-  getGameId(): string;
-  setGameId(value: string): TimerRequest;
-
-  getIsHost(): boolean;
-  setIsHost(value: boolean): TimerRequest;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): TimerRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: TimerRequest): TimerRequest.AsObject;
-  static serializeBinaryToWriter(message: TimerRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): TimerRequest;
-  static deserializeBinaryFromReader(message: TimerRequest, reader: jspb.BinaryReader): TimerRequest;
-}
-
-export namespace TimerRequest {
-  export type AsObject = {
-    gameId: string;
-    isHost: boolean;
-  };
+    time: number,
+  }
 }
 
 export class Connection extends jspb.Message {
@@ -89,10 +68,10 @@ export class Connection extends jspb.Message {
 
 export namespace Connection {
   export type AsObject = {
-    gameId: string;
-    user?: User.AsObject;
-    active: boolean;
-  };
+    gameId: string,
+    user?: User.AsObject,
+    active: boolean,
+  }
 }
 
 export class QuestionOption extends jspb.Message {
@@ -112,9 +91,9 @@ export class QuestionOption extends jspb.Message {
 
 export namespace QuestionOption {
   export type AsObject = {
-    key: OptionKey;
-    title: string;
-  };
+    key: OptionKey,
+    title: string,
+  }
 }
 
 export class Question extends jspb.Message {
@@ -123,9 +102,6 @@ export class Question extends jspb.Message {
 
   getQ(): string;
   setQ(value: string): Question;
-
-  getGameId(): string;
-  setGameId(value: string): Question;
 
   getOptionsList(): Array<QuestionOption>;
   setOptionsList(value: Array<QuestionOption>): Question;
@@ -142,11 +118,10 @@ export class Question extends jspb.Message {
 
 export namespace Question {
   export type AsObject = {
-    id: number;
-    q: string;
-    gameId: string;
-    optionsList: Array<QuestionOption.AsObject>;
-  };
+    id: number,
+    q: string,
+    optionsList: Array<QuestionOption.AsObject>,
+  }
 }
 
 export class Message extends jspb.Message {
@@ -168,9 +143,37 @@ export class Message extends jspb.Message {
 
 export namespace Message {
   export type AsObject = {
-    time: number;
-    question?: Question.AsObject;
-  };
+    time: number,
+    question?: Question.AsObject,
+  }
+}
+
+export class StartQuestion extends jspb.Message {
+  getQuestion(): Question | undefined;
+  setQuestion(value?: Question): StartQuestion;
+  hasQuestion(): boolean;
+  clearQuestion(): StartQuestion;
+
+  getIsHost(): boolean;
+  setIsHost(value: boolean): StartQuestion;
+
+  getGameId(): string;
+  setGameId(value: string): StartQuestion;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): StartQuestion.AsObject;
+  static toObject(includeInstance: boolean, msg: StartQuestion): StartQuestion.AsObject;
+  static serializeBinaryToWriter(message: StartQuestion, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): StartQuestion;
+  static deserializeBinaryFromReader(message: StartQuestion, reader: jspb.BinaryReader): StartQuestion;
+}
+
+export namespace StartQuestion {
+  export type AsObject = {
+    question?: Question.AsObject,
+    isHost: boolean,
+    gameId: string,
+  }
 }
 
 export class DisconnectResponse extends jspb.Message {
@@ -183,23 +186,11 @@ export class DisconnectResponse extends jspb.Message {
 }
 
 export namespace DisconnectResponse {
-  export type AsObject = {};
+  export type AsObject = {
+  }
 }
 
-export class NextQuestionResponse extends jspb.Message {
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): NextQuestionResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: NextQuestionResponse): NextQuestionResponse.AsObject;
-  static serializeBinaryToWriter(message: NextQuestionResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): NextQuestionResponse;
-  static deserializeBinaryFromReader(message: NextQuestionResponse, reader: jspb.BinaryReader): NextQuestionResponse;
-}
-
-export namespace NextQuestionResponse {
-  export type AsObject = {};
-}
-
-export enum OptionKey {
+export enum OptionKey { 
   A = 0,
   B = 1,
   C = 2,

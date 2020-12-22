@@ -6,6 +6,7 @@
 
 // GENERATED CODE -- DO NOT EDIT!
 
+
 /* eslint-disable */
 // @ts-nocheck
 
@@ -93,42 +94,23 @@ export class BroadcastClient {
     this.methodInfoDisconnect);
   }
 
-  methodInfoStartTimer = new grpcWeb.AbstractClientBase.MethodInfo(
-    broadcast_pb.Countdown,
-    (request: broadcast_pb.TimerRequest) => {
+  methodInfoStart = new grpcWeb.AbstractClientBase.MethodInfo(
+    broadcast_pb.Message,
+    (request: broadcast_pb.StartQuestion) => {
       return request.serializeBinary();
     },
-    broadcast_pb.Countdown.deserializeBinary
+    broadcast_pb.Message.deserializeBinary
   );
 
-  startTimer(
-    request: broadcast_pb.TimerRequest,
+  start(
+    request: broadcast_pb.StartQuestion,
     metadata?: grpcWeb.Metadata) {
     return this.client_.serverStreaming(
       this.hostname_ +
-        '/pq.streaming.games.timer.Broadcast/StartTimer',
+        '/pq.streaming.games.timer.Broadcast/Start',
       request,
       metadata || {},
-      this.methodInfoStartTimer);
-  }
-
-  methodInfoNextQuestion = new grpcWeb.AbstractClientBase.MethodInfo(
-    broadcast_pb.NextQuestionResponse,
-    (request: broadcast_pb.Question) => {
-      return request.serializeBinary();
-    },
-    broadcast_pb.NextQuestionResponse.deserializeBinary
-  );
-
-  nextQuestion(
-    request: broadcast_pb.Question,
-    metadata?: grpcWeb.Metadata) {
-    return this.client_.serverStreaming(
-      this.hostname_ +
-        '/pq.streaming.games.timer.Broadcast/NextQuestion',
-      request,
-      metadata || {},
-      this.methodInfoNextQuestion);
+      this.methodInfoStart);
   }
 
 }

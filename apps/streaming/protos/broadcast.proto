@@ -12,11 +12,6 @@ message Countdown {
     int64 time = 1;
 }
 
-message TimerRequest {
-    string game_id = 1;
-    bool is_host = 2;
-}
-
 message Connection {
     string game_id = 1;
     User user = 2;
@@ -38,7 +33,6 @@ message QuestionOption {
 message Question {
     int64 id = 1;
     string q = 2;
-    string game_id = 3;
     repeated QuestionOption options = 4;
 }
 
@@ -47,12 +41,16 @@ message Message {
     Question question = 2;
 }
 
+message StartQuestion {
+    Question question = 1;
+    bool is_host = 2;
+    string game_id = 3;
+}
+
 message DisconnectResponse{}
-message NextQuestionResponse{}
 
 service Broadcast {
     rpc CreateStream(Connection) returns (stream Message) {}
     rpc Disconnect(Connection) returns (DisconnectResponse) {}
-    rpc StartTimer(TimerRequest) returns (stream Countdown) {}
-    rpc NextQuestion(Question) returns (stream NextQuestionResponse) {}
+    rpc Start(StartQuestion) returns (stream Message) {}
 }
