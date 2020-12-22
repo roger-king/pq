@@ -94,6 +94,46 @@ export class BroadcastClient {
     this.methodInfoDisconnect);
   }
 
+  methodInfoHeartbeat = new grpcWeb.AbstractClientBase.MethodInfo(
+    broadcast_pb.HeartbeatResponse,
+    (request: broadcast_pb.Connection) => {
+      return request.serializeBinary();
+    },
+    broadcast_pb.HeartbeatResponse.deserializeBinary
+  );
+
+  heartbeat(
+    request: broadcast_pb.Connection,
+    metadata: grpcWeb.Metadata | null): Promise<broadcast_pb.HeartbeatResponse>;
+
+  heartbeat(
+    request: broadcast_pb.Connection,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: broadcast_pb.HeartbeatResponse) => void): grpcWeb.ClientReadableStream<broadcast_pb.HeartbeatResponse>;
+
+  heartbeat(
+    request: broadcast_pb.Connection,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: broadcast_pb.HeartbeatResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/pq.streaming.games.timer.Broadcast/Heartbeat',
+        request,
+        metadata || {},
+        this.methodInfoHeartbeat,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/pq.streaming.games.timer.Broadcast/Heartbeat',
+    request,
+    metadata || {},
+    this.methodInfoHeartbeat);
+  }
+
   methodInfoStart = new grpcWeb.AbstractClientBase.MethodInfo(
     broadcast_pb.Message,
     (request: broadcast_pb.StartQuestion) => {

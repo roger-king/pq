@@ -190,6 +190,20 @@ export namespace DisconnectResponse {
   }
 }
 
+export class HeartbeatResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): HeartbeatResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: HeartbeatResponse): HeartbeatResponse.AsObject;
+  static serializeBinaryToWriter(message: HeartbeatResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): HeartbeatResponse;
+  static deserializeBinaryFromReader(message: HeartbeatResponse, reader: jspb.BinaryReader): HeartbeatResponse;
+}
+
+export namespace HeartbeatResponse {
+  export type AsObject = {
+  }
+}
+
 export enum OptionKey { 
   A = 0,
   B = 1,

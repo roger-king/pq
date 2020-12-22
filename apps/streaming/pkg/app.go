@@ -25,6 +25,7 @@ type Connection struct {
 	gameID string
 	userID string
 	active bool
+	lastConnected int64
 	isHost bool
 	error  chan error
 }
@@ -34,11 +35,13 @@ type broadcastServer struct {
 
 // TODO: add a remove connection
 func (s *broadcastServer) CreateStream(req *server.Connection, stream server.Broadcast_CreateStreamServer) error {
+	now := time.Now() 
 	conn := &Connection{
 		stream: stream,
 		gameID: req.GameId,
 		userID: req.User.Id,
 		isHost: req.User.IsHost,
+		lastConnected: now.Unix(),
 		active: true,
 		error:  make(chan error),
 	}
@@ -110,6 +113,12 @@ func (s *broadcastServer) Start(req *server.StartQuestion, stream server.Broadca
 	return nil
 }
 
+func removeConnection(conns []*Connection, id int) []*Connection {
+	conns[id] = conns[len(conns)-1] // Copy last element to index i.
+	conns[len(conns)-1] = nil
+	return conns[:len(conns)-1]
+}
+
 func (s *broadcastServer) Disconnect(ctx context.Context, conn *server.Connection) (*server.DisconnectResponse, error) {
 	log.Print("Disconnecting User:")
 	var connToRemove int
@@ -121,14 +130,53 @@ func (s *broadcastServer) Disconnect(ctx context.Context, conn *server.Connectio
 		}
 	}
 
-	connections[connToRemove] = connections[len(connections)-1] // Copy last element to index i.
-	connections[len(connections)-1] = nil
-	s.Connections[conn.GameId] = connections[:len(connections)-1]
+	s.Connections[conn.GameId] = removeConnection(connections, connToRemove)
 
 	log.Print(s.Connections[conn.GameId])
 	return &server.DisconnectResponse{}, nil
 }
 
+
+// AuditConnections - audits the active connections
+// Client should be sending a heartbeat request every 3 seconds.
+func (s *broadcastServer) AuditConnections() {
+	log.Print("Auditing connections started...")
+	for {
+		if len(s.Connections) > 0 {
+			time.Sleep(time.Second * 10)
+			for key, conns := range s.Connections {
+				for i, c := range conns {
+					now := time.Now().Unix()
+					// We give a grace period of 15 seconds for the user.
+					if c.lastConnected + 15 < now {
+						log.Printf("%s is inactive.", c.userID)
+						s.Connections[key] = removeConnection(conns, i)
+					}
+				}
+			}
+		}
+	}
+}
+
+
+func (s *broadcastServer) Heartbeat(ctx context.Context, conn *server.Connection) (*server.HeartbeatResponse, error) {
+	log.Printf("Heartbeat from user: %s", conn.User.DisplayName)
+	didUpdate := false
+	connections := s.Connections[conn.GameId]
+	for _, c := range connections {
+		if c.userID == conn.User.Id {
+			didUpdate = true
+			c.lastConnected = time.Now().Unix()
+			break;
+		}
+	}
+
+	if didUpdate {
+		s.Connections[conn.GameId] = connections
+	}
+	log.Print(s.Connections[conn.GameId])
+	return &server.HeartbeatResponse{}, nil
+}
 
 // App -
 type App struct {
@@ -144,89 +192,10 @@ func (a *App) Start() (net.Listener, *grpc.Server) {
 	}
 
 	s := grpc.NewServer()
-	server.RegisterBroadcastServer(s, &broadcastServer{})
+	broadcaster := &broadcastServer{}
+	server.RegisterBroadcastServer(s, broadcaster)
+
+	go broadcaster.AuditConnections()
 
 	return lis, s
 }
-
-
-
-
-// func (s *broadcastServer) StartTimer(req *server.TimerRequest, stream server.Broadcast_StartTimerServer) error {
-// 	wait := sync.WaitGroup{}
-// 	done := make(chan int)
-
-// 	if conns, ok := s.Connections[req.GameId]; ok {
-// 		for _, conn := range conns {
-// 			wait.Add(1)
-// 			go func(req *server.TimerRequest, stream server.Broadcast_StartTimerServer) {
-// 				defer wait.Done()
-// 				log.Printf("Starting counddown: %v", conn.userID)
-// 				if req.GameId == conn.gameID  {
-	
-// 					countdown := 60
-	
-// 					for countdown != 0 {
-// 						countdown--
-// 						time.Sleep(time.Second * 1)
-						
-// 						 // TODO: look into a better way than using a global message.
-// 						err := conn.stream.Send(&server.Message{Time: int64(countdown)})
-// 						if req.IsHost {
-// 							// ToDO: look into why the connection stream doesnt send to the host too.
-// 							stream.Send(&server.Countdown{Time: int64(countdown)})
-// 						}
-
-// 						if err != nil {
-// 							fmt.Errorf("Failed to send countdown: %v", err)
-// 						}
-// 					}
-// 				}
-// 			}(req, stream)
-	
-// 		}
-// 	}
-
-// 	go func() {
-// 		wait.Wait()
-// 		close(done)
-// 	}()
-
-// 	<-done
-// 	return nil
-// }
-
-// func (s *broadcastServer) NextQuestion(req *server.Question, stream server.Broadcast_NextQuestionServer) error {
-// 	wait := sync.WaitGroup{}
-// 	done := make(chan int)
-
-// 	if conns, ok := s.Connections[req.GameId]; ok {
-// 		log.Print(len(conns))
-// 		for _, conn := range conns {
-// 			wait.Add(1)
-// 			go func(req *server.Question, stream server.Broadcast_NextQuestionServer) {
-// 				defer wait.Done()
-// 				if !conn.isHost && req.GameId == conn.gameID  {
-// 					log.Printf("Sending question to: ", conn.userID)
-// 					err := conn.stream.Send(&server.Message{Question: &server.Question{
-// 						Q: req.Q,
-// 						Options: req.Options,
-// 					}})
-
-// 					if err != nil {
-// 						fmt.Errorf("Failed to send countdown: %v", err)
-// 					}
-// 				}
-// 			}(req, stream)
-
-// 		}
-// 	}
-
-// 	go func() {
-// 		wait.Wait()
-// 		close(done)
-// 	}()
-
-// 	<-done
-// 	return nil
-// }

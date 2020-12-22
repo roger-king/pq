@@ -4,6 +4,7 @@ import { Game } from '../../@types';
 import { Connection, User } from '../../grpc/broadcast_pb';
 import { useBroadcastClient } from '../../hooks/useGrpcClient';
 import { ConnectionStatus } from '../../components/connectionStatus';
+import { time } from 'console';
 
 export interface ParticipantViewProps {
   game: Game;
@@ -35,13 +36,20 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: Partic
     });
   };
 
+  const heartBeat = () => {
+    setInterval(() => {
+      console.log('sending heartbeat');
+      client.heartbeat(connection, {});
+    }, 3000);
+  };
+
   useEffect(() => {
     if (!connected) {
       connectToBroadcastServer();
     }
-
+    heartBeat();
     return () => {
-      console.log('disconnecting     ');
+      console.log('disconnecting');
       client.disconnect(connection, {});
     };
   }, []);

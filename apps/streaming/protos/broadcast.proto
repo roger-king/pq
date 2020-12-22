@@ -48,9 +48,11 @@ message StartQuestion {
 }
 
 message DisconnectResponse{}
+message HeartbeatResponse{}
 
 service Broadcast {
     rpc CreateStream(Connection) returns (stream Message) {}
     rpc Disconnect(Connection) returns (DisconnectResponse) {}
+    rpc Heartbeat(Connection) returns (HeartbeatResponse) {}
     rpc Start(StartQuestion) returns (stream Message) {}
 }
