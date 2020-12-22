@@ -8,8 +8,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "lint": "eslint src --ext .ts",
-    "lint:fix": "eslint src --fix --ext .ts",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --fix --ext .ts,.tsx",
     "generate": "apollo client:codegen --target typescript --outputFlat=src/@types",
     "start": "next start -p $PORT",
     "test": "jest",
@@ -54,7 +54,12 @@
     "eslint-config-airbnb-typescript": "^12.0.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-flowtype": "^5.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^3.3.0",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "jest": "^26.5.3",
     "prettier": "^2.2.1",
     "react-test-renderer": "^16.14.0",
@@ -64,25 +69,48 @@
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
     "extends": [
+      "react-app",
+      "plugin:react/recommended",
       "plugin:@typescript-eslint/recommended",
+      "airbnb-typescript",
+      "prettier/@typescript-eslint",
+      "prettier/react",
       "plugin:prettier/recommended"
     ],
+    "plugins": [
+      "prettier"
+    ],
     "parserOptions": {
+      "project": [
+        "./tsconfig.json"
+      ],
       "ecmaVersion": 2018,
-      "project": "./tsconfig.build.json",
       "sourceType": "module",
       "ecmaFeatures": {
         "jsx": true
       }
     },
-    "plugins": [
-      "prettier"
-    ],
     "rules": {
       "prettier/prettier": "error",
-      "no-unused-vars": "error",
-      "sort-imports": "error"
+      "import/prefer-default-export": 0,
+      "no-console": "off",
+      "class-methods-use-this": 0,
+      "@typescript-eslint/no-explicit-any": 0,
+      "no-shadow": 0,
+      "prefer-destructuring": 0,
+      "no-duplicate-imports": 2,
+      "no-restricted-syntax": [
+        "error",
+        {
+          "selector": "CallExpression[callee.object.name='console'][callee.property.name!=/^(log|warn|error|info|trace)$/]",
+          "message": "Unexpected property on console object was called"
+        }
+      ]
     },
-    "settings": {}
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
+    }
   }
 }

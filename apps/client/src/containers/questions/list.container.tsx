@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, Heading, Text } from 'grommet';
 import { useQuery } from 'react-query';
+import Axios from 'axios';
 import { Question } from '../../@types';
 import { API_URL } from '../../constants';
-import Axios from 'axios';
 
 export interface QuestionListProps {
   gameId: number;

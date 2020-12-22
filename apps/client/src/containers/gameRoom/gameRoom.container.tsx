@@ -7,6 +7,7 @@ import { HostLobbyView, HostInGameView } from './host.container';
 import { JoinedGame } from '../../@types';
 import { API_URL } from '../../constants';
 import { ParticipantView } from './participant.container';
+
 export interface GameRoomContainerProps {
   code: string;
 }

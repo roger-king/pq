@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 import axios from 'axios';
 import { Box, Button, TextInput } from 'grommet';
-import { API_URL } from '../../constants';
 import { AddCircle } from 'grommet-icons';
-import { QuestionForm } from '../../components/form/questions';
 import { useRouter } from 'next/router';
+import { API_URL } from '../../constants';
+import { QuestionForm } from '../../components/form/questions';
 
 export const CreateGameContainer: React.FC = () => {
   const router = useRouter();
@@ -57,7 +57,7 @@ export const CreateGameContainer: React.FC = () => {
         label="Create"
         primary
         onClick={() => {
-          createGame({ name: name, createdBy: hostName });
+          createGame({ name, createdBy: hostName });
         }}
       />
       <Box elevation="medium" pad="medium" border="all" height="250px" gap="small" align="center" justify="center">

@@ -1,6 +1,4 @@
-import * as jspb from 'google-protobuf'
-
-
+import * as jspb from 'google-protobuf';
 
 export class User extends jspb.Message {
   getId(): string;
@@ -22,10 +20,10 @@ export class User extends jspb.Message {
 
 export namespace User {
   export type AsObject = {
-    id: string,
-    displayName: string,
-    isHost: boolean,
-  }
+    id: string;
+    displayName: string;
+    isHost: boolean;
+  };
 }
 
 export class Countdown extends jspb.Message {
@@ -42,8 +40,8 @@ export class Countdown extends jspb.Message {
 
 export namespace Countdown {
   export type AsObject = {
-    time: number,
-  }
+    time: number;
+  };
 }
 
 export class TimerRequest extends jspb.Message {
@@ -63,9 +61,9 @@ export class TimerRequest extends jspb.Message {
 
 export namespace TimerRequest {
   export type AsObject = {
-    gameId: string,
-    isHost: boolean,
-  }
+    gameId: string;
+    isHost: boolean;
+  };
 }
 
 export class Connection extends jspb.Message {
@@ -90,10 +88,10 @@ export class Connection extends jspb.Message {
 
 export namespace Connection {
   export type AsObject = {
-    gameId: string,
-    user?: User.AsObject,
-    active: boolean,
-  }
+    gameId: string;
+    user?: User.AsObject;
+    active: boolean;
+  };
 }
 
 export class QuestionOption extends jspb.Message {
@@ -113,9 +111,9 @@ export class QuestionOption extends jspb.Message {
 
 export namespace QuestionOption {
   export type AsObject = {
-    key: OptionKey,
-    title: string,
-  }
+    key: OptionKey;
+    title: string;
+  };
 }
 
 export class Question extends jspb.Message {
@@ -143,11 +141,11 @@ export class Question extends jspb.Message {
 
 export namespace Question {
   export type AsObject = {
-    id: number,
-    q: string,
-    gameId: string,
-    optionsList: Array<QuestionOption.AsObject>,
-  }
+    id: number;
+    q: string;
+    gameId: string;
+    optionsList: Array<QuestionOption.AsObject>;
+  };
 }
 
 export class Message extends jspb.Message {
@@ -169,9 +167,9 @@ export class Message extends jspb.Message {
 
 export namespace Message {
   export type AsObject = {
-    time: number,
-    question?: Question.AsObject,
-  }
+    time: number;
+    question?: Question.AsObject;
+  };
 }
 
 export class DisconnectResponse extends jspb.Message {
@@ -184,8 +182,7 @@ export class DisconnectResponse extends jspb.Message {
 }
 
 export namespace DisconnectResponse {
-  export type AsObject = {
-  }
+  export type AsObject = {};
 }
 
 export class NextQuestionResponse extends jspb.Message {
@@ -198,11 +195,10 @@ export class NextQuestionResponse extends jspb.Message {
 }
 
 export namespace NextQuestionResponse {
-  export type AsObject = {
-  }
+  export type AsObject = {};
 }
 
-export enum OptionKey { 
+export enum OptionKey {
   A = 0,
   B = 1,
   C = 2,

@@ -3,19 +3,19 @@ import { Avatar } from 'grommet';
 import { User } from 'grommet-icons';
 
 export interface AvatarIconProps {
-    imgUrl?: string;
+  imgUrl?: string;
 }
 
 export const AvatarIcon: React.FC<AvatarIconProps> = (props: AvatarIconProps) => {
-    const { imgUrl } = props;
+  const { imgUrl } = props;
 
-    if (imgUrl) {
-        return <Avatar src={imgUrl} />;
-    }
+  if (imgUrl) {
+    return <Avatar src={imgUrl} />;
+  }
 
-    return (
-        <Avatar background="accent-2">
-            <User color="accent-1" />
-        </Avatar>
-    );
+  return (
+    <Avatar background="accent-2">
+      <User color="accent-1" />
+    </Avatar>
+  );
 };

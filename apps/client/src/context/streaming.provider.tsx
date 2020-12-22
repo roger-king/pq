@@ -5,5 +5,5 @@ export const GRPCContext = React.createContext<{ client: BroadcastClient }>({ cl
 
 export const GRPCProvider: React.FC<PropsWithChildren<{ host: string }>> = ({ children, host }) => {
   const client = new BroadcastClient(host);
-  return <GRPCContext.Provider value={{ client: client }}>{children}</GRPCContext.Provider>;
+  return <GRPCContext.Provider value={{ client }}>{children}</GRPCContext.Provider>;
 };

@@ -1,10 +1,10 @@
 import React, { ComponentType } from 'react';
 import { Box, Grid, Heading, ResponsiveContext } from 'grommet';
 
-import { Header } from './../components/header/header.component';
+import { Head } from 'next/document';
+import { Header } from '../components/header/header.component';
 import { Root } from './index';
 import { ProtectedRouteProps } from './protected';
-import { Head } from 'next/document';
 
 export interface MainLayoutProps extends ProtectedRouteProps {
   size?: 'small' | 'medium' | 'large';

@@ -174,5 +174,5 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
       </Box>
     );
   }
-  return <Box fill></Box>;
+  return <Box fill />;
 };
