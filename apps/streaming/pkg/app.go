@@ -68,6 +68,7 @@ func (s *broadcastServer) Start(req *server.StartQuestion, stream server.Broadca
 	done := make(chan int)
 
 	if conns, ok := s.Connections[req.GameId]; ok {
+		log.Print(len(conns))
 		for _, conn := range conns {
 			wait.Add(1)
 			go func(req *server.StartQuestion, stream server.Broadcast_StartServer) {
@@ -145,13 +146,19 @@ func (s *broadcastServer) AuditConnections() {
 		if len(s.Connections) > 0 {
 			time.Sleep(time.Second * 10)
 			for key, conns := range s.Connections {
+				idsToRemove := []int{}
 				for i, c := range conns {
 					now := time.Now().Unix()
 					// We give a grace period of 15 seconds for the user.
 					if c.lastConnected + 15 < now {
 						log.Printf("%s is inactive.", c.userID)
-						s.Connections[key] = removeConnection(conns, i)
+						idsToRemove = append(idsToRemove, i);
 					}
+				}
+
+				for _, id := range idsToRemove {
+					s.Connections[key] = removeConnection(s.Connections[key], id)
+					idsToRemove = []int{}
 				}
 			}
 		}
@@ -174,7 +181,7 @@ func (s *broadcastServer) Heartbeat(ctx context.Context, conn *server.Connection
 	if didUpdate {
 		s.Connections[conn.GameId] = connections
 	}
-	log.Print(s.Connections[conn.GameId])
+
 	return &server.HeartbeatResponse{}, nil
 }
 
