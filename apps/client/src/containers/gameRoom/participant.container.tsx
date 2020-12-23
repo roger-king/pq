@@ -5,6 +5,8 @@ import { Connection, User } from '../../grpc/broadcast_pb';
 import { useBroadcastClient } from '../../hooks/useGrpcClient';
 import { ConnectionStatus } from '../../components/connectionStatus';
 import { time } from 'console';
+import { AnswerCard } from '../../components/question/answerCard';
+import { randomId } from '../../utils/random';
 
 export interface ParticipantViewProps {
   game: Game;
@@ -14,23 +16,24 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: Partic
   const client = useBroadcastClient();
   const [connected, setConnected] = useState<boolean>(false);
   const [timer, setTimer] = useState<number>(60);
+  const [currentQuestion, setCurrentQuestion] = useState<any | null>(null);
+
   const { created_by, code } = game; // eslint-disable
   const user = new User();
-  user.setDisplayName('test');
-  user.setId('test');
-  user.setIsHost(false);
   const connection = new Connection();
-  connection.setGameId(code);
-  connection.setActive(true);
-  connection.setUser(user);
 
   const connectToBroadcastServer = () => {
     const stream = client.createStream(connection, {});
     stream.on('data', async function (response: any) {
+      console.log(response.toObject());
       const { time, question } = response.toObject();
-      console.log('QUESTION: ', question);
-      if (time && timer <= 60) {
+      if ((timer <= 60 && time > 0) || (timer === 1 && time === 0)) {
         setTimer(time);
+      }
+
+      if (question) {
+        setCurrentQuestion(question);
+        console.log(question);
       }
       setConnected(true);
     });
@@ -44,10 +47,17 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: Partic
   };
 
   useEffect(() => {
+    user.setDisplayName('test');
+    user.setId(randomId());
+    user.setIsHost(false);
+    connection.setGameId(code);
+    connection.setActive(true);
+    connection.setUser(user);
+
     if (!connected) {
       connectToBroadcastServer();
+      heartBeat();
     }
-    heartBeat();
     return () => {
       console.log('disconnecting');
       client.disconnect(connection, {});
@@ -59,6 +69,11 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: Partic
     <Box fill background="brand" align="center" justify="center">
       <ConnectionStatus connected={connected} />
       <Text>{timer}</Text>
+      {currentQuestion ? (
+        <AnswerCard q={currentQuestion.q} options={currentQuestion.optionsList} />
+      ) : (
+        <Text> Waiting for your host to start the next question.</Text>
+      )}
     </Box>
   );
 };

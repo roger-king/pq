@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Button, TextInput } from 'grommet';
 import { AddCircle } from 'grommet-icons';
 
+import { QuestionCard } from './../../card';
 import { OptionFormProps, OptionForm } from './option.form';
 
 export interface QuestionFormProps {
@@ -22,7 +23,7 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
   maxNumOptions,
 }: QuestionFormProps) => {
   return (
-    <Box elevation="medium" pad="medium" border="all" height={{ min: '278px', max: '400px' }}>
+    <QuestionCard elevation={true}>
       <TextInput placeholder={`Question ${qIndex + 1}`} value={q} onChange={qOnChange} />
       <Box gap="small" margin="small">
         {options.map((o) => (
@@ -30,6 +31,6 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
         ))}
         {options.length < maxNumOptions && <Button icon={<AddCircle />} onClick={addOption} />}
       </Box>
-    </Box>
+    </QuestionCard>
   );
 };

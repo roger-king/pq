@@ -20,6 +20,7 @@ import {
 } from '../../grpc/broadcast_pb';
 import { useBroadcastClient } from '../../hooks/useGrpcClient';
 import { ConnectionStatus } from '../../components/connectionStatus';
+import { randomId } from '../../utils/random';
 
 export interface HostViewProps {
   game: Game;
@@ -73,17 +74,10 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
     return d;
   });
   const [connected, setConnected] = useState<boolean>(false);
+  const user = new User();
+  const connection = new Connection();
+
   const connectToBroadcastServer = () => {
-    const user = new User();
-    user.setDisplayName(created_by);
-    user.setId(created_by);
-    user.setIsHost(true);
-
-    const connection = new Connection();
-    connection.setGameId(code);
-    connection.setActive(true);
-    connection.setUser(user);
-
     const stream = client.createStream(connection, {});
     stream.on('data', function () {
       setConnected(true);
@@ -116,9 +110,26 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
     });
   };
 
+  const heartBeat = () => {
+    setInterval(() => {
+      console.log('sending heartbeat');
+      client.heartbeat(connection, {});
+    }, 3000);
+  };
+
   useEffect(() => {
+    user.setDisplayName(created_by);
+    const rando = randomId();
+    user.setId(rando);
+    user.setIsHost(true);
+
+    connection.setGameId(code);
+    connection.setActive(true);
+    connection.setUser(user);
+
     if (!connected) {
       connectToBroadcastServer();
+      heartBeat();
     }
   }, []);
 
@@ -128,6 +139,7 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
       <Box fill background="brand" align="center" justify="center">
         <ConnectionStatus connected={connected} />
         <Heading color={timer <= 10 ? 'red' : 'white'}>{timer}</Heading>
+        {code}
         <Box width="80%" gap="medium">
           <Text alignSelf="start">
             Question {currentQuestion + 1}/{questions.data.length}
