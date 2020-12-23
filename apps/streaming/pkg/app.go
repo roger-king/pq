@@ -24,6 +24,7 @@ type Connection struct {
 	stream server.Broadcast_CreateStreamServer
 	gameID string
 	userID string
+	displayName string
 	active bool
 	lastConnected int64
 	isHost bool
@@ -40,17 +41,30 @@ func (s *broadcastServer) CreateStream(req *server.Connection, stream server.Bro
 		stream: stream,
 		gameID: req.GameId,
 		userID: req.User.Id,
+		displayName: req.User.DisplayName,
 		isHost: req.User.IsHost,
 		lastConnected: now.Unix(),
 		active: true,
 		error:  make(chan error),
 	}
 
-	log.Printf("User is connected: %s", req.User.DisplayName)
 	if currentConns, ok := s.Connections[req.GameId]; ok {
-		s.Connections[req.GameId] = append(currentConns, conn)
+		alreadyConnected := false
+		for i, c := range currentConns {
+			if c.userID == req.User.Id {
+				alreadyConnected = true;
+				s.Connections[req.GameId][i].lastConnected = now.Unix() 
+				break;
+			}
+		}
+
+		if !alreadyConnected {
+			log.Printf("User is connected: %s", conn.displayName)
+			s.Connections[req.GameId] = append(currentConns, conn)
+		}
 	} else {
 		s.Connections = make(map[string][]*Connection)
+		log.Printf("User is connected: %s", conn.displayName)
 		s.Connections[req.GameId] = []*Connection{conn}
 	}
 
@@ -120,6 +134,10 @@ func removeConnection(conns []*Connection, id int) []*Connection {
 	return conns[:len(conns)-1]
 }
 
+func(s *broadcastServer) getGameConnections(gameID string) []*Connection {
+	return s.Connections[gameID]
+}
+
 func (s *broadcastServer) Disconnect(ctx context.Context, conn *server.Connection) (*server.DisconnectResponse, error) {
 	log.Print("Disconnecting User:")
 	var connToRemove int
@@ -183,6 +201,20 @@ func (s *broadcastServer) Heartbeat(ctx context.Context, conn *server.Connection
 	}
 
 	return &server.HeartbeatResponse{}, nil
+}
+
+func (s *broadcastServer) GetPlayerList(ctx context.Context, req *server.PlayerlistRequest) (*server.PlayerListResponse, error) {
+	var playerList server.PlayerListResponse
+	connections := s.Connections[req.GameId]
+	for _, c := range connections {
+		playerList.Players = append(playerList.Players, &server.User{
+			DisplayName: c.displayName,
+			Id: c.userID,
+			IsHost: c.isHost,
+		})
+	}
+
+	return &playerList, nil
 }
 
 // App -

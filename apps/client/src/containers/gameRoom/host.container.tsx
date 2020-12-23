@@ -21,6 +21,7 @@ import {
 import { useBroadcastClient } from '../../hooks/useGrpcClient';
 import { ConnectionStatus } from '../../components/connectionStatus';
 import { randomId } from '../../utils/random';
+import { PlayerList } from '../playerList/playerList';
 
 export interface HostViewProps {
   game: Game;
@@ -119,7 +120,9 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
 
   useEffect(() => {
     user.setDisplayName(created_by);
-    const rando = randomId();
+    const storedId = sessionStorage.getItem('pq_user_id');
+    const rando = storedId ? storedId : randomId();
+    console.log(rando);
     user.setId(rando);
     user.setIsHost(true);
 
@@ -129,9 +132,15 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
 
     if (!connected) {
       connectToBroadcastServer();
+      if (!storedId) {
+        sessionStorage.setItem('pq_user_id', rando);
+      }
+    }
+
+    if (connected) {
       heartBeat();
     }
-  }, []);
+  }, [connected]);
 
   if (questions) {
     const { q, options } = questions.data[currentQuestion];
@@ -140,38 +149,41 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
         <ConnectionStatus connected={connected} />
         <Heading color={timer <= 10 ? 'red' : 'white'}>{timer}</Heading>
         {code}
-        <Box width="80%" gap="medium">
-          <Text alignSelf="start">
-            Question {currentQuestion + 1}/{questions.data.length}
-          </Text>
-          <Box key={`${q}`} pad="large" border="all" height={{ min: '275px' }}>
-            <Heading level="3">{q}</Heading>
-            {options.map((o) => (
-              <Box key={o.key} gap="small" direction="row" margin="small">
-                <Text size="1.5em">
-                  <b>{o.key}:</b>
-                </Text>
-                <Text size="1.5em">{o.title}</Text>
-              </Box>
-            ))}
-          </Box>
-          <Box direction="row" gap="medium" align="center" justify="center">
-            {timer === 0 && !isComplete && (
-              <Button
-                label="Next"
-                onClick={() => {
-                  if (currentQuestion < questions.data.length - 1) {
-                    setTimer(60);
-                    setCurrentQuestion(currentQuestion + 1);
-                  } else {
-                    setIsComplete(true);
-                  }
-                }}
-                primary
-              />
-            )}
-            {timer === 0 && isComplete && <Button label="Finish" onClick={() => console.log('done')} primary />}
-            {timer <= 60 && !isComplete && <Button label="Play" icon={<Play />} onClick={() => start()} primary />}
+        <Box width="80%" gap="medium" direction="row">
+          <PlayerList gameId={code} />
+          <Box width="100%" gap="medium">
+            <Text alignSelf="start">
+              Question {currentQuestion + 1}/{questions.data.length}
+            </Text>
+            <Box key={`${q}`} pad="large" border="all" height={{ min: '275px' }}>
+              <Heading level="3">{q}</Heading>
+              {options.map((o) => (
+                <Box key={o.key} gap="small" direction="row" margin="small">
+                  <Text size="1.5em">
+                    <b>{o.key}:</b>
+                  </Text>
+                  <Text size="1.5em">{o.title}</Text>
+                </Box>
+              ))}
+            </Box>
+            <Box direction="row" gap="medium" align="center" justify="center">
+              {timer === 0 && !isComplete && (
+                <Button
+                  label="Next"
+                  onClick={() => {
+                    if (currentQuestion < questions.data.length - 1) {
+                      setTimer(60);
+                      setCurrentQuestion(currentQuestion + 1);
+                    } else {
+                      setIsComplete(true);
+                    }
+                  }}
+                  primary
+                />
+              )}
+              {timer === 0 && isComplete && <Button label="Finish" onClick={() => console.log('done')} primary />}
+              {timer <= 60 && !isComplete && <Button label="Play" icon={<Play />} onClick={() => start()} primary />}
+            </Box>
           </Box>
         </Box>
       </Box>

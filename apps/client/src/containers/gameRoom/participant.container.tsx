@@ -48,7 +48,9 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: Partic
 
   useEffect(() => {
     user.setDisplayName('test');
-    user.setId(randomId());
+    const storedId = sessionStorage.getItem('pq_user_id');
+    const rando = storedId ? storedId : randomId();
+    user.setId(rando);
     user.setIsHost(false);
     connection.setGameId(code);
     connection.setActive(true);
@@ -61,6 +63,10 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: Partic
     return () => {
       console.log('disconnecting');
       client.disconnect(connection, {});
+
+      if (!storedId) {
+        sessionStorage.setItem('pq_user_id', rando);
+      }
     };
   }, []);
 

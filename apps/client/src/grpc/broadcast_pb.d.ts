@@ -204,6 +204,44 @@ export namespace HeartbeatResponse {
   }
 }
 
+export class PlayerlistRequest extends jspb.Message {
+  getGameId(): string;
+  setGameId(value: string): PlayerlistRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): PlayerlistRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: PlayerlistRequest): PlayerlistRequest.AsObject;
+  static serializeBinaryToWriter(message: PlayerlistRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): PlayerlistRequest;
+  static deserializeBinaryFromReader(message: PlayerlistRequest, reader: jspb.BinaryReader): PlayerlistRequest;
+}
+
+export namespace PlayerlistRequest {
+  export type AsObject = {
+    gameId: string,
+  }
+}
+
+export class PlayerListResponse extends jspb.Message {
+  getPlayersList(): Array<User>;
+  setPlayersList(value: Array<User>): PlayerListResponse;
+  clearPlayersList(): PlayerListResponse;
+  addPlayers(value?: User, index?: number): User;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): PlayerListResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: PlayerListResponse): PlayerListResponse.AsObject;
+  static serializeBinaryToWriter(message: PlayerListResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): PlayerListResponse;
+  static deserializeBinaryFromReader(message: PlayerListResponse, reader: jspb.BinaryReader): PlayerListResponse;
+}
+
+export namespace PlayerListResponse {
+  export type AsObject = {
+    playersList: Array<User.AsObject>,
+  }
+}
+
 export enum OptionKey { 
   A = 0,
   B = 1,

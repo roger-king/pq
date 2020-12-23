@@ -49,10 +49,17 @@ message StartQuestion {
 
 message DisconnectResponse{}
 message HeartbeatResponse{}
+message PlayerlistRequest {
+    string game_id = 1;
+}
+message PlayerListResponse {
+    repeated User players = 1;
+}
 
 service Broadcast {
     rpc CreateStream(Connection) returns (stream Message) {}
     rpc Disconnect(Connection) returns (DisconnectResponse) {}
     rpc Heartbeat(Connection) returns (HeartbeatResponse) {}
     rpc Start(StartQuestion) returns (stream Message) {}
+    rpc GetPlayerList(PlayerlistRequest) returns (PlayerListResponse) {}
 }

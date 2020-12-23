@@ -153,5 +153,45 @@ export class BroadcastClient {
       this.methodInfoStart);
   }
 
+  methodInfoGetPlayerList = new grpcWeb.AbstractClientBase.MethodInfo(
+    broadcast_pb.PlayerListResponse,
+    (request: broadcast_pb.PlayerlistRequest) => {
+      return request.serializeBinary();
+    },
+    broadcast_pb.PlayerListResponse.deserializeBinary
+  );
+
+  getPlayerList(
+    request: broadcast_pb.PlayerlistRequest,
+    metadata: grpcWeb.Metadata | null): Promise<broadcast_pb.PlayerListResponse>;
+
+  getPlayerList(
+    request: broadcast_pb.PlayerlistRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: broadcast_pb.PlayerListResponse) => void): grpcWeb.ClientReadableStream<broadcast_pb.PlayerListResponse>;
+
+  getPlayerList(
+    request: broadcast_pb.PlayerlistRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: broadcast_pb.PlayerListResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/pq.streaming.games.timer.Broadcast/GetPlayerList',
+        request,
+        metadata || {},
+        this.methodInfoGetPlayerList,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/pq.streaming.games.timer.Broadcast/GetPlayerList',
+    request,
+    metadata || {},
+    this.methodInfoGetPlayerList);
+  }
+
 }
 
