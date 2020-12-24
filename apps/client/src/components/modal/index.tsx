@@ -15,7 +15,6 @@ const Modal: React.FC<PropsWithChildren<BaseModalProps>> = (props: PropsWithChil
       <Box fill align="center" justify="center" pad="medium">
         <Box direction="row" align="center" justify="between" fill>
           <Heading level="3">{title}</Heading>
-          <Button icon={<Close />} onClick={() => onClose()} />
         </Box>
         {children}
       </Box>
