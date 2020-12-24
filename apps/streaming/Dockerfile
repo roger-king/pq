@@ -18,6 +18,8 @@ WORKDIR /root/
 
 COPY --from=builder /app/cmd/build/app .
 
-EXPOSE 5002
+EXPOSE 9000
+
+RUN ls
 
 CMD ["./app"]

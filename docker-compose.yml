@@ -1,9 +1,9 @@
-version: "3.1"
+version: "3"
 
 volumes:
   db: {}
 
-network:
+networks:
   proxy: {}
 
 services:
@@ -23,69 +23,70 @@ services:
   envoy:
     image: envoyproxy/envoy-dev:c3e4a00ed3fcb7d07fbe6c8c655a2f4949a67da3
     container_name: proxy
+    networks:
+      - proxy
     ports:
       - "9901:9901"
       - "9001:9001"
     volumes:
       - ./.infra/envoy.yaml:/etc/envoy/envoy.yaml
-  qb:
-    hostname: qb-dev
-    restart: unless-stopped
-    build:
-      context: ./apps/qb
-      dockerfile: Dockerfile
-      target: dev
-    command:
-      ["./scripts/wait-for-it.sh", "db:5432", "--", "python", "/app/run.py"]
-    environment:
-      DEBUG: "true"
-      PORT: "8000"
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USER: appuser
-      DB_PASSWORD: appuser
-    volumes:
-      - ./scripts:/scripts
-      - ./apps/qb:/app
-    ports:
-      - "8000:8000"
-    links:
-      - "db"
-    depends_on:
-      - "db"
-  client:
-    hostname: client-dev
-    restart: unless-stopped
-    build:
-      context: ./apps/client
-      dockerfile: Dockerfile
-      target: dev
-    command: ["./scripts/wait-for-it.sh", "qb:8000", "--", "yarn", "dev"]
-    environment:
-      NODE_ENV: "development"
-      PORT: "3000"
-    volumes:
-      - ./scripts:/scripts
-      - ./apps/client:/app
-    ports:
-      - "3000:3000"
-    links:
-      - "qb"
-    depends_on:
-      - "qb"
+  # qb:
+  #   hostname: qb-dev
+  #   restart: unless-stopped
+  #   build:
+  #     context: ./apps/qb
+  #     dockerfile: Dockerfile
+  #     target: dev
+  #   command:
+  #     ["./scripts/wait-for-it.sh", "db:5432", "--", "python", "/app/run.py"]
+  #   environment:
+  #     DEBUG: "true"
+  #     PORT: "8000"
+  #     DB_HOST: db
+  #     DB_PORT: 5432
+  #     DB_USER: appuser
+  #     DB_PASSWORD: appuser
+  #   volumes:
+  #     - ./scripts:/scripts
+  #     - ./apps/qb:/app
+  #   ports:
+  #     - "8000:8000"
+  #   links:
+  #     - "db"
+  #   depends_on:
+  #     - "db"
+  # client:
+  #   hostname: client-dev
+  #   restart: unless-stopped
+  #   build:
+  #     context: ./apps/client
+  #     dockerfile: Dockerfile
+  #     target: dev
+  #   command: ["./scripts/wait-for-it.sh", "qb:8000", "--", "yarn", "dev"]
+  #   environment:
+  #     NODE_ENV: "development"
+  #     PORT: "3000"
+  #   volumes:
+  #     - ./scripts:/scripts
+  #     - ./apps/client:/app
+  #   ports:
+  #     - "3000:3000"
+  #   links:
+  #     - "qb"
+  #   depends_on:
+  #     - "qb"
   streaming:
     hostname: streaming-dev
     restart: unless-stopped
     build:
       context: ./apps/streaming
       dockerfile: Dockerfile
-      target: dev
-    command: ["./scripts/wait-for-it.sh", "envoy:9001", "--", "./app/app"]
     environment:
       GO_ENV: "development"
       PORT: "9000"
+    networks:
+      - proxy
     volumes:
-      - ./scripts:/scripts
       - ./apps/streaming:/app
     ports:
       - "9000:9000"
