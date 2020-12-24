@@ -20,7 +20,7 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: Partic
   const [display, setDisplay] = useState<string>('');
   const [currentQuestion, setCurrentQuestion] = useState<any | null>(null);
 
-  const { created_by, code, is_started } = game; // eslint-disable
+  const { code, is_started } = game; // eslint-disable
   const user = new User();
   const connection = new Connection();
 
@@ -43,14 +43,10 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: Partic
 
   const heartBeat = () => {
     setInterval(async () => {
-      client
-        .heartbeat(connection, {})
-        .then((res) => {
-          console.log('sending heartbeat');
-        })
-        .catch((e) => {
-          console.error(e);
-        });
+      client.heartbeat(connection, {}).catch((e) => {
+        console.error('Error sending heartbeat', e);
+        setConnected(false);
+      });
     }, 3000);
   };
 
@@ -69,7 +65,6 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: Partic
       connection.setGameId(code);
       connection.setActive(true);
       connection.setUser(user);
-      console.log('Testing connection setup');
       if (!connected) {
         connectToBroadcastServer();
         heartBeat();
@@ -94,7 +89,10 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: Partic
       {currentQuestion ? (
         <AnswerCard q={currentQuestion.q} options={currentQuestion.optionsList} />
       ) : (
-        <Text> Waiting for your host to start the next question.</Text>
+        <Text>
+          {' '}
+          {is_started ? `Waiting for your host to start the next question.` : `Host hasn't joined yet. Hang tight.`}
+        </Text>
       )}
       {display.length === 0 && (
         <Modal title="What's your team name?" onClose={() => console.log('closing')}>
