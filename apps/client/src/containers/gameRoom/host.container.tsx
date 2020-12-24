@@ -22,6 +22,7 @@ import { useBroadcastClient } from '../../hooks/useGrpcClient';
 import { ConnectionStatus } from '../../components/connectionStatus';
 import { randomId } from '../../utils/random';
 import { PlayerList } from '../playerList/playerList';
+import { ClientReadableStream } from 'grpc-web';
 
 export interface HostViewProps {
   game: Game;
@@ -70,6 +71,9 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
   const [timer, setTimer] = useState(60);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
+  const [updatedPlayerList, setUpdatedPlayerList] = useState<{ name: string; id: number }[]>([]);
+  const [broadcastStream, setBroadcastStream] = useState<ClientReadableStream<unknown> | null>(null);
+
   const { data: questions } = useQuery<{ data: Question[] }>(`game_${id}_questions`, async () => {
     const d = Axios.get(`${API_URL}/games/${id}/questions`);
     return d;
@@ -80,8 +84,27 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
 
   const connectToBroadcastServer = () => {
     const stream = client.createStream(connection, {});
-    stream.on('data', function () {
+    setBroadcastStream(stream);
+    stream.on('data', function (response: any) {
       setConnected(true);
+      const { removedplayer, newplayer } = response.toObject();
+
+      if (newplayer) {
+        console.log('joined', newplayer);
+        setUpdatedPlayerList([...updatedPlayerList, { name: newplayer.displayname, id: newplayer.id }]);
+      }
+
+      if (removedplayer) {
+        console.log('removed', removedplayer);
+      }
+    });
+    stream.on('end', () => {
+      console.log('ending');
+      setConnected(false);
+    });
+    stream.on('error', (err) => {
+      console.log('error: ', err);
+      setConnected(false);
     });
   };
 
@@ -113,7 +136,6 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
 
   const heartBeat = () => {
     setInterval(() => {
-      console.log('sending heartbeat');
       client.heartbeat(connection, {});
     }, 3000);
   };
@@ -122,7 +144,6 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
     user.setDisplayName(created_by);
     const storedId = sessionStorage.getItem('pq_user_id');
     const rando = storedId ? storedId : randomId();
-    console.log(rando);
     user.setId(rando);
     user.setIsHost(true);
 
@@ -148,9 +169,9 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
       <Box fill background="brand" align="center" justify="center">
         <ConnectionStatus connected={connected} />
         <Heading color={timer <= 10 ? 'red' : 'white'}>{timer}</Heading>
-        {code}
+        <Button label="Player Link" as="a" href={`http://localhost:3000/pq/${code}`} target="_blank" />
         <Box width="80%" gap="medium" direction="row">
-          <PlayerList gameId={code} />
+          <PlayerList gameId={code} broadcastStream={broadcastStream} />
           <Box width="100%" gap="medium">
             <Text alignSelf="start">
               Question {currentQuestion + 1}/{questions.data.length}

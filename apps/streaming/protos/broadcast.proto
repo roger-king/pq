@@ -39,6 +39,8 @@ message Question {
 message Message {
     int64 time = 1;
     Question question = 2;
+    User NewPlayer = 3;
+    User RemovedPlayer = 4;
 }
 
 message StartQuestion {

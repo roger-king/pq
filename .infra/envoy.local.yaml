@@ -25,6 +25,7 @@ static_resources:
                           route:
                             {
                               cluster: game_streamer_service,
+                              timeout: 0s,
                               max_grpc_timeout: 0s,
                             }
                       cors:
@@ -40,7 +41,7 @@ static_resources:
                   - name: envoy.filters.http.router
   clusters:
     - name: game_streamer_service
-      connect_timeout: 0.25s
+      connect_timeout: 60s
       type: LOGICAL_DNS
       http2_protocol_options: {}
       lb_policy: ROUND_ROBIN

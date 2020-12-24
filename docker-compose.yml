@@ -29,7 +29,7 @@ services:
       - "9901:9901"
       - "9001:9001"
     volumes:
-      - ./.infra/envoy.yaml:/etc/envoy/envoy.yaml
+      - ./.infra/envoy.local.yaml:/etc/envoy/envoy.yaml
   # qb:
   #   hostname: qb-dev
   #   restart: unless-stopped

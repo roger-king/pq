@@ -133,6 +133,16 @@ export class Message extends jspb.Message {
   hasQuestion(): boolean;
   clearQuestion(): Message;
 
+  getNewplayer(): User | undefined;
+  setNewplayer(value?: User): Message;
+  hasNewplayer(): boolean;
+  clearNewplayer(): Message;
+
+  getRemovedplayer(): User | undefined;
+  setRemovedplayer(value?: User): Message;
+  hasRemovedplayer(): boolean;
+  clearRemovedplayer(): Message;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Message.AsObject;
   static toObject(includeInstance: boolean, msg: Message): Message.AsObject;
@@ -145,6 +155,8 @@ export namespace Message {
   export type AsObject = {
     time: number,
     question?: Question.AsObject,
+    newplayer?: User.AsObject,
+    removedplayer?: User.AsObject,
   }
 }
 

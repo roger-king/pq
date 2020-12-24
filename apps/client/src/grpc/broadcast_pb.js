@@ -1201,7 +1201,9 @@ proto.pq.streaming.games.timer.Message.prototype.toObject = function(opt_include
 proto.pq.streaming.games.timer.Message.toObject = function(includeInstance, msg) {
   var f, obj = {
     time: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    question: (f = msg.getQuestion()) && proto.pq.streaming.games.timer.Question.toObject(includeInstance, f)
+    question: (f = msg.getQuestion()) && proto.pq.streaming.games.timer.Question.toObject(includeInstance, f),
+    newplayer: (f = msg.getNewplayer()) && proto.pq.streaming.games.timer.User.toObject(includeInstance, f),
+    removedplayer: (f = msg.getRemovedplayer()) && proto.pq.streaming.games.timer.User.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -1247,6 +1249,16 @@ proto.pq.streaming.games.timer.Message.deserializeBinaryFromReader = function(ms
       reader.readMessage(value,proto.pq.streaming.games.timer.Question.deserializeBinaryFromReader);
       msg.setQuestion(value);
       break;
+    case 3:
+      var value = new proto.pq.streaming.games.timer.User;
+      reader.readMessage(value,proto.pq.streaming.games.timer.User.deserializeBinaryFromReader);
+      msg.setNewplayer(value);
+      break;
+    case 4:
+      var value = new proto.pq.streaming.games.timer.User;
+      reader.readMessage(value,proto.pq.streaming.games.timer.User.deserializeBinaryFromReader);
+      msg.setRemovedplayer(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -1289,6 +1301,22 @@ proto.pq.streaming.games.timer.Message.serializeBinaryToWriter = function(messag
       2,
       f,
       proto.pq.streaming.games.timer.Question.serializeBinaryToWriter
+    );
+  }
+  f = message.getNewplayer();
+  if (f != null) {
+    writer.writeMessage(
+      3,
+      f,
+      proto.pq.streaming.games.timer.User.serializeBinaryToWriter
+    );
+  }
+  f = message.getRemovedplayer();
+  if (f != null) {
+    writer.writeMessage(
+      4,
+      f,
+      proto.pq.streaming.games.timer.User.serializeBinaryToWriter
     );
   }
 };
@@ -1346,6 +1374,80 @@ proto.pq.streaming.games.timer.Message.prototype.clearQuestion = function() {
  */
 proto.pq.streaming.games.timer.Message.prototype.hasQuestion = function() {
   return jspb.Message.getField(this, 2) != null;
+};
+
+
+/**
+ * optional User NewPlayer = 3;
+ * @return {?proto.pq.streaming.games.timer.User}
+ */
+proto.pq.streaming.games.timer.Message.prototype.getNewplayer = function() {
+  return /** @type{?proto.pq.streaming.games.timer.User} */ (
+    jspb.Message.getWrapperField(this, proto.pq.streaming.games.timer.User, 3));
+};
+
+
+/**
+ * @param {?proto.pq.streaming.games.timer.User|undefined} value
+ * @return {!proto.pq.streaming.games.timer.Message} returns this
+*/
+proto.pq.streaming.games.timer.Message.prototype.setNewplayer = function(value) {
+  return jspb.Message.setWrapperField(this, 3, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.pq.streaming.games.timer.Message} returns this
+ */
+proto.pq.streaming.games.timer.Message.prototype.clearNewplayer = function() {
+  return this.setNewplayer(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.pq.streaming.games.timer.Message.prototype.hasNewplayer = function() {
+  return jspb.Message.getField(this, 3) != null;
+};
+
+
+/**
+ * optional User RemovedPlayer = 4;
+ * @return {?proto.pq.streaming.games.timer.User}
+ */
+proto.pq.streaming.games.timer.Message.prototype.getRemovedplayer = function() {
+  return /** @type{?proto.pq.streaming.games.timer.User} */ (
+    jspb.Message.getWrapperField(this, proto.pq.streaming.games.timer.User, 4));
+};
+
+
+/**
+ * @param {?proto.pq.streaming.games.timer.User|undefined} value
+ * @return {!proto.pq.streaming.games.timer.Message} returns this
+*/
+proto.pq.streaming.games.timer.Message.prototype.setRemovedplayer = function(value) {
+  return jspb.Message.setWrapperField(this, 4, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.pq.streaming.games.timer.Message} returns this
+ */
+proto.pq.streaming.games.timer.Message.prototype.clearRemovedplayer = function() {
+  return this.setRemovedplayer(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.pq.streaming.games.timer.Message.prototype.hasRemovedplayer = function() {
+  return jspb.Message.getField(this, 4) != null;
 };
 
 
