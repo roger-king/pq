@@ -13,34 +13,34 @@ interface PlayerListProps {
 export const PlayerList: React.FC<PlayerListProps> = ({ gameId, broadcastStream }: PlayerListProps) => {
   const client = useBroadcastClient();
   const [players, setPlayers] = useState<{ name: string; id: string }[]>([]);
+  const [expectedPlayerLength] = useState<number>(players.length);
 
-  // const initBroadcastStream = () => {
-  //   if (broadcastStream) {
-  //     broadcastStream.on('data', (response: any) => {
-  //       console.log('Broadcast found: ');
-  //       const { newplayer, removedplayer } = response.toObject();
-  //       if (newplayer) {
-  //         console.log('adding player', newplayer);
-  //         setPlayers([...players, { name: newplayer.displayName, id: newplayer.id }]);
-  //       }
+  const initBroadcastStream = () => {
+    if (broadcastStream) {
+      broadcastStream.on('data', (response: any) => {
+        console.log('Broadcast found: ');
+        const { newplayer, removedplayer } = response.toObject();
+        if (newplayer) {
+          console.log('adding player', newplayer);
+          setPlayers([...players, { name: newplayer.displayName, id: newplayer.id }]);
+        }
 
-  //       if (removedplayer && players.length > 2) {
-  //         // fix this
-  //         console.log('removing player', removedplayer);
-  //         const updatedPlayers = players.filter((u) => u.id !== removedplayer.id);
-  //         console.log(updatedPlayers);
-  //         setPlayers([...updatedPlayers]);
-  //       }
-  //     });
+        if (removedplayer && expectedPlayerLength - 1 < players.length) {
+          // fix this
+          console.log('removing player', removedplayer);
+          const updatedPlayers = players.filter((u) => u.id !== removedplayer.id);
+          setPlayers([...updatedPlayers]);
+        }
+      });
 
-  //     broadcastStream.on('end', () => {
-  //       console.log('ending');
-  //     });
-  //     broadcastStream.on('error', (err) => {
-  //       console.log('error: ', err);
-  //     });
-  //   }
-  // };
+      broadcastStream.on('end', () => {
+        console.log('ending');
+      });
+      broadcastStream.on('error', (err) => {
+        console.log('error: ', err);
+      });
+    }
+  };
 
   useEffect(() => {
     if (players.length === 0) {
@@ -51,7 +51,7 @@ export const PlayerList: React.FC<PlayerListProps> = ({ gameId, broadcastStream 
         setPlayers([...updatedPlayers]);
       });
     } else {
-      // initBroadcastStream();
+      initBroadcastStream();
     }
   }, [players]);
 

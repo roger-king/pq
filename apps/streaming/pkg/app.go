@@ -262,7 +262,7 @@ func (a *App) Start() (net.Listener, *grpc.Server) {
 	broadcaster := &broadcastServer{}
 	server.RegisterBroadcastServer(s, broadcaster)
 
-	// go broadcaster.AuditConnections()
+	go broadcaster.AuditConnections()
 
 	return lis, s
 }
