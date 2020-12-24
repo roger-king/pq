@@ -134,9 +134,14 @@ func (s *broadcastServer) Start(req *server.StartQuestion, stream server.Broadca
 }
 
 func removeConnection(conns []*Connection, id int) []*Connection {
-	conns[id] = conns[len(conns)-1] // Copy last element to index i.
-	conns[len(conns)-1] = nil
-	return conns[:len(conns)-1]
+
+	if len(conns) > 0 {
+		conns[id] = conns[len(conns)-1] // Copy last element to index i.
+		conns[len(conns)-1] = nil
+		return conns[:len(conns)-1]
+	}
+
+	return conns
 }
 
 func(s *broadcastServer) getGameConnections(gameID string) []*Connection {
@@ -144,17 +149,20 @@ func(s *broadcastServer) getGameConnections(gameID string) []*Connection {
 }
 
 func (s *broadcastServer) Disconnect(ctx context.Context, conn *server.Connection) (*server.DisconnectResponse, error) {
-	log.Print("Disconnecting User:")
 	var connToRemove int
 	connections := s.Connections[conn.GameId]
 
-	for i, c := range connections {
-		if c.userID == conn.User.Id {
-			connToRemove = i;
+	if len(connections) > 0 {
+		log.Print("Disconnecting User:")
+		for i, c := range connections {
+			if c.userID == conn.User.Id {
+				connToRemove = i;
+			}
 		}
+	
+		s.Connections[conn.GameId] = removeConnection(connections, connToRemove)
 	}
 
-	s.Connections[conn.GameId] = removeConnection(connections, connToRemove)
 	return &server.DisconnectResponse{}, nil
 }
 
@@ -173,7 +181,7 @@ func (s *broadcastServer) AuditConnections() {
 					defer wait.Done()
 					idsToRemove := []int{}
 					var hostStream server.Broadcast_CreateStreamServer
-					for i, c := range conns {
+					for i, c := range connections {
 						now := time.Now().Unix()
 						// We give a grace period of 15 seconds for the user.
 						if c.lastConnected + 15 < now {
@@ -189,15 +197,15 @@ func (s *broadcastServer) AuditConnections() {
 					for _, id := range idsToRemove {
 						if hostStream != nil {
 							log.Print("Sending to host")
-							hostStream.Send(&server.Message{RemovedPlayer: &server.User{Id: s.Connections[key][id].userID}})
+							hostStream.Send(&server.Message{RemovedPlayer: &server.User{Id: s.Connections[gameID][id].userID}})
 						}
-						s.Connections[gameID] = removeConnection(s.Connections[key], id)
+						s.Connections[gameID] = removeConnection(s.Connections[gameID], id)
 					}
 	
 					if len(idsToRemove) > 0 {
 						idsToRemove = []int{}
 					}
-				}()
+				}(key, conns)
 
 			}
 		}
@@ -254,7 +262,7 @@ func (a *App) Start() (net.Listener, *grpc.Server) {
 	broadcaster := &broadcastServer{}
 	server.RegisterBroadcastServer(s, broadcaster)
 
-	go broadcaster.AuditConnections()
+	// go broadcaster.AuditConnections()
 
 	return lis, s
 }

@@ -75,22 +75,22 @@ services:
   #     - "qb"
   #   depends_on:
   #     - "qb"
-  streaming:
-    hostname: streaming-dev
-    restart: unless-stopped
-    build:
-      context: ./apps/streaming
-      dockerfile: Dockerfile
-    environment:
-      GO_ENV: "development"
-      PORT: "9000"
-    networks:
-      - proxy
-    volumes:
-      - ./apps/streaming:/app
-    ports:
-      - "9000:9000"
-    links:
-      - "envoy"
-    depends_on:
-      - "envoy"
+  # streaming:
+  #   hostname: streaming-dev
+  #   restart: unless-stopped
+  #   build:
+  #     context: ./apps/streaming
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     GO_ENV: "development"
+  #     PORT: "9000"
+  #   networks:
+  #     - proxy
+  #   volumes:
+  #     - ./apps/streaming:/app
+  #   ports:
+  #     - "9000:9000"
+  #   links:
+  #     - "envoy"
+  #   depends_on:
+  #     - "envoy"

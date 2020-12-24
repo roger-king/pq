@@ -25,7 +25,7 @@ static_resources:
                           route:
                             {
                               cluster: game_streamer_service,
-                              timeout: 0s,
+                              timeout: 1000s,
                               max_grpc_timeout: 0s,
                             }
                       cors:
@@ -42,7 +42,7 @@ static_resources:
   clusters:
     - name: game_streamer_service
       connect_timeout: 60s
-      type: LOGICAL_DNS
+      type: strict_dns
       http2_protocol_options: {}
       lb_policy: ROUND_ROBIN
       load_assignment:
@@ -52,5 +52,5 @@ static_resources:
               - endpoint:
                   address:
                     socket_address:
-                      address: streaming-dev
+                      address: host.docker.internal
                       port_value: 9000

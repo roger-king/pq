@@ -25,9 +25,9 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: Partic
   const connection = new Connection();
 
   const connectToBroadcastServer = () => {
+    console.log('trying to connect');
     const stream = client.createStream(connection, {});
     stream.on('data', async function (response: any) {
-      console.log(response.toObject());
       const { time, question } = response.toObject();
       if ((timer <= 60 && time > 0) || (timer === 1 && time === 0)) {
         setTimer(time);
@@ -42,9 +42,15 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: Partic
   };
 
   const heartBeat = () => {
-    setInterval(() => {
-      console.log('sending heartbeat');
-      client.heartbeat(connection, {});
+    setInterval(async () => {
+      client
+        .heartbeat(connection, {})
+        .then((res) => {
+          console.log('sending heartbeat');
+        })
+        .catch((e) => {
+          console.error(e);
+        });
     }, 3000);
   };
 
@@ -63,6 +69,7 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: Partic
       connection.setGameId(code);
       connection.setActive(true);
       connection.setUser(user);
+      console.log('Testing connection setup');
       if (!connected) {
         connectToBroadcastServer();
         heartBeat();
