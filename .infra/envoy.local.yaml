@@ -50,6 +50,8 @@ static_resources:
         endpoints:
           - lb_endpoints:
               - endpoint:
+                  health_check_config:
+                    port_value: 9000
                   address:
                     socket_address:
                       address: host.docker.internal
