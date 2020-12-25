@@ -4,6 +4,10 @@ from sqlalchemy.orm import Session
 from app.routers.middlewares import get_db
 from app.models.game import GameSchema, JoinGameSchema, CreateGameInput
 from app.models.question import QuestionSchema, CreateQuestionInput
+from app.models.answer_bank import RecordAnswerInput
+from app.services.answer_bank_service import (
+    record_answer
+)
 from app.services.question_service import (
     find_questions_by_game_id,
     bulk_create_question,
@@ -56,6 +60,11 @@ async def join(
         created_at=game.created_at,
         is_host=is_host,
     )
+
+@router.post("/games/submit", tags=["game", "record", "submit"], response_model=bool)
+async def record(input: RecordAnswerInput, db: Session = Depends(get_db)):
+    r = record_answer(db, input)
+    return r
 
 
 @router.put("/games/{code}/start", tags=["game", "start"], response_model=GameSchema)

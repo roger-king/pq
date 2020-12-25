@@ -12,6 +12,9 @@ def create_question(db: Session, input: CreateQuestionInput):
     db.refresh(c)
     return c
 
+@handle_sql_error
+def find_one_question(db: Session, id: int):
+    return db.query(Question).filter_by(id=id).first()
 
 @handle_sql_error
 def bulk_create_question(db: Session, input: List[CreateQuestionInput]):

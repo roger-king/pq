@@ -12,6 +12,7 @@ MODEL_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..")  # n
 sys.path.append(MODEL_PATH)  # noqa
 import app.models.game
 import app.models.question
+import app.models.answer_bank
 from app.models import Base
 
 # this is the Alembic Config object, which provides
