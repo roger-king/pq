@@ -7,6 +7,7 @@ import { HostLobbyView, HostInGameView } from './host.container';
 import { JoinedGame } from '../../@types';
 import { API_URL } from '../../constants';
 import { ParticipantView } from './participant.container';
+import { LeaderBoard } from '../leaderboard';
 
 export interface GameRoomContainerProps {
   code: string;
@@ -25,19 +26,29 @@ export const GameRoomContainer: React.FC<GameRoomContainerProps> = ({ code }: Ga
   // TODO: add redirect if not valid code.
   if (gameData) {
     const { data } = gameData;
+
+    if (data.is_over) {
+      return (
+        <Box fill border>
+          <Heading>{data.name}</Heading>
+          <LeaderBoard code={data.code} />
+        </Box>
+      );
+    }
+
     if (data.is_host) {
       if (data.is_started) {
         // Show Host Started View
         return (
           <Box fill>
-            <HostInGameView game={{ ...data }} />
+            <HostInGameView game={data} />
           </Box>
         );
       }
 
       return (
         <Box fill>
-          <HostLobbyView game={{ ...data }} />
+          <HostLobbyView game={data} />
         </Box>
       );
     }
