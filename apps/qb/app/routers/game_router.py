@@ -18,7 +18,8 @@ from app.services.game_service import (
     find_one_game,
     join_game,
     start_game,
-    mark_as_done
+    mark_as_done,
+    calculate_score,
 )
 
 router = APIRouter()
@@ -64,11 +65,18 @@ async def join(
 
 
 @router.put("/games/{code}/end", tags=["game", "end"], response_model=bool)
-async def join(
+async def end(
     code: str, db: Session = Depends(get_db),
 ):
     done = mark_as_done(db, code)
     return done
+
+@router.get("/games/{code}/leaderboard", tags=["game", "end"])
+async def score(
+    code: str, db: Session = Depends(get_db),
+):
+    board = calculate_score(db, code)
+    return board
 
 @router.post("/games/submit", tags=["game", "record", "submit"], response_model=bool)
 async def record(input: RecordAnswerInput, db: Session = Depends(get_db)):
