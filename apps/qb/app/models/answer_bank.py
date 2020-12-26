@@ -1,4 +1,5 @@
 import string
+from typing import Optional
 from sqlalchemy import Column, String, Integer, ForeignKey, Boolean
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship, backref
@@ -54,4 +55,4 @@ class RecordAnswerInput(BaseModel):
     game_id: int
     question_id: int
     user_id: str
-    answer: str
+    answer: Optional[str]
