@@ -143,7 +143,7 @@ func (s *broadcastServer) End(req *server.EndGame, stream server.Broadcast_EndSe
 			wait.Add(1)
 			go func(req *server.EndGame, stream server.Broadcast_EndServer) {
 				defer wait.Done()
-				log.Printf("Starting counddown: %v", conn.userID)
+				log.Printf("Signalling end of game to: %v", conn.userID)
 				if req.GameId == conn.gameID  {
 					err := conn.stream.Send(&server.Message{End: true})
 					if err != nil {

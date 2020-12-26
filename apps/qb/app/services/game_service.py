@@ -53,5 +53,7 @@ def start_game(db: Session, code: str):
 
 
 @handle_sql_error
-def mark_as_done(db: Session, id: int):
-    return db.query(Game).filter_by(id=id).update({"is_done": True})
+def mark_as_done(db: Session, code: str):
+    db.query(Game).filter_by(code=code).update({"is_over": True})
+    db.commit()
+    return True

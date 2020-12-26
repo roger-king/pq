@@ -12,6 +12,7 @@ export const useBroadcastStream = (connection: Connection | null) => {
     newplayer: null,
     removedplayer: null,
     connected: false,
+    end: false,
   });
 
   useEffect(() => {
@@ -20,7 +21,7 @@ export const useBroadcastStream = (connection: Connection | null) => {
       const stream = client.createStream(connection, {});
 
       stream.on('data', async (res: any) => {
-        setMessage({ ...res.toObject(), connected: true });
+        setMessage({ ...message, ...res.toObject(), connected: true });
       });
 
       stream.on('error', async () => {

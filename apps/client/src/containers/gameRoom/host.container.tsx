@@ -17,6 +17,7 @@ import {
   Question as QuestionRequest,
   QuestionOption,
   OptionKey,
+  EndGame,
 } from '../../grpc/broadcast_pb';
 import { useBroadcastClient } from '../../hooks/useGrpcClient';
 import { ConnectionStatus } from '../../components/connectionStatus';
@@ -81,6 +82,10 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
     return d;
   });
 
+  const [endgame] = useMutation(async (gameCode: string) => {
+    return Axios.put(`${API_URL}/games/${gameCode}/end`);
+  });
+
   const start = () => {
     const q = questions && questions.data[currentQuestion];
     const req = new StartQuestion();
@@ -121,6 +126,14 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
     connection.setUser(user);
     setConnection(connection);
     return connection;
+  };
+
+  const end = (gameCode: string) => {
+    endgame(gameCode);
+    const req = new EndGame();
+    req.setGameId(gameCode);
+    client.end(req, {});
+    console.log('Redirect to leaderboard page.');
   };
 
   useEffect(() => {
@@ -170,7 +183,7 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
                   primary
                 />
               )}
-              {timer === 0 && isComplete && <Button label="Finish" onClick={() => console.log('done')} primary />}
+              {timer === 0 && isComplete && <Button label="Finish" onClick={() => end(code)} primary />}
               {timer <= 60 && !isComplete && <Button label="Play" icon={<Play />} onClick={() => start()} primary />}
             </Box>
           </Box>

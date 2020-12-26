@@ -40,4 +40,5 @@ export interface BroadcastMessage {
   removedplayer: Player | null;
   question: { id: number; q: string; optionsList: QuestionOption[] } | null;
   connected: boolean;
+  end: boolean;
 }

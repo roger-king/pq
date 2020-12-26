@@ -17,7 +17,8 @@ from app.services.game_service import (
     find_all_games,
     find_one_game,
     join_game,
-    start_game
+    start_game,
+    mark_as_done
 )
 
 router = APIRouter()
@@ -60,6 +61,14 @@ async def join(
         created_at=game.created_at,
         is_host=is_host,
     )
+
+
+@router.put("/games/{code}/end", tags=["game", "end"], response_model=bool)
+async def join(
+    code: str, db: Session = Depends(get_db),
+):
+    done = mark_as_done(db, code)
+    return done
 
 @router.post("/games/submit", tags=["game", "record", "submit"], response_model=bool)
 async def record(input: RecordAnswerInput, db: Session = Depends(get_db)):
