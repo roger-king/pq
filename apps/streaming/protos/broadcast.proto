@@ -37,15 +37,20 @@ message Question {
 }
 
 message Message {
-    int64 time = 1;
-    Question question = 2;
+    int64 Time = 1;
+    Question Question = 2;
     User NewPlayer = 3;
     User RemovedPlayer = 4;
+    bool End = 5;
 }
 
 message StartQuestion {
     Question question = 1;
     bool is_host = 2;
+    string game_id = 3;
+}
+
+message EndGame {
     string game_id = 3;
 }
 
@@ -63,5 +68,6 @@ service Broadcast {
     rpc Disconnect(Connection) returns (DisconnectResponse) {}
     rpc Heartbeat(Connection) returns (HeartbeatResponse) {}
     rpc Start(StartQuestion) returns (stream Message) {}
+    rpc End(EndGame) returns (stream Message) {}
     rpc GetPlayerList(PlayerlistRequest) returns (PlayerListResponse) {}
 }

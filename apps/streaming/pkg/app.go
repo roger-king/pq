@@ -133,6 +133,37 @@ func (s *broadcastServer) Start(req *server.StartQuestion, stream server.Broadca
 	return nil
 }
 
+func (s *broadcastServer) End(req *server.EndGame, stream server.Broadcast_EndServer) error {
+	wait := sync.WaitGroup{}
+	done := make(chan int)
+
+	if conns, ok := s.Connections[req.GameId]; ok {
+		log.Print(len(conns))
+		for _, conn := range conns {
+			wait.Add(1)
+			go func(req *server.EndGame, stream server.Broadcast_EndServer) {
+				defer wait.Done()
+				log.Printf("Starting counddown: %v", conn.userID)
+				if req.GameId == conn.gameID  {
+					err := conn.stream.Send(&server.Message{End: true})
+					if err != nil {
+						fmt.Errorf("Failed to send question: %v", err)
+					}
+				}
+			}(req, stream)
+	
+		}
+	}
+
+	go func() {
+		wait.Wait()
+		close(done)
+	}()
+
+	<-done
+	return nil
+}
+
 func removeConnection(conns []*Connection, id int) []*Connection {
 
 	if len(conns) > 0 {

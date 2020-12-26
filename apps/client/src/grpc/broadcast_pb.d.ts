@@ -143,6 +143,9 @@ export class Message extends jspb.Message {
   hasRemovedplayer(): boolean;
   clearRemovedplayer(): Message;
 
+  getEnd(): boolean;
+  setEnd(value: boolean): Message;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Message.AsObject;
   static toObject(includeInstance: boolean, msg: Message): Message.AsObject;
@@ -157,6 +160,7 @@ export namespace Message {
     question?: Question.AsObject,
     newplayer?: User.AsObject,
     removedplayer?: User.AsObject,
+    end: boolean,
   }
 }
 
@@ -184,6 +188,24 @@ export namespace StartQuestion {
   export type AsObject = {
     question?: Question.AsObject,
     isHost: boolean,
+    gameId: string,
+  }
+}
+
+export class EndGame extends jspb.Message {
+  getGameId(): string;
+  setGameId(value: string): EndGame;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): EndGame.AsObject;
+  static toObject(includeInstance: boolean, msg: EndGame): EndGame.AsObject;
+  static serializeBinaryToWriter(message: EndGame, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): EndGame;
+  static deserializeBinaryFromReader(message: EndGame, reader: jspb.BinaryReader): EndGame;
+}
+
+export namespace EndGame {
+  export type AsObject = {
     gameId: string,
   }
 }

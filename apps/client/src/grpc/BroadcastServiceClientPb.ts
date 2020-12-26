@@ -153,6 +153,25 @@ export class BroadcastClient {
       this.methodInfoStart);
   }
 
+  methodInfoEnd = new grpcWeb.AbstractClientBase.MethodInfo(
+    broadcast_pb.Message,
+    (request: broadcast_pb.EndGame) => {
+      return request.serializeBinary();
+    },
+    broadcast_pb.Message.deserializeBinary
+  );
+
+  end(
+    request: broadcast_pb.EndGame,
+    metadata?: grpcWeb.Metadata) {
+    return this.client_.serverStreaming(
+      this.hostname_ +
+        '/pq.streaming.games.timer.Broadcast/End',
+      request,
+      metadata || {},
+      this.methodInfoEnd);
+  }
+
   methodInfoGetPlayerList = new grpcWeb.AbstractClientBase.MethodInfo(
     broadcast_pb.PlayerListResponse,
     (request: broadcast_pb.PlayerlistRequest) => {
