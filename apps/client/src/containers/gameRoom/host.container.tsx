@@ -23,6 +23,8 @@ import { ConnectionStatus } from '../../components/connectionStatus';
 import { randomId } from '../../utils/random';
 import { PlayerList } from '../playerList/playerList';
 import { ClientReadableStream } from 'grpc-web';
+import { useBroadcastStream } from '../../hooks/useBroadcastStream';
+import { create } from 'react-test-renderer';
 
 export interface HostViewProps {
   game: Game;
@@ -67,46 +69,17 @@ export const HostLobbyView: React.FC<HostViewProps> = ({ game }: HostViewProps) 
 
 export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps) => {
   const client = useBroadcastClient();
+  const [connection, setConnection] = useState<Connection | null>(null);
+  const { connected, newplayer, removedplayer } = useBroadcastStream(connection);
   const { id, code, created_by } = game; //eslint-disable-line
-  const [timer, setTimer] = useState(60);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
-  const [updatedPlayerList, setUpdatedPlayerList] = useState<{ name: string; id: number }[]>([]);
-  const [broadcastStream, setBroadcastStream] = useState<ClientReadableStream<unknown> | null>(null);
+  const [timer, setTimer] = useState<number>(60);
 
   const { data: questions } = useQuery<{ data: Question[] }>(`game_${id}_questions`, async () => {
     const d = Axios.get(`${API_URL}/games/${id}/questions`);
     return d;
   });
-  const [connected, setConnected] = useState<boolean>(false);
-  const user = new User();
-  const connection = new Connection();
-
-  const connectToBroadcastServer = () => {
-    const stream = client.createStream(connection, {});
-    setBroadcastStream(stream);
-    stream.on('data', function (response: any) {
-      setConnected(true);
-      const { removedplayer, newplayer } = response.toObject();
-
-      if (newplayer) {
-        console.log('joined', newplayer);
-        setUpdatedPlayerList([...updatedPlayerList, { name: newplayer.displayname, id: newplayer.id }]);
-      }
-
-      if (removedplayer) {
-        console.log('removed', removedplayer);
-      }
-    });
-    stream.on('end', () => {
-      console.log('ending');
-      setConnected(false);
-    });
-    stream.on('error', (err) => {
-      console.log('error: ', err);
-      setConnected(false);
-    });
-  };
 
   const start = () => {
     const q = questions && questions.data[currentQuestion];
@@ -130,36 +103,31 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
 
     stream.on('data', function (response: any) {
       const { time } = response.toObject();
+      console.log(time);
       setTimer(time);
     });
   };
 
-  const heartBeat = () => {
-    setInterval(() => {
-      client.heartbeat(connection, {});
-    }, 3000);
-  };
+  const setupConnection = (id: string) => {
+    const user = new User();
+    const connection = new Connection();
 
-  useEffect(() => {
     user.setDisplayName(created_by);
-    const storedId = sessionStorage.getItem('pq_user_id');
-    const rando = storedId ? storedId : randomId();
-    user.setId(rando);
+    user.setId(id);
     user.setIsHost(true);
-
     connection.setGameId(code);
     connection.setActive(true);
     connection.setUser(user);
+    setConnection(connection);
+    return connection;
+  };
+
+  useEffect(() => {
+    const storedId = sessionStorage.getItem('pq_user_id');
+    const rando = storedId ? storedId : randomId();
 
     if (!connected) {
-      connectToBroadcastServer();
-      if (!storedId) {
-        sessionStorage.setItem('pq_user_id', rando);
-      }
-    }
-
-    if (connected) {
-      heartBeat();
+      setupConnection(rando);
     }
   }, [connected]);
 
@@ -171,7 +139,7 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
         <Heading color={timer <= 10 ? 'red' : 'white'}>{timer}</Heading>
         <Button label="Player Link" as="a" href={`http://localhost:3000/pq/${code}`} target="_blank" />
         <Box width="80%" gap="medium" direction="row">
-          <PlayerList gameId={code} broadcastStream={broadcastStream} />
+          <PlayerList gameId={code} newplayer={newplayer} removedplayer={removedplayer} />
           <Box width="100%" gap="medium">
             <Text alignSelf="start">
               Question {currentQuestion + 1}/{questions.data.length}
@@ -193,7 +161,6 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
                   label="Next"
                   onClick={() => {
                     if (currentQuestion < questions.data.length - 1) {
-                      setTimer(60);
                       setCurrentQuestion(currentQuestion + 1);
                     } else {
                       setIsComplete(true);

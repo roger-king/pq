@@ -1,3 +1,5 @@
+import { User } from '../grpc/broadcast_pb';
+
 export interface Game {
   id: number;
   name: string;
@@ -23,4 +25,18 @@ export interface Question {
   q: string;
   answer: string;
   options: QuestionOption[];
+}
+
+export interface Player {
+  id: string;
+  displayName: string;
+  isHost: boolean;
+}
+
+export interface BroadcastMessage {
+  time: number;
+  newplayer: Player | null;
+  removedplayer: Player | null;
+  question: { id: number; q: string; optionsList: QuestionOption[] } | null;
+  connected: boolean;
 }

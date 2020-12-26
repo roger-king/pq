@@ -73,7 +73,7 @@ func (s *broadcastServer) CreateStream(req *server.Connection, stream server.Bro
 		s.Connections[req.GameId] = []*Connection{conn}
 	}
 
-	err := stream.Send(&server.Message{})
+	err := stream.Send(&server.Message{Time: int64(60), NewPlayer: nil, RemovedPlayer: nil, Question: nil})
 
 	if err != nil {
 		return err
@@ -95,9 +95,9 @@ func (s *broadcastServer) Start(req *server.StartQuestion, stream server.Broadca
 				log.Printf("Starting counddown: %v", conn.userID)
 				if req.GameId == conn.gameID  {
 	
-					countdown := 60
+					countdown := 10
 					// Send question to players
-					err := conn.stream.Send(&server.Message{Question: req.Question})
+					err := conn.stream.Send(&server.Message{Question: req.Question, Time: int64(countdown)})
 					if err != nil {
 						fmt.Errorf("Failed to send question: %v", err)
 					}
@@ -108,7 +108,7 @@ func (s *broadcastServer) Start(req *server.StartQuestion, stream server.Broadca
 						time.Sleep(time.Second * 1)
 						
 						 // TODO: look into a better way than using a global message.
-						err := conn.stream.Send(&server.Message{Time: int64(countdown)})
+						err := conn.stream.Send(&server.Message{Time: int64(countdown), Question: req.Question})
 						if req.IsHost {
 							// ToDO: look into why the connection stream doesnt send to the host too.
 							stream.Send(&server.Message{Time: int64(countdown)})

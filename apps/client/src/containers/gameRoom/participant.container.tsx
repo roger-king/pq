@@ -8,86 +8,90 @@ import { time } from 'console';
 import { AnswerCard } from '../../components/question/answerCard';
 import { randomId } from '../../utils/random';
 import Modal from '../../components/modal';
+import { useMutation } from 'react-query';
+import Axios from 'axios';
+import { API_URL } from '../../constants';
+import { useBroadcastStream } from '../../hooks/useBroadcastStream';
 
 export interface ParticipantViewProps {
   game: Game;
 }
 
+enum AnswerKeyCard {
+  'A',
+  'B',
+  'C',
+  'D',
+}
+
 export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: ParticipantViewProps) => {
-  const client = useBroadcastClient();
-  const [connected, setConnected] = useState<boolean>(false);
-  const [timer, setTimer] = useState<number>(60);
-  const [display, setDisplay] = useState<string>('');
-  const [currentQuestion, setCurrentQuestion] = useState<any | null>(null);
-
-  const { code, is_started } = game; // eslint-disable
-  const user = new User();
-  const connection = new Connection();
-
-  const connectToBroadcastServer = () => {
-    console.log('trying to connect');
-    const stream = client.createStream(connection, {});
-    stream.on('data', async function (response: any) {
-      const { time, question } = response.toObject();
-      if ((timer <= 60 && time > 0) || (timer === 1 && time === 0)) {
-        setTimer(time);
-      }
-
-      if (question) {
-        setCurrentQuestion(question);
-        console.log(question);
-      }
-      setConnected(true);
-    });
-  };
-
-  const heartBeat = () => {
-    setInterval(async () => {
-      client.heartbeat(connection, {}).catch((e) => {
-        console.error('Error sending heartbeat', e);
-        setConnected(false);
+  const [submitAnswer] = useMutation(
+    async (vars: { gameId: number; questionId: number; userId: string; answer: string | null }) => {
+      return Axios.post(`${API_URL}/games/submit`, {
+        game_id: vars.gameId,
+        question_id: vars.questionId,
+        answer: vars.answer,
+        user_id: vars.userId,
       });
-    }, 3000);
+    },
+  );
+  const [connection, setConnection] = useState<Connection | null>(null);
+  const { time, question, connected } = useBroadcastStream(connection);
+  const [display, setDisplay] = useState<string>('');
+  const [answer, setAnswer] = useState<string | null>(null);
+  const { id, code, is_started } = game; // eslint-disable
+
+  const setupConnection = (id: string) => {
+    const user = new User();
+    const connection = new Connection();
+
+    user.setDisplayName(display);
+    user.setId(id);
+    user.setIsHost(false);
+    connection.setGameId(code);
+    connection.setActive(true);
+    connection.setUser(user);
+    setConnection(connection);
+    return connection;
   };
 
   useEffect(() => {
     const storedId = sessionStorage.getItem('pq_user_id');
-    const rando = storedId ? storedId : randomId();
     const displayName = sessionStorage.getItem('pq_display_name');
     if (displayName) {
       setDisplay(displayName);
     }
 
-    if (display.length > 0) {
-      user.setDisplayName(display);
-      user.setId(rando);
-      user.setIsHost(false);
-      connection.setGameId(code);
-      connection.setActive(true);
-      connection.setUser(user);
-      if (!connected) {
-        connectToBroadcastServer();
-        heartBeat();
-      }
+    if (display.length > 0 && !connected) {
+      const rando = storedId ? storedId : randomId();
+      sessionStorage.setItem('pq_user_id', rando);
+      setupConnection(rando);
     }
 
-    return () => {
-      console.log('disconnecting');
-      client.disconnect(connection, {});
-
-      if (!storedId) {
-        sessionStorage.setItem('pq_user_id', rando);
+    if (!isNaN(time) && time === 0) {
+      const userId = sessionStorage.getItem('pq_user_id');
+      if (userId && answer) {
+        const k = answer.split('.')[0].trim();
+        const abcd = AnswerKeyCard[Number(k)];
+        submitAnswer({ gameId: id, questionId: question.id, userId: userId, answer: abcd });
+      } else {
+        console.error('Failed to submit answer');
       }
-    };
-  }, [display]);
+    }
+  }, [display, answer, time, question]);
 
   // TODO: adding is_started check for participants
   return (
     <Box fill background="brand" align="center" justify="center">
       <ConnectionStatus connected={connected} />
-      <Text>{timer}</Text>
-      {currentQuestion ? (
-        <AnswerCard q={currentQuestion.q} options={currentQuestion.optionsList} />
+      <Text>{time}</Text>
+      {question && time > 0 ? (
+        <AnswerCard
+          q={question.q}
+          options={question.optionsList}
+          selectedAnswer={answer}
+          setSelectedAnswer={setAnswer}
+        />
       ) : (
         <Text>
           {' '}
