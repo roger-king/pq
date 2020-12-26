@@ -12,9 +12,10 @@ from pydantic import BaseModel, Json
 
 class AnswerBank(Base):
     __tablename__ = "answer_bank"
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     game_id = Column(Integer, ForeignKey("games.id", ondelete="CASCADE"), primary_key=True)
     question_id = Column(Integer, ForeignKey("questions.id", ondelete="CASCADE"), primary_key=True)
+    display_name = Column(String, nullable=False)
     user_id = Column(String, nullable=False)
     answer = Column(String, nullable=True)
     is_correct = Column(Boolean, nullable=False)
@@ -31,6 +32,7 @@ class AnswerBank(Base):
             "game_id": self.game_id,
             "question_id": self.question_id,
             "user_id": self.user_id,
+            "display_name": self.display_name,
             "answer": self.answer,
             "is_correct": self.is_correct,
         }
@@ -55,4 +57,5 @@ class RecordAnswerInput(BaseModel):
     game_id: int
     question_id: int
     user_id: str
+    display_name: str
     answer: Optional[str]

@@ -12,7 +12,7 @@ def record_answer(db: Session, input: RecordAnswerInput) -> bool:
     # TODO: fix duplicate entries for a persons answer for 1 question in 1 game can be recorded twice
     if game and question:
         is_correct = question.answer.lower() == input.answer.lower()
-        a = AnswerBank(game_id=game.id, question_id=question.id, answer=input.answer, user_id=input.user_id, is_correct=is_correct)
+        a = AnswerBank(game_id=game.id, question_id=question.id, answer=input.answer, user_id=input.user_id, is_correct=is_correct, display_name=input.display_name)
         db.add(a)
         db.commit()
         return True

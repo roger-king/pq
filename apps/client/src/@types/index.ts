@@ -21,6 +21,7 @@ export interface QuestionOption {
   title: string;
 }
 export interface Question {
+  id: number;
   created_by: string;
   q: string;
   answer: string;

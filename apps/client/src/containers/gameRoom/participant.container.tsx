@@ -26,12 +26,19 @@ enum AnswerKeyCard {
 
 export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: ParticipantViewProps) => {
   const [submitAnswer] = useMutation(
-    async (vars: { gameId: number; questionId: number; userId: string; answer: string | null }) => {
+    async (vars: {
+      gameId: number;
+      questionId: number;
+      userId: string;
+      answer: string | null;
+      displayName: string;
+    }) => {
       return Axios.post(`${API_URL}/games/submit`, {
         game_id: vars.gameId,
         question_id: vars.questionId,
         answer: vars.answer,
         user_id: vars.userId,
+        display_name: vars.displayName,
       });
     },
   );
@@ -70,10 +77,11 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: Partic
 
     if (!isNaN(time) && time === 0) {
       const userId = sessionStorage.getItem('pq_user_id');
-      if (userId && answer) {
+      if (userId && display.length > 0 && answer) {
         const k = answer.split('.')[0].trim();
         const abcd = AnswerKeyCard[Number(k)];
-        submitAnswer({ gameId: id, questionId: question.id, userId: userId, answer: abcd });
+        submitAnswer({ gameId: id, questionId: question.id, userId: userId, answer: abcd, displayName: display });
+        setAnswer(null);
       } else {
         console.error('Failed to submit answer');
       }

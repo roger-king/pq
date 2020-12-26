@@ -95,6 +95,7 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
         questionOptions.setTitle(o.title);
         return questionOptions;
       });
+      questionReq.setId(q.id);
       questionReq.setQ(q.q);
       questionReq.setOptionsList(options);
       req.setQuestion(questionReq);
