@@ -72,7 +72,7 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
   const client = useBroadcastClient();
   const [connection, setConnection] = useState<Connection | null>(null);
   const { connected, newplayer, removedplayer } = useBroadcastStream(connection);
-  const { id, code, created_by } = game; //eslint-disable-line
+  const { id, code, created_by, host_code } = game; //eslint-disable-line
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
   const [timer, setTimer] = useState<number>(60);
@@ -82,9 +82,16 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
     return d;
   });
 
-  const [endgame] = useMutation(async (gameCode: string) => {
-    return Axios.put(`${API_URL}/games/${gameCode}/end`);
-  });
+  const [endgame] = useMutation(
+    async (gameCode: string) => {
+      return Axios.put(`${API_URL}/games/${gameCode}/end`);
+    },
+    {
+      onSuccess: () => {
+        queryCache.invalidateQueries(`game_${host_code}`);
+      },
+    },
+  );
 
   const start = () => {
     const q = questions && questions.data[currentQuestion];
