@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Text, Form, FormField } from 'grommet';
+import { useMutation } from 'react-query';
+import Axios from 'axios';
+
 import { Game } from '../../@types';
 import { Connection, User } from '../../grpc/broadcast_pb';
-import { useBroadcastClient } from '../../hooks/useGrpcClient';
 import { ConnectionStatus } from '../../components/connectionStatus';
-import { time } from 'console';
 import { AnswerCard } from '../../components/question/answerCard';
 import { randomId } from '../../utils/random';
 import Modal from '../../components/modal';
-import { useMutation } from 'react-query';
-import Axios from 'axios';
 import { API_URL } from '../../constants';
 import { useBroadcastStream } from '../../hooks/useBroadcastStream';
+import { Timer } from '../../components/timer';
+import { GameCard } from '../../components/card';
 
 export interface ParticipantViewProps {
   game: Game;
@@ -43,7 +44,7 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: Partic
     },
   );
   const [connection, setConnection] = useState<Connection | null>(null);
-  const { time, question, connected } = useBroadcastStream(connection);
+  const { time, connected, question } = useBroadcastStream(connection);
   const [display, setDisplay] = useState<string>('');
   const [answer, setAnswer] = useState<string | null>(null);
   const { id, code, is_started } = game; // eslint-disable
@@ -90,22 +91,21 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: Partic
 
   // TODO: adding is_started check for participants
   return (
-    <Box fill background="brand" align="center" justify="center">
-      <ConnectionStatus connected={connected} />
-      <Text>{time}</Text>
-      {question && time > 0 ? (
-        <AnswerCard
-          q={question.q}
-          options={question.optionsList}
-          selectedAnswer={answer}
-          setSelectedAnswer={setAnswer}
-        />
-      ) : (
-        <Text>
-          {' '}
-          {is_started ? `Waiting for your host to start the next question.` : `Host hasn't joined yet. Hang tight.`}
-        </Text>
-      )}
+    <Box fill align="center" justify="center">
+      <GameCard time={time} connected={connected}>
+        {question && time > 0 ? (
+          <AnswerCard
+            q={question.q}
+            options={question.optionsList}
+            selectedAnswer={answer}
+            setSelectedAnswer={setAnswer}
+          />
+        ) : (
+          <Text size="1.3em">
+            {is_started ? `Waiting for your host to start the next question.` : `Host hasn't joined yet. Hang tight.`}
+          </Text>
+        )}
+      </GameCard>
       {display.length === 0 && (
         <Modal title="What's your team name?" onClose={() => console.log('closing')}>
           <Form

@@ -5,6 +5,7 @@ import { Grommet } from 'grommet';
 import { QueryCache, ReactQueryCacheProvider } from 'react-query';
 
 import { theme } from '../constants';
+import { GlobalStateProvider } from '../context/global.provider';
 import { GRPCProvider } from '../context/streaming.provider';
 
 export const queryCache = new QueryCache();
@@ -14,11 +15,13 @@ export const Root = (props: PropsWithChildren<{}>) => {
 
   return (
     <ReactQueryCacheProvider queryCache={queryCache}>
-      <GRPCProvider host="http://localhost:9001">
-        <Grommet theme={theme} full>
-          {children}
-        </Grommet>
-      </GRPCProvider>
+      <GlobalStateProvider room="" isPlaying={false}>
+        <GRPCProvider host="http://localhost:9001" isPlaying={false}>
+          <Grommet theme={theme} full>
+            {children}
+          </Grommet>
+        </GRPCProvider>
+      </GlobalStateProvider>
     </ReactQueryCacheProvider>
   );
 };

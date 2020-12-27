@@ -16,35 +16,31 @@ export const useBroadcastStream = (connection: Connection | null) => {
   });
 
   useEffect(() => {
-    if (connection) {
-      console.info('Connecting to broadcast stream');
-      const stream = client.createStream(connection, {});
-
-      stream.on('data', async (res: any) => {
-        setMessage({ ...message, ...res.toObject(), connected: true });
-      });
-
-      stream.on('error', async () => {
-        const updatedMsg = message;
-        updatedMsg.connected = false;
-        setMessage({ ...updatedMsg });
-      });
-
-      stream.on('end', async () => {
-        const updatedMsg = message;
-        updatedMsg.connected = false;
-        setMessage({ ...updatedMsg });
-      });
-
-      setInterval(() => {
-        client.heartbeat(connection, {}).catch((e) => {
-          console.error('Error sending heartbeat');
-          const updatedMsg = message;
-          updatedMsg.connected = false;
-          setMessage({ ...updatedMsg });
-        });
-      }, 5000);
-    }
+    // if (connection) {
+    //   // console.info('Connecting to broadcast stream');
+    //   const stream = client.createStream(connection, {});
+    //   stream.on('data', async (res: any) => {
+    //     setMessage({ ...message, ...res.toObject(), connected: true });
+    //   });
+    //   stream.on('error', async () => {
+    //     const updatedMsg = message;
+    //     updatedMsg.connected = false;
+    //     setMessage({ ...updatedMsg });
+    //   });
+    //   stream.on('end', async () => {
+    //     const updatedMsg = message;
+    //     updatedMsg.connected = false;
+    //     setMessage({ ...updatedMsg });
+    //   });
+    //   // setInterval(() => {
+    //   //   client.heartbeat(connection, {}).catch((e) => {
+    //   //     console.error('Error sending heartbeat');
+    //   //     const updatedMsg = message;
+    //   //     updatedMsg.connected = false;
+    //   //     setMessage({ ...updatedMsg });
+    //   //   });
+    //   // }, 5000);
+    // }
   }, [connection]);
 
   return message;

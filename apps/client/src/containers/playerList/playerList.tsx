@@ -37,7 +37,7 @@ export const PlayerList: React.FC<PlayerListProps> = ({ gameId, newplayer, remov
   }, [newplayer, removedplayer]);
 
   return (
-    <Box direction="column" gap="small" width="150px" height={{ min: 'auto' }} pad="small" border="all">
+    <Box direction="column" gap="small" width="150px" height={{ min: 'auto' }} pad="small">
       {players.map((u) => {
         return <Text key={u.id}>{u.name}</Text>;
       })}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Heading, Text } from 'grommet';
-import { Clipboard, Play } from 'grommet-icons';
+import { Clipboard, Link, Play, Share } from 'grommet-icons';
 import { useMutation, useQuery } from 'react-query';
 import Axios from 'axios';
 
@@ -26,6 +26,7 @@ import { PlayerList } from '../playerList/playerList';
 import { ClientReadableStream } from 'grpc-web';
 import { useBroadcastStream } from '../../hooks/useBroadcastStream';
 import { create } from 'react-test-renderer';
+import { GameCard } from '../../components/card';
 
 export interface HostViewProps {
   game: Game;
@@ -155,17 +156,19 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
   if (questions) {
     const { q, options } = questions.data[currentQuestion];
     return (
-      <Box fill background="brand" align="center" justify="center">
-        <ConnectionStatus connected={connected} />
-        <Heading color={timer <= 10 ? 'red' : 'white'}>{timer}</Heading>
-        <Button label="Player Link" as="a" href={`http://localhost:3000/pq/${code}`} target="_blank" />
-        <Box width="80%" gap="medium" direction="row">
+      <Box fill align="center" justify="center" direction="row" gap="small">
+        <Box gap="medium" height="50%" background="light-4" align="center" justify="start">
+          <Heading level="4" margin="small">
+            Players
+          </Heading>
           <PlayerList gameId={code} newplayer={newplayer} removedplayer={removedplayer} />
+        </Box>
+        <GameCard time={timer} connected={connected}>
           <Box width="100%" gap="medium">
             <Text alignSelf="start">
               Question {currentQuestion + 1}/{questions.data.length}
             </Text>
-            <Box key={`${q}`} pad="large" border="all" height={{ min: '275px' }}>
+            <Box key={`${q}`} pad="large" height={{ min: '275px' }}>
               <Heading level="3">{q}</Heading>
               {options.map((o) => (
                 <Box key={o.key} gap="small" direction="row" margin="small">
@@ -193,8 +196,17 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
               {timer === 0 && isComplete && <Button label="Finish" onClick={() => end(code)} primary />}
               {timer <= 60 && !isComplete && <Button label="Play" icon={<Play />} onClick={() => start()} primary />}
             </Box>
+            <Box align="end">
+              <Button
+                icon={<Link size="small" />}
+                label="Invite"
+                as="a"
+                href={`http://localhost:3000/pq/${code}`}
+                target="_blank"
+              />
+            </Box>
           </Box>
-        </Box>
+        </GameCard>
       </Box>
     );
   }

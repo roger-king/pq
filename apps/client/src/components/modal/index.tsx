@@ -12,7 +12,7 @@ const Modal: React.FC<PropsWithChildren<BaseModalProps>> = (props: PropsWithChil
 
   return (
     <Layer modal>
-      <Box fill align="center" justify="center" pad="medium">
+      <Box fill align="center" justify="center" pad="medium" background="brand">
         <Box direction="row" align="center" justify="between" fill>
           <Heading level="3">{title}</Heading>
         </Box>

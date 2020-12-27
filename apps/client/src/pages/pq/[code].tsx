@@ -2,6 +2,7 @@ import { Box } from 'grommet';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { GameRoomContainer } from '../../containers/gameRoom';
+import { withMainLayout } from '../../layouts/main';
 
 export const GameRoom: React.FC = () => {
   const router = useRouter();
@@ -14,4 +15,4 @@ export const GameRoom: React.FC = () => {
   );
 };
 
-export default GameRoom;
+export default withMainLayout(GameRoom);

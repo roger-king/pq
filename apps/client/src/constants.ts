@@ -42,6 +42,9 @@ export const theme: ThemeType = deepMerge(base, {
       },
     },
   },
+  radioButton: {
+    size: '25px',
+  },
   meter: {
     color: 'brand',
   },

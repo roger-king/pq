@@ -62,7 +62,7 @@ export const GameRoomContainer: React.FC<GameRoomContainerProps> = ({ code }: Ga
   }
 
   return (
-    <Box fill background="brand">
+    <Box fill>
       <Heading>{code}</Heading>
       <Text> Something went wrong getting game information. We are working on it.</Text>
     </Box>
