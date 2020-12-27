@@ -10,7 +10,13 @@ export const QuestionCard: React.FC<PropsWithChildren<QuestionCardProps>> = ({
   elevation,
 }: PropsWithChildren<QuestionCardProps>) => {
   return (
-    <Box elevation={elevation ? 'medium' : 'none'} pad="medium" border="all" height={{ min: '278px', max: '400px' }}>
+    <Box
+      elevation={elevation ? 'medium' : 'none'}
+      pad="medium"
+      border="all"
+      height={{ min: '278px', max: '400px' }}
+      background="light-4"
+    >
       {children}
     </Box>
   );

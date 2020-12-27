@@ -3,7 +3,7 @@ import { Box, Grid, Heading, ResponsiveContext } from 'grommet';
 
 import { Root } from './index';
 import { ProtectedRouteProps } from './protected';
-
+import { Header } from '../components/header/header.component';
 export interface MainLayoutProps extends ProtectedRouteProps {
   size?: 'small' | 'medium' | 'large';
 }
@@ -19,21 +19,18 @@ export function withMainLayout<T extends MainLayoutProps>(Component: ComponentTy
                 fill
                 areas={[
                   { name: 'header', start: [0, 0], end: [1, 0] },
-                  { name: 'sidebar', start: [0, 1], end: [0, 1] },
-                  { name: 'main', start: [0, 0], end: [1, 1] },
+                  { name: 'main', start: [0, 1], end: [1, 1] },
                 ]}
                 rows={['auto', 'flex']}
                 columns={['auto', 'flex']}
-                gap="small"
               >
-                {/* <Header gridArea="header" /> */}
-                {/* <AppNav user={user} /> */}
-                <Heading style={{ position: 'absolute' }} margin="none">
-                  BETA
-                </Heading>
+                <Header gridArea="header" />
                 <Box gridArea="main" direction="column" gap="small" height="100%">
                   <Component {...(props as T)} size={size} />
                 </Box>
+                <Heading style={{ position: 'absolute', bottom: 0, left: 0 }} margin="small" level="3" color="white">
+                  BETA
+                </Heading>
               </Grid>
             </Root>
           );

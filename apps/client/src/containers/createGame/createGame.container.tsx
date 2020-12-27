@@ -61,7 +61,7 @@ export const CreateGameContainer: React.FC = () => {
           createGame({ name, createdBy: hostName });
         }}
       />
-      <Box elevation="medium" pad="medium" border="all" height="250px" gap="small" align="center" justify="center">
+      <Box pad="medium" border="all" height="250px" gap="small" align="center" justify="center" background="light-4">
         <TextInput placeholder="New PQ" value={name} onChange={(e) => setName(e.target.value)} />
         <TextInput placeholder="Hosted By..." value={hostName} onChange={(e) => setHostName(e.target.value)} />
       </Box>

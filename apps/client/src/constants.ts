@@ -5,8 +5,7 @@ import { FormDown, FormUp } from 'grommet-icons';
 export const theme: ThemeType = deepMerge(base, {
   global: {
     colors: {
-      // background: '#001932',
-      background: 'light-3',
+      background: '#001932',
       brand: '#003B64',
       'accent-1': '#00639B',
       'accent-2': '#0087CA',

@@ -23,7 +23,7 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
   maxNumOptions,
 }: QuestionFormProps) => {
   return (
-    <QuestionCard elevation={true}>
+    <QuestionCard>
       <TextInput placeholder={`Question ${qIndex + 1}`} value={q} onChange={qOnChange} />
       <Box gap="small" margin="small">
         {options.map((o) => (
