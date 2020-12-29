@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Box, Button, Heading, Text } from 'grommet';
-import { Clipboard, Link, Play, Share } from 'grommet-icons';
+import { Clipboard, Copy, Link, Play, Share } from 'grommet-icons';
 import { useMutation, useQuery } from 'react-query';
 import Axios from 'axios';
 
@@ -74,9 +74,11 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
   const [connection, setConnection] = useState<Connection | null>(null);
   const { connected, newplayer, removedplayer } = useBroadcastStream(connection);
   const { id, code, created_by, host_code } = game; //eslint-disable-line
+  const roomURL = `${window.location.origin}/pq/${code}`;
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
   const [timer, setTimer] = useState<number>(60);
+  const [didCopy, setDidCopy] = useState<boolean>(false);
 
   const { data: questions } = useQuery<{ data: Question[] }>(`game_${id}_questions`, async () => {
     const d = Axios.get(`${API_URL}/games/${id}/questions`);
@@ -144,6 +146,14 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
     console.log('Redirect to leaderboard page.');
   };
 
+  const startCopyText = () => {
+    setDidCopy(true);
+
+    setTimeout(() => {
+      setDidCopy(false);
+    }, 3000);
+  };
+
   useEffect(() => {
     const storedId = sessionStorage.getItem('pq_user_id');
     const rando = storedId ? storedId : randomId();
@@ -163,48 +173,57 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
           </Heading>
           <PlayerList gameId={code} newplayer={newplayer} removedplayer={removedplayer} />
         </Box>
-        <GameCard time={timer} connected={connected}>
-          <Box width="100%" gap="medium">
-            <Text alignSelf="start">
-              Question {currentQuestion + 1}/{questions.data.length}
-            </Text>
-            <Box key={`${q}`} pad="large" height={{ min: '275px' }}>
-              <Heading level="3">{q}</Heading>
-              {options.map((o) => (
-                <Box key={o.key} gap="small" direction="row" margin="small">
-                  <Text size="1.5em">
-                    <b>{o.key}:</b>
-                  </Text>
-                  <Text size="1.5em">{o.title}</Text>
-                </Box>
-              ))}
-            </Box>
-            <Box direction="row" gap="medium" align="center" justify="center">
-              {timer === 0 && !isComplete && (
+        <GameCard
+          time={timer}
+          connected={connected}
+          extendedFooter={
+            <>
+              <Text>
+                Question {currentQuestion + 1}/{questions.data.length}
+              </Text>
+              <Box direction="row" align="center" justify="end" width="400px">
+                <Text>{didCopy ? 'Copied!' : roomURL}</Text>
                 <Button
-                  label="Next"
+                  icon={<Copy />}
                   onClick={() => {
-                    if (currentQuestion < questions.data.length - 1) {
-                      setCurrentQuestion(currentQuestion + 1);
-                    } else {
-                      setIsComplete(true);
-                    }
+                    navigator.clipboard.writeText(roomURL);
+                    startCopyText();
                   }}
-                  primary
                 />
-              )}
-              {timer === 0 && isComplete && <Button label="Finish" onClick={() => end(code)} primary />}
-              {timer <= 60 && !isComplete && <Button label="Play" icon={<Play />} onClick={() => start()} primary />}
-            </Box>
-            <Box align="end">
+              </Box>
+            </>
+          }
+        >
+          <Box>
+            <Heading level="4" margin="small">
+              {q}
+            </Heading>
+            {options.map((o) => (
+              <Box key={o.key} gap="small" direction="row" margin="small">
+                <Text size="1.2em">
+                  <b>{o.key}:</b>
+                </Text>
+                <Text size="1.2em">{o.title}</Text>
+              </Box>
+            ))}
+          </Box>
+          <Box direction="row" gap="medium" align="center" justify="start">
+            {timer === 0 && !isComplete && (
               <Button
-                icon={<Link size="small" />}
-                label="Invite"
-                as="a"
-                href={`http://localhost:3000/pq/${code}`}
-                target="_blank"
+                label="Next"
+                onClick={() => {
+                  if (currentQuestion < questions.data.length - 1) {
+                    setCurrentQuestion(currentQuestion + 1);
+                    setTimer(60);
+                  } else {
+                    setIsComplete(true);
+                  }
+                }}
+                primary
               />
-            </Box>
+            )}
+            {timer === 0 && isComplete && <Button label="Finish" onClick={() => end(code)} primary />}
+            {timer <= 60 && !isComplete && <Button label="Play" icon={<Play />} onClick={() => start()} primary />}
           </Box>
         </GameCard>
       </Box>
