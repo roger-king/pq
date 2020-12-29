@@ -31,6 +31,7 @@ type Connection struct {
 	error  chan error
 	
 }
+
 type broadcastServer struct {
 	Connections map[string][]*Connection
 }
@@ -93,7 +94,7 @@ func (s *broadcastServer) Start(req *server.StartQuestion, stream server.Broadca
 			go func(req *server.StartQuestion, stream server.Broadcast_StartServer) {
 				defer wait.Done()
 				log.Printf("Starting counddown: %v", conn.userID)
-				if req.GameId == conn.gameID  {
+				if req.GameId == conn.gameID && conn.active  {
 	
 					countdown := 10
 					// Send question to players
@@ -107,7 +108,6 @@ func (s *broadcastServer) Start(req *server.StartQuestion, stream server.Broadca
 						countdown--
 						time.Sleep(time.Second * 1)
 						
-						 // TODO: look into a better way than using a global message.
 						err := conn.stream.Send(&server.Message{Time: int64(countdown), Question: req.Question})
 						if req.IsHost {
 							// ToDO: look into why the connection stream doesnt send to the host too.
@@ -149,6 +149,7 @@ func (s *broadcastServer) End(req *server.EndGame, stream server.Broadcast_EndSe
 					if err != nil {
 						fmt.Errorf("Failed to send question: %v", err)
 					}
+					// TODO: drain connection pool
 				}
 			}(req, stream)
 	
@@ -180,18 +181,18 @@ func(s *broadcastServer) getGameConnections(gameID string) []*Connection {
 }
 
 func (s *broadcastServer) Disconnect(ctx context.Context, conn *server.Connection) (*server.DisconnectResponse, error) {
-	var connToRemove int
+	// var connToRemove int
 	connections := s.Connections[conn.GameId]
 
 	if len(connections) > 0 {
 		log.Print("Disconnecting User:")
-		for i, c := range connections {
+		for _, c := range connections {
 			if c.userID == conn.User.Id {
-				connToRemove = i;
+				//connToRemove = i;
 			}
 		}
-	
-		s.Connections[conn.GameId] = removeConnection(connections, connToRemove)
+		// TODO: Check if this is used
+		// s.Connections[conn.GameId] = removeConnection(connections, connToRemove)
 	}
 
 	return &server.DisconnectResponse{}, nil
@@ -215,9 +216,10 @@ func (s *broadcastServer) AuditConnections() {
 					for i, c := range connections {
 						now := time.Now().Unix()
 						// We give a grace period of 15 seconds for the user.
-						if c.lastConnected + 15 < now {
+						if c.lastConnected + 15 < now && c.active {
 							log.Printf("%s is inactive.", c.userID)
 							idsToRemove = append(idsToRemove, i);
+							s.Connections[gameID][i].active = false
 						}
 	
 						if c.isHost {
@@ -227,10 +229,8 @@ func (s *broadcastServer) AuditConnections() {
 	
 					for _, id := range idsToRemove {
 						if hostStream != nil {
-							log.Print("Sending to host")
 							hostStream.Send(&server.Message{RemovedPlayer: &server.User{Id: s.Connections[gameID][id].userID}})
 						}
-						s.Connections[gameID] = removeConnection(s.Connections[gameID], id)
 					}
 	
 					if len(idsToRemove) > 0 {
