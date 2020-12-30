@@ -10,6 +10,7 @@ require (
 	github.com/google/wire v0.4.0 // indirect
 	github.com/imdario/mergo v0.3.11 // indirect
 	github.com/pelletier/go-toml v1.8.1 // indirect
+	github.com/stretchr/testify v1.5.1
 	golang.org/x/sys v0.0.0-20201223074533-0d417f636930 // indirect
 	google.golang.org/grpc v1.34.0
 	google.golang.org/protobuf v1.25.0

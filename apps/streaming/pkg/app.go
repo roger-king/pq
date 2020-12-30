@@ -31,7 +31,7 @@ func (a *App) Start() (net.Listener, *grpc.Server) {
 	}
 
 	s := grpc.NewServer()
-	liveServer := server.NewLiveServer()
+	liveServer := NewLiveServer()
 	server.RegisterBroadcastServer(s, liveServer)
 
 	go liveServer.AuditConnections()
