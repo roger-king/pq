@@ -15,7 +15,6 @@ jobs:
         working-directory: ${{env.streaming-dir}}
         run: |
           go mod vendor
-          go get -u golang.org/x/lint/golint
       - name: Run Test with Code Coverage
         working-directory: ${{env.streaming-dir}}
         run: |
