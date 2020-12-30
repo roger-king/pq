@@ -1,5 +1,7 @@
 package app
 
+// TODO: look into making the core logic a separate file.
+
 import (
 	"context"
 	"fmt"
