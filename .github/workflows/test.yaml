@@ -1,0 +1,28 @@
+name: Streaming Service
+on: 
+  push: 
+    branches: 
+    — master
+  pull_request: 
+    branches: 
+    — master
+jobs:
+  streaming_test: 
+    runs-on: ubuntu-latest
+    env:
+      streaming-dir: ./apps/streaming
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: '1.15.6'
+    - name: Vendor
+      run: |
+        go mod vendor
+        go get -u golang.org/x/lint/golint
+    - name: Run Test with Code Coverage
+      working-directory: ${{env.streaming-dir}}
+      run: |
+        make cov
+

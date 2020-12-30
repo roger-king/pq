@@ -17,3 +17,7 @@ test:
 
 cov:
 	go test -race -coverprofile=coverage.txt -covermode=atomic -v github.com/roger-king/pq/streaming/pkg/...
+
+lint:
+	go get -u golang.org/x/lint/golint
+	test -z "$$(golint pkg/... cmd/...)"
