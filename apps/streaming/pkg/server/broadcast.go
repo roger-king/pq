@@ -6,13 +6,23 @@ import (
 	"log"
 	sync "sync"
 	"time"
-
-	app "github.com/roger-king/pq/streaming/pkg"
 )
+
+// UserConnection -
+type UserConnection struct {
+	Stream Broadcast_CreateStreamServer
+	GameID string
+	UserID string
+	DisplayName string
+	Active bool
+	LastConnected int64
+	IsHost bool
+	Error  chan error
+}
 
 // LiveServer -
 type LiveServer struct {
-	Connections map[string][]*app.Connection
+	Connections map[string][]*UserConnection
 }
 
 // NewLiveServer -
@@ -23,7 +33,7 @@ func NewLiveServer() *LiveServer {
 // CreateStream -
 func (s *LiveServer) CreateStream(req *Connection, stream Broadcast_CreateStreamServer) error {
 	now := time.Now() 
-	conn := &app.Connection{
+	conn := &UserConnection{
 		Stream: stream,
 		GameID: req.GameId,
 		UserID: req.User.Id,
@@ -53,9 +63,9 @@ func (s *LiveServer) CreateStream(req *Connection, stream Broadcast_CreateStream
 			s.Connections[req.GameId] = append(currentConns, conn)
 		}
 	} else {
-		s.Connections = make(map[string][]*app.Connection)
+		s.Connections = make(map[string][]*UserConnection)
 		log.Printf("User is connected: %s", conn.DisplayName)
-		s.Connections[req.GameId] = []*app.Connection{conn}
+		s.Connections[req.GameId] = []*UserConnection{conn}
 	}
 
 	err := stream.Send(&Message{Time: int64(60), NewPlayer: nil, RemovedPlayer: nil, Question: nil})
@@ -141,7 +151,7 @@ func (s *LiveServer) End(req *EndGame, stream Broadcast_EndServer) error {
 		}
 
 		if didEnd {
-			s.Connections[req.GameId] = []*app.Connection{}
+			s.Connections[req.GameId] = []*UserConnection{}
 		}
 	}
 
@@ -164,7 +174,7 @@ func removeConnection(conns []*Connection, id int) []*Connection {
 	return conns
 }
 
-func(s *LiveServer) getGameConnections(gameID string) []*app.Connection {
+func(s *LiveServer) getGameConnections(gameID string) []*UserConnection {
 	return s.Connections[gameID]
 }
 
@@ -198,7 +208,7 @@ func (s *LiveServer) AuditConnections() {
 			time.Sleep(time.Second * 5)
 			for key, conns := range s.Connections {
 				wait.Add(1)
-				go func (gameID string, connections []*app.Connection) {
+				go func (gameID string, connections []*UserConnection) {
 					defer wait.Done()
 					idsToRemove := []int{}
 					var hostStream Broadcast_CreateStreamServer
