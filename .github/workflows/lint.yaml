@@ -1,7 +1,7 @@
-name: Unit Testing
+name: Linting
 on: [push, pull_request]
 jobs:
-  streaming_test:
+  streaming_lint:
     runs-on: ubuntu-latest
     env:
       streaming-dir: ./apps/streaming
@@ -15,7 +15,7 @@ jobs:
         working-directory: ${{env.streaming-dir}}
         run: |
           go mod vendor
-      - name: Run Test with Code Coverage
+      - name: Run GoLint
         working-directory: ${{env.streaming-dir}}
         run: |
-          make cov
+          make lint
