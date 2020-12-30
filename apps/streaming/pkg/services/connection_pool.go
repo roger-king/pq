@@ -38,24 +38,6 @@ func (c *UserConnectionPool) Add(user *models.UserConnection) bool {
 	return false
 }
 
-// Remove - removes a user from the connection
-func (c *UserConnectionPool) Remove(id string) bool {
-	previousLen := len(c.Connections)
-	for i, conn := range c.Connections {
-		if conn.ID == id {
-			c.Connections[i] = c.Connections[len(c.Connections)-1] // Copy last element to index i.
-			c.Connections[len(c.Connections)-1] = nil
-			c.Connections = c.Connections[:len(c.Connections)-1]
-		}
-	}
-
-	if previousLen > len(c.Connections) {
-		return true
-	}
-
-	return false
-}
-
 // FindByID - finds a user within the connection pool
 func (c *UserConnectionPool) FindByID(id string) *models.UserConnection {
 	var user *models.UserConnection
