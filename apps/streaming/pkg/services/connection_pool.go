@@ -5,7 +5,6 @@ import "github.com/roger-king/pq/streaming/pkg/models"
 // ConnectionPool -
 type ConnectionPool interface {
 	Add(user *models.UserConnection) bool
-	Remove(id string) bool
 	All() []*models.UserConnection
 	FindByID(id string) *models.UserConnection
 }
