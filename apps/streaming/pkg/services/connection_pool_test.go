@@ -83,6 +83,6 @@ func (s *ConnectionPoolSuite) TestFindByID_IsNil() {
 	require.Nil(s.T(), user)
 }
 
-func TestComponentServiceSuite(t *testing.T) {
+func TestConnectionPoolSuite(t *testing.T) {
 	suite.Run(t, new(ConnectionPoolSuite))
 }
