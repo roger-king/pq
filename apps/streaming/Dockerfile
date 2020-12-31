@@ -20,6 +20,4 @@ COPY --from=builder /app/cmd/build/app .
 
 EXPOSE 9000
 
-RUN ls
-
 CMD ["./app"]
