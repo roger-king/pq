@@ -78,7 +78,7 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: Partic
 
     if (!isNaN(time) && time === 0) {
       const userId = sessionStorage.getItem('pq_user_id');
-      if (userId && display.length > 0 && answer) {
+      if (userId && display.length > 0 && answer && question) {
         const k = answer.split('.')[0].trim();
         const abcd = AnswerKeyCard[Number(k)];
         submitAnswer({ gameId: id, questionId: question.id, userId: userId, answer: abcd, displayName: display });
