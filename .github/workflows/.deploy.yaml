@@ -15,3 +15,4 @@ jobs:
         heroku_email: ${{secrets.HEROKU_API_KEY}}
       env:
         HD_APP_BASE: "apps/client"
+        HD_PORT: 80
