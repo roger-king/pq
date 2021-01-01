@@ -19,3 +19,21 @@ jobs:
         working-directory: ${{env.streaming-dir}}
         run: |
           make lint
+  client_lint:
+    runs-on: ubuntu-latest
+    env:
+      client-dir: ./apps/client
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "15.5"
+      - name: Install Dependencies
+        working-directory: ${{env.client-dir}}
+        run: |
+          yarn install
+      - name: Run Yarn linting
+        working-directory: ${{env.client-dir}}
+        run: |
+          yarn lint
