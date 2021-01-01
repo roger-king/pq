@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Heading, RadioButtonGroup } from 'grommet';
 
-import { QuestionCard } from './../card';
+import { QuestionCard } from '../card';
 import { Question } from '../../@types';
 
 interface AnswerCardProps extends Partial<Question> {
@@ -25,8 +25,8 @@ export const AnswerCard: React.FC<AnswerCardProps> = ({
           margin="medium"
           id="example2-id"
           name="question-option"
-          options={options!.map((o) => `${o.key}. ${o.title}`)}
-          value={selectedAnswer ? selectedAnswer : undefined}
+          options={options ? options.map((o) => `${o.key}. ${o.title}`) : []}
+          value={selectedAnswer || undefined}
           onChange={(e: any) => {
             setSelectedAnswer(e.target.value);
           }}

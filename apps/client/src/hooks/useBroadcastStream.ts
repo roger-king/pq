@@ -33,7 +33,7 @@ export const useBroadcastStream = (connection: Connection | null) => {
       });
       setInterval(() => {
         client.heartbeat(connection, {}).catch((e) => {
-          console.error('Error sending heartbeat');
+          console.error('Error sending heartbeat: ', e);
           const updatedMsg = message;
           updatedMsg.connected = false;
           setMessage({ ...updatedMsg });

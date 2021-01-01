@@ -1,6 +1,5 @@
 import React from 'react';
-import { Box, Heading, Text } from 'grommet';
-import { Game } from '../../@types';
+import { Box, Text } from 'grommet';
 import { useQuery } from 'react-query';
 import Axios from 'axios';
 import { API_URL } from '../../constants';

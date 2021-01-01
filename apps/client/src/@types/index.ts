@@ -1,5 +1,3 @@
-import { User } from '../grpc/broadcast_pb';
-
 export interface Game {
   id: number;
   name: string;

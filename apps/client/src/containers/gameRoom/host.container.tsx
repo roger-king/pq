@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Box, Button, Heading, Text } from 'grommet';
-import { Clipboard, Copy, Link, Play, Share } from 'grommet-icons';
+import { Clipboard, Copy, Play } from 'grommet-icons';
 import { useMutation, useQuery } from 'react-query';
 import Axios from 'axios';
 
@@ -20,12 +20,9 @@ import {
   EndGame,
 } from '../../grpc/broadcast_pb';
 import { useBroadcastClient } from '../../hooks/useGrpcClient';
-import { ConnectionStatus } from '../../components/connectionStatus';
 import { randomId } from '../../utils/random';
 import { PlayerList } from '../playerList/playerList';
-import { ClientReadableStream } from 'grpc-web';
 import { useBroadcastStream } from '../../hooks/useBroadcastStream';
-import { create } from 'react-test-renderer';
 import { GameCard } from '../../components/card';
 
 export interface HostViewProps {
@@ -117,26 +114,26 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
     }
     const stream = client.start(req, {});
 
-    stream.on('data', function (response: any) {
+    stream.on('data', (response: any) => {
       const { time } = response.toObject();
-      console.log(time);
       setTimer(time);
     });
   };
 
-  const setupConnection = (id: string) => {
+  const setupConnection = useCallback(() => {
+    const storedId = sessionStorage.getItem('pq_user_id');
+    const rando = storedId || randomId();
     const user = new User();
-    const connection = new Connection();
+    const userConnection = new Connection();
 
     user.setDisplayName(created_by);
-    user.setId(id);
+    user.setId(rando);
     user.setIsHost(true);
-    connection.setGameId(code);
-    connection.setActive(true);
-    connection.setUser(user);
-    setConnection(connection);
-    return connection;
-  };
+    userConnection.setGameId(code);
+    userConnection.setActive(true);
+    userConnection.setUser(user);
+    setConnection(userConnection);
+  }, [code, created_by]);
 
   const end = (gameCode: string) => {
     endgame(gameCode);
@@ -155,13 +152,10 @@ export const HostInGameView: React.FC<HostViewProps> = ({ game }: HostViewProps)
   };
 
   useEffect(() => {
-    const storedId = sessionStorage.getItem('pq_user_id');
-    const rando = storedId ? storedId : randomId();
-
     if (!connected) {
-      setupConnection(rando);
+      setupConnection();
     }
-  }, [connected]);
+  }, [connected, setupConnection]);
 
   if (questions) {
     const { q, options } = questions.data[currentQuestion];

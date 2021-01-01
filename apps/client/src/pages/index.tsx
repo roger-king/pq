@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Box, Button, Heading, Text, Image, ResponsiveContext } from 'grommet';
+import { Box, Button, Heading, Text, ResponsiveContext } from 'grommet';
 
 import { useRouter } from 'next/router';
 import { withMainLayout } from '../layouts/main';

@@ -4,6 +4,7 @@ import { Box, Grid, Heading, ResponsiveContext } from 'grommet';
 import { Root } from './index';
 import { ProtectedRouteProps } from './protected';
 import { Header } from '../components/header/header.component';
+
 export interface MainLayoutProps extends ProtectedRouteProps {
   size?: 'small' | 'medium' | 'large';
 }

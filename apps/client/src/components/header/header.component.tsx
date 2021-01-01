@@ -1,9 +1,8 @@
 import React from 'react';
-import { Box, Button, DropButton, Form, FormField, Header as InnerHeader, Heading, TextInput } from 'grommet';
+import { Box, Button, DropButton, Form, FormField, Header as InnerHeader, Heading } from 'grommet';
 import Router, { useRouter } from 'next/router';
 
 import { Logo } from '../logo';
-import { useBroadcastClient } from '../../hooks/useGrpcClient';
 import { useGlobalState } from '../../hooks/useGlobalState';
 
 interface HeaderProps {

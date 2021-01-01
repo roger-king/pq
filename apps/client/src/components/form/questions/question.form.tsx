@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Button, TextInput } from 'grommet';
 import { AddCircle } from 'grommet-icons';
 
-import { QuestionCard } from './../../card';
+import { QuestionCard } from '../../card';
 import { OptionFormProps, OptionForm } from './option.form';
 
 export interface QuestionFormProps {

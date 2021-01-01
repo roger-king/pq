@@ -1,6 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { Box, Button, Heading, Layer } from 'grommet';
-import { Close } from 'grommet-icons';
+import { Box, Heading, Layer } from 'grommet';
 
 export interface BaseModalProps {
   title: string;
@@ -8,7 +7,7 @@ export interface BaseModalProps {
 }
 
 const Modal: React.FC<PropsWithChildren<BaseModalProps>> = (props: PropsWithChildren<BaseModalProps>) => {
-  const { children, onClose, title } = props;
+  const { children, title } = props;
 
   return (
     <Layer modal>

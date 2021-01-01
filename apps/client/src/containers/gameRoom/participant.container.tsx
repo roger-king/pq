@@ -5,13 +5,11 @@ import Axios from 'axios';
 
 import { Game } from '../../@types';
 import { Connection, User } from '../../grpc/broadcast_pb';
-import { ConnectionStatus } from '../../components/connectionStatus';
 import { AnswerCard } from '../../components/question/answerCard';
 import { randomId } from '../../utils/random';
 import Modal from '../../components/modal';
 import { API_URL } from '../../constants';
 import { useBroadcastStream } from '../../hooks/useBroadcastStream';
-import { Timer } from '../../components/timer';
 import { GameCard } from '../../components/card';
 
 export interface ParticipantViewProps {
@@ -47,20 +45,20 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: Partic
   const { time, connected, question } = useBroadcastStream(connection);
   const [display, setDisplay] = useState<string>('');
   const [answer, setAnswer] = useState<string | null>(null);
-  const { id, code, is_started } = game; // eslint-disable
+  // eslint-disable-next-line
+  const { id, code, is_started } = game;
 
-  const setupConnection = (id: string) => {
+  const setupConnection = (userId: string) => {
     const user = new User();
-    const connection = new Connection();
+    const userConnection = new Connection();
 
     user.setDisplayName(display);
-    user.setId(id);
+    user.setId(userId);
     user.setIsHost(false);
-    connection.setGameId(code);
-    connection.setActive(true);
-    connection.setUser(user);
-    setConnection(connection);
-    return connection;
+    userConnection.setGameId(code);
+    userConnection.setActive(true);
+    userConnection.setUser(user);
+    setConnection(userConnection);
   };
 
   useEffect(() => {
@@ -71,17 +69,17 @@ export const ParticipantView: React.FC<ParticipantViewProps> = ({ game }: Partic
     }
 
     if (display.length > 0 && !connected) {
-      const rando = storedId ? storedId : randomId();
+      const rando = storedId || randomId();
       sessionStorage.setItem('pq_user_id', rando);
       setupConnection(rando);
     }
 
-    if (!isNaN(time) && time === 0) {
+    if (!Number.isNaN(time) && time === 0) {
       const userId = sessionStorage.getItem('pq_user_id');
       if (userId && display.length > 0 && answer && question) {
         const k = answer.split('.')[0].trim();
         const abcd = AnswerKeyCard[Number(k)];
-        submitAnswer({ gameId: id, questionId: question.id, userId: userId, answer: abcd, displayName: display });
+        submitAnswer({ gameId: id, questionId: question.id, userId, answer: abcd, displayName: display });
         setAnswer(null);
       } else {
         console.error('Failed to submit answer');
