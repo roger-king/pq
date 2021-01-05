@@ -1,0 +1,22 @@
+name: Integration Testing
+on: [push, pull_request]
+jobs:
+  e2e_test:
+    runs-on: ubuntu-latest
+    env:
+      client-dir: ./apps/client
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "15.5"
+      - name: Install Dependencies
+        working-directory: ${{env.client-dir}}
+        run: |
+          yarn install
+      - name: Cypress run
+        uses: cypress-io/github-action@v1
+        with:
+          start: yarn dev
+          wait-on: http://localhost:3000
