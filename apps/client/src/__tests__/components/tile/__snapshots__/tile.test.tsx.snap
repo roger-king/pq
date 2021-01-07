@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Tile /> should display Tile with background 1`] = `
+<div
+  className="StyledBox-sc-13pk1d4-0 kShffx"
+/>
+`;
+
+exports[`<Tile /> should display Tile without background 1`] = `
+<div
+  className="StyledBox-sc-13pk1d4-0 gCllZT"
+/>
+`;

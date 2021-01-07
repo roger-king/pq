@@ -1,0 +1,173 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AnswerCard /> should display AnswerCard none selected 1`] = `
+<div
+  className="StyledBox-sc-13pk1d4-0 bxevCE"
+>
+  <div
+    className="StyledBox-sc-13pk1d4-0 jlHNLW"
+  >
+    <h4
+      className="StyledHeading-sc-1rdh4aw-0 bpyjiZ"
+    >
+      What day is it?
+    </h4>
+    <div
+      className="StyledBox-sc-13pk1d4-0 jvjhNK"
+      id="example2-id"
+    >
+      <label
+        className="StyledRadioButton__StyledRadioButtonContainer-g1f6ld-0 hnWETW"
+        htmlFor="example2-id-A. Monday"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        <div
+          className="StyledBox-sc-13pk1d4-0 bHWzdD StyledRadioButton-g1f6ld-5 imYubY"
+        >
+          <input
+            checked={false}
+            className="StyledRadioButton__StyledRadioButtonInput-g1f6ld-1 hIKMbD"
+            id="example2-id-A. Monday"
+            name="question-option"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            type="radio"
+            value="A. Monday"
+          />
+          <div
+            className="StyledBox-sc-13pk1d4-0 cMdTKN StyledRadioButton__StyledRadioButtonBox-g1f6ld-4 kGVpuu"
+          />
+        </div>
+        <span
+          className="StyledRadioButton__StyledRadioButtonLabel-g1f6ld-2"
+        >
+          A. Monday
+        </span>
+      </label>
+      <div
+        className="StyledBox__StyledBoxGap-sc-13pk1d4-1 ggstca"
+      />
+      <label
+        className="StyledRadioButton__StyledRadioButtonContainer-g1f6ld-0 hnWETW"
+        htmlFor="example2-id-B. Tuesday"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        <div
+          className="StyledBox-sc-13pk1d4-0 bHWzdD StyledRadioButton-g1f6ld-5 imYubY"
+        >
+          <input
+            checked={false}
+            className="StyledRadioButton__StyledRadioButtonInput-g1f6ld-1 hIKMbD"
+            id="example2-id-B. Tuesday"
+            name="question-option"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            type="radio"
+            value="B. Tuesday"
+          />
+          <div
+            className="StyledBox-sc-13pk1d4-0 cMdTKN StyledRadioButton__StyledRadioButtonBox-g1f6ld-4 kGVpuu"
+          />
+        </div>
+        <span
+          className="StyledRadioButton__StyledRadioButtonLabel-g1f6ld-2"
+        >
+          B. Tuesday
+        </span>
+      </label>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AnswerCard /> should display AnswerCard with selected Answer 1`] = `
+<div
+  className="StyledBox-sc-13pk1d4-0 bxevCE"
+>
+  <div
+    className="StyledBox-sc-13pk1d4-0 jlHNLW"
+  >
+    <h4
+      className="StyledHeading-sc-1rdh4aw-0 bpyjiZ"
+    >
+      What day is it?
+    </h4>
+    <div
+      className="StyledBox-sc-13pk1d4-0 jvjhNK"
+      id="example2-id"
+    >
+      <label
+        className="StyledRadioButton__StyledRadioButtonContainer-g1f6ld-0 hnWETW"
+        htmlFor="example2-id-A. Monday"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        <div
+          className="StyledBox-sc-13pk1d4-0 bHWzdD StyledRadioButton-g1f6ld-5 imYubY"
+        >
+          <input
+            checked={false}
+            className="StyledRadioButton__StyledRadioButtonInput-g1f6ld-1 hIKMbD"
+            id="example2-id-A. Monday"
+            name="question-option"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            type="radio"
+            value="A. Monday"
+          />
+          <div
+            className="StyledBox-sc-13pk1d4-0 cMdTKN StyledRadioButton__StyledRadioButtonBox-g1f6ld-4 kGVpuu"
+          />
+        </div>
+        <span
+          className="StyledRadioButton__StyledRadioButtonLabel-g1f6ld-2"
+        >
+          A. Monday
+        </span>
+      </label>
+      <div
+        className="StyledBox__StyledBoxGap-sc-13pk1d4-1 ggstca"
+      />
+      <label
+        className="StyledRadioButton__StyledRadioButtonContainer-g1f6ld-0 hnWETW"
+        htmlFor="example2-id-B. Tuesday"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        <div
+          className="StyledBox-sc-13pk1d4-0 bHWzdD StyledRadioButton-g1f6ld-5 imYubY"
+        >
+          <input
+            checked={false}
+            className="StyledRadioButton__StyledRadioButtonInput-g1f6ld-1 hIKMbD"
+            id="example2-id-B. Tuesday"
+            name="question-option"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            type="radio"
+            value="B. Tuesday"
+          />
+          <div
+            className="StyledBox-sc-13pk1d4-0 cMdTKN StyledRadioButton__StyledRadioButtonBox-g1f6ld-4 kGVpuu"
+          />
+        </div>
+        <span
+          className="StyledRadioButton__StyledRadioButtonLabel-g1f6ld-2"
+        >
+          B. Tuesday
+        </span>
+      </label>
+    </div>
+  </div>
+</div>
+`;

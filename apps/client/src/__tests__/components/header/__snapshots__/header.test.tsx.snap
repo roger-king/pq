@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Header /> should display Header 1`] = `
+<header
+  className="StyledBox-sc-13pk1d4-0 eTdmLy"
+>
+  <h3
+    className="StyledHeading-sc-1rdh4aw-0 XVrap"
+    onClick={[Function]}
+    style={
+      Object {
+        "cursor": "pointer",
+      }
+    }
+  >
+    <div
+      className="StyledBox-sc-13pk1d4-0 cIkaNd"
+    >
+      <h2
+        className="StyledHeading-sc-1rdh4aw-0 frzykv"
+      >
+        PQ
+      </h2>
+    </div>
+  </h3>
+  <div
+    className="StyledBox__StyledBoxGap-sc-13pk1d4-1 ffHQai"
+  />
+  <h1
+    className="StyledHeading-sc-1rdh4aw-0 fmEWrv"
+  >
+    
+  </h1>
+  <div
+    className="StyledBox__StyledBoxGap-sc-13pk1d4-1 ffHQai"
+  />
+  <div
+    className="StyledBox-sc-13pk1d4-0 fYCwfB"
+  />
+</header>
+`;
