@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Logo /> should display default logo 1`] = `
+<div
+  className="StyledBox-sc-13pk1d4-0 cIkaNd"
+>
+  <h2
+    className="StyledHeading-sc-1rdh4aw-0 frzykv"
+  >
+    PQ
+  </h2>
+</div>
+`;

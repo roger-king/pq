@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ConnectionStatus /> should display ConnectionStatus with Children 1`] = `
+<div
+  className="StyledBox-sc-13pk1d4-0 iQEJEP"
+>
+  <div
+    className="StyledBox-sc-13pk1d4-0 cOvDVi"
+    style={
+      Object {
+        "borderRadius": "50px",
+      }
+    }
+  />
+  <div
+    className="StyledBox__StyledBoxGap-sc-13pk1d4-1 eBVJAG"
+  />
+  <span
+    className="StyledText-sc-1sadyjn-0 DkZvS"
+  >
+    Not Connected
+  </span>
+</div>
+`;
+
+exports[`<ConnectionStatus /> should display connected ConnectionStatus 1`] = `
+<div
+  className="StyledBox-sc-13pk1d4-0 iQEJEP"
+>
+  <div
+    className="StyledBox-sc-13pk1d4-0 fcIOFG"
+    style={
+      Object {
+        "borderRadius": "50px",
+      }
+    }
+  />
+  <div
+    className="StyledBox__StyledBoxGap-sc-13pk1d4-1 eBVJAG"
+  />
+  <span
+    className="StyledText-sc-1sadyjn-0 DkZvS"
+  >
+    Connected
+  </span>
+</div>
+`;
+
+exports[`<ConnectionStatus /> should display disconnected ConnectionStatus 1`] = `
+<div
+  className="StyledBox-sc-13pk1d4-0 iQEJEP"
+>
+  <div
+    className="StyledBox-sc-13pk1d4-0 cOvDVi"
+    style={
+      Object {
+        "borderRadius": "50px",
+      }
+    }
+  />
+  <div
+    className="StyledBox__StyledBoxGap-sc-13pk1d4-1 eBVJAG"
+  />
+  <span
+    className="StyledText-sc-1sadyjn-0 DkZvS"
+  >
+    Not Connected
+  </span>
+</div>
+`;
