@@ -1,0 +1,13 @@
+{
+  "folders": [
+	{
+		"path": "apps/client"
+	},
+	{
+		"path": "apps/qb"
+	},
+	{
+		"path": "apps/streaming"
+	}
+]
+}
