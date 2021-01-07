@@ -1,13 +1,20 @@
 {
   "folders": [
-	{
-		"path": "apps/client"
-	},
-	{
-		"path": "apps/qb"
-	},
-	{
-		"path": "apps/streaming"
-	}
-]
+    {
+      "name": ".github",
+      "path": ".github"
+    },
+    {
+      "name": "client",
+      "path": "apps/client"
+    },
+    {
+      "name": "qb",
+      "path": "apps/qb"
+    },
+    {
+      "name": "streaming",
+      "path": "apps/streaming"
+    }
+  ]
 }
