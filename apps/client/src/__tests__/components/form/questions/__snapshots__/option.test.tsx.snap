@@ -1,0 +1,216 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OptionForm /> should display basic Options Form is answer or remove shown 1`] = `
+<div
+  className="StyledBox-sc-13pk1d4-0 dfYOnT"
+>
+  <label
+    checked={true}
+    className="StyledCheckBox__StyledCheckBoxContainer-sc-1dbk5ju-1 htOOow"
+    onClick={[Function]}
+  >
+    <span>
+      answer
+    </span>
+    <div
+      checked={true}
+      className="StyledBox-sc-13pk1d4-0 jUHgwK StyledCheckBox-sc-1dbk5ju-6 hOFfoi"
+    >
+      <input
+        checked={true}
+        className="StyledCheckBox__StyledCheckBoxInput-sc-1dbk5ju-2 fYuA-Ds"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        type="checkbox"
+        value={1}
+      />
+      <div
+        checked={true}
+        className="StyledBox-sc-13pk1d4-0 icgjqF StyledCheckBox__StyledCheckBoxBox-sc-1dbk5ju-3 kRWCTA"
+      >
+        <svg
+          checked={true}
+          className="StyledCheckBox__StyledCheckBoxIcon-sc-1dbk5ju-0 uDaMI"
+          preserveAspectRatio="xMidYMid meet"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M6,11.3 L10.3,16 L18,6.2"
+            fill="none"
+          />
+        </svg>
+      </div>
+    </div>
+  </label>
+  <div
+    className="StyledBox__StyledBoxGap-sc-13pk1d4-1 eBVJAG"
+  />
+  <div
+    className="StyledTextInput__StyledTextInputContainer-sc-1x30a0s-1 dpaJQp"
+  >
+    <input
+      autoComplete="off"
+      className="StyledTextInput-sc-1x30a0s-0 fwbQtl"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      placeholder="Option 2"
+      value="test"
+    />
+  </div>
+  <div
+    className="StyledBox__StyledBoxGap-sc-13pk1d4-1 eBVJAG"
+  />
+  <button
+    className="StyledButton-sc-323bzc-0 hiyJPE"
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onMouseOut={[Function]}
+    onMouseOver={[Function]}
+    type="button"
+  >
+    <svg
+      aria-label="SubtractCircle"
+      className="StyledIcon-ofa7kd-0 dEeaTZ"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M12,22 C17.5228475,22 22,17.5228475 22,12 C22,6.4771525 17.5228475,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 Z M6,12 L18,12"
+        fill="none"
+        stroke="#000"
+        strokeWidth="2"
+      />
+    </svg>
+  </button>
+</div>
+`;
+
+exports[`<OptionForm /> should display basic Options Form: not answer or remove not shown 1`] = `
+<div
+  className="StyledBox-sc-13pk1d4-0 dfYOnT"
+>
+  <label
+    checked={false}
+    className="StyledCheckBox__StyledCheckBoxContainer-sc-1dbk5ju-1 htOOow"
+    onClick={[Function]}
+  >
+    <span>
+      answer
+    </span>
+    <div
+      checked={false}
+      className="StyledBox-sc-13pk1d4-0 jUHgwK StyledCheckBox-sc-1dbk5ju-6 hOFfoi"
+    >
+      <input
+        checked={false}
+        className="StyledCheckBox__StyledCheckBoxInput-sc-1dbk5ju-2 fYuA-Ds"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        type="checkbox"
+        value={1}
+      />
+      <div
+        checked={false}
+        className="StyledBox-sc-13pk1d4-0 jYPXhZ StyledCheckBox__StyledCheckBoxBox-sc-1dbk5ju-3 kRWCTA"
+      />
+    </div>
+  </label>
+  <div
+    className="StyledBox__StyledBoxGap-sc-13pk1d4-1 eBVJAG"
+  />
+  <div
+    className="StyledTextInput__StyledTextInputContainer-sc-1x30a0s-1 dpaJQp"
+  >
+    <input
+      autoComplete="off"
+      className="StyledTextInput-sc-1x30a0s-0 fwbQtl"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      placeholder="Option 2"
+      value="test"
+    />
+  </div>
+</div>
+`;
+
+exports[`<OptionForm /> should display basic Options Form: not answer or remove shown 1`] = `
+<div
+  className="StyledBox-sc-13pk1d4-0 dfYOnT"
+>
+  <label
+    checked={false}
+    className="StyledCheckBox__StyledCheckBoxContainer-sc-1dbk5ju-1 htOOow"
+    onClick={[Function]}
+  >
+    <span>
+      answer
+    </span>
+    <div
+      checked={false}
+      className="StyledBox-sc-13pk1d4-0 jUHgwK StyledCheckBox-sc-1dbk5ju-6 hOFfoi"
+    >
+      <input
+        checked={false}
+        className="StyledCheckBox__StyledCheckBoxInput-sc-1dbk5ju-2 fYuA-Ds"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        type="checkbox"
+        value={1}
+      />
+      <div
+        checked={false}
+        className="StyledBox-sc-13pk1d4-0 jYPXhZ StyledCheckBox__StyledCheckBoxBox-sc-1dbk5ju-3 kRWCTA"
+      />
+    </div>
+  </label>
+  <div
+    className="StyledBox__StyledBoxGap-sc-13pk1d4-1 eBVJAG"
+  />
+  <div
+    className="StyledTextInput__StyledTextInputContainer-sc-1x30a0s-1 dpaJQp"
+  >
+    <input
+      autoComplete="off"
+      className="StyledTextInput-sc-1x30a0s-0 fwbQtl"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      placeholder="Option 2"
+      value="test"
+    />
+  </div>
+  <div
+    className="StyledBox__StyledBoxGap-sc-13pk1d4-1 eBVJAG"
+  />
+  <button
+    className="StyledButton-sc-323bzc-0 hiyJPE"
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onMouseOut={[Function]}
+    onMouseOver={[Function]}
+    type="button"
+  >
+    <svg
+      aria-label="SubtractCircle"
+      className="StyledIcon-ofa7kd-0 dEeaTZ"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M12,22 C17.5228475,22 22,17.5228475 22,12 C22,6.4771525 17.5228475,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 Z M6,12 L18,12"
+        fill="none"
+        stroke="#000"
+        strokeWidth="2"
+      />
+    </svg>
+  </button>
+</div>
+`;
