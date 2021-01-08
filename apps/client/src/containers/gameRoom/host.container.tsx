@@ -10,14 +10,9 @@ import { queryCache } from '../../layouts';
 import { API_URL } from '../../constants';
 import { QuestionList } from '../questions/list.container';
 
-import {
-  Connection,
-  StartQuestion,
-  Question as QuestionRequest,
-  QuestionOption,
-  OptionKey,
-  EndGame,
-} from '../../grpc/Broadcast_pb';
+import { Connection, StartQuestion, EndGame } from '../../grpc/Broadcast_pb';
+import { Question as QuestionRequest } from '../../grpc/Question_pb';
+import { QuestionOption, OptionKey } from '../../grpc/QuestionOption_pb';
 import { User } from '../../grpc/User_pb';
 import { useBroadcastClient } from '../../hooks/useGrpcClient';
 import { randomId } from '../../utils/random';

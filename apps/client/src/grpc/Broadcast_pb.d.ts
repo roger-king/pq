@@ -1,6 +1,7 @@
 import * as jspb from 'google-protobuf'
 
 import * as User_pb from './User_pb';
+import * as Question_pb from './Question_pb';
 
 
 export class Countdown extends jspb.Message {
@@ -49,62 +50,12 @@ export namespace Connection {
   }
 }
 
-export class QuestionOption extends jspb.Message {
-  getKey(): OptionKey;
-  setKey(value: OptionKey): QuestionOption;
-
-  getTitle(): string;
-  setTitle(value: string): QuestionOption;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): QuestionOption.AsObject;
-  static toObject(includeInstance: boolean, msg: QuestionOption): QuestionOption.AsObject;
-  static serializeBinaryToWriter(message: QuestionOption, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): QuestionOption;
-  static deserializeBinaryFromReader(message: QuestionOption, reader: jspb.BinaryReader): QuestionOption;
-}
-
-export namespace QuestionOption {
-  export type AsObject = {
-    key: OptionKey,
-    title: string,
-  }
-}
-
-export class Question extends jspb.Message {
-  getId(): number;
-  setId(value: number): Question;
-
-  getQ(): string;
-  setQ(value: string): Question;
-
-  getOptionsList(): Array<QuestionOption>;
-  setOptionsList(value: Array<QuestionOption>): Question;
-  clearOptionsList(): Question;
-  addOptions(value?: QuestionOption, index?: number): QuestionOption;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): Question.AsObject;
-  static toObject(includeInstance: boolean, msg: Question): Question.AsObject;
-  static serializeBinaryToWriter(message: Question, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): Question;
-  static deserializeBinaryFromReader(message: Question, reader: jspb.BinaryReader): Question;
-}
-
-export namespace Question {
-  export type AsObject = {
-    id: number,
-    q: string,
-    optionsList: Array<QuestionOption.AsObject>,
-  }
-}
-
 export class Message extends jspb.Message {
   getTime(): number;
   setTime(value: number): Message;
 
-  getQuestion(): Question | undefined;
-  setQuestion(value?: Question): Message;
+  getQuestion(): Question_pb.Question | undefined;
+  setQuestion(value?: Question_pb.Question): Message;
   hasQuestion(): boolean;
   clearQuestion(): Message;
 
@@ -132,7 +83,7 @@ export class Message extends jspb.Message {
 export namespace Message {
   export type AsObject = {
     time: number,
-    question?: Question.AsObject,
+    question?: Question_pb.Question.AsObject,
     newplayer?: User_pb.User.AsObject,
     removedplayer?: User_pb.User.AsObject,
     end: boolean,
@@ -140,8 +91,8 @@ export namespace Message {
 }
 
 export class StartQuestion extends jspb.Message {
-  getQuestion(): Question | undefined;
-  setQuestion(value?: Question): StartQuestion;
+  getQuestion(): Question_pb.Question | undefined;
+  setQuestion(value?: Question_pb.Question): StartQuestion;
   hasQuestion(): boolean;
   clearQuestion(): StartQuestion;
 
@@ -161,7 +112,7 @@ export class StartQuestion extends jspb.Message {
 
 export namespace StartQuestion {
   export type AsObject = {
-    question?: Question.AsObject,
+    question?: Question_pb.Question.AsObject,
     isHost: boolean,
     gameId: string,
   }
@@ -251,9 +202,3 @@ export namespace PlayerListResponse {
   }
 }
 
-export enum OptionKey { 
-  A = 0,
-  B = 1,
-  C = 2,
-  D = 3,
-}
