@@ -1,0 +1,12 @@
+syntax="proto3";
+package pq.qb.questions;
+
+import "QuestionOption.proto";
+
+option go_package=".;server";
+
+message Question {
+  int64 id = 1;
+  string q = 2;
+  repeated pq.qb.questions.option.QuestionOption options = 4;
+}

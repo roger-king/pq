@@ -1,6 +1,6 @@
 syntax = "proto3";
 import "User.proto";
-
+import "Question.proto";
 package pq.streaming.games.timer;
 option go_package=".;server";
 
@@ -14,34 +14,16 @@ message Connection {
     bool active = 3;
 }
 
-enum OptionKey {
-    A = 0;
-    B = 1;
-    C = 2;
-    D = 3;
-}
-
-message QuestionOption {
-    OptionKey key = 1;
-    string title = 2;
-}
-
-message Question {
-    int64 id = 1;
-    string q = 2;
-    repeated QuestionOption options = 4;
-}
-
 message Message {
     int64 Time = 1;
-    Question Question = 2;
+    pq.qb.questions.Question Question = 2;
     pq.user.User NewPlayer = 3;
     pq.user.User RemovedPlayer = 4;
     bool End = 5;
 }
 
 message StartQuestion {
-    Question question = 1;
+    pq.qb.questions.Question question = 1;
     bool is_host = 2;
     string game_id = 3;
 }

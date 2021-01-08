@@ -1,0 +1,16 @@
+syntax="proto3";
+package pq.qb.questions.option;
+
+option go_package=".;server";
+
+enum OptionKey {
+  A = 0;
+  B = 1;
+  C = 2;
+  D = 3;
+}
+
+message QuestionOption {
+  OptionKey key = 1;
+  string title = 2;
+}
