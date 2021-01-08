@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BroadcastMessage } from '../@types';
-import { Connection } from '../grpc/broadcast_pb';
+import { Connection } from '../grpc/Broadcast_pb';
 import { useBroadcastClient } from './useGrpcClient';
 
 export const useBroadcastStream = (connection: Connection | null) => {

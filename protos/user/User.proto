@@ -1,0 +1,9 @@
+syntax="proto3";
+package pq.user;
+option go_package=".;server";
+
+message User {
+  string id = 1;
+  string display_name = 2;
+  bool is_host = 3;
+}

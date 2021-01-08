@@ -1,12 +1,8 @@
 syntax = "proto3";
-package pq.streaming.games.timer;
-option go_package="server";
+import "User.proto";
 
-message User {
-    string id = 1;
-    string display_name = 2;
-    bool is_host = 3;
-}
+package pq.streaming.games.timer;
+option go_package=".;server";
 
 message Countdown {
     int64 time = 1;
@@ -14,7 +10,7 @@ message Countdown {
 
 message Connection {
     string game_id = 1;
-    User user = 2;
+    pq.user.User user = 2;
     bool active = 3;
 }
 
@@ -39,8 +35,8 @@ message Question {
 message Message {
     int64 Time = 1;
     Question Question = 2;
-    User NewPlayer = 3;
-    User RemovedPlayer = 4;
+    pq.user.User NewPlayer = 3;
+    pq.user.User RemovedPlayer = 4;
     bool End = 5;
 }
 
@@ -60,7 +56,7 @@ message PlayerlistRequest {
     string game_id = 1;
 }
 message PlayerListResponse {
-    repeated User players = 1;
+    repeated pq.user.User players = 1;
 }
 
 service Broadcast {

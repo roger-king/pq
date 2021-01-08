@@ -4,7 +4,8 @@ import { useMutation } from 'react-query';
 import Axios from 'axios';
 
 import { Game } from '../../@types';
-import { Connection, User } from '../../grpc/broadcast_pb';
+import { Connection } from '../../grpc/Broadcast_pb';
+import { User } from '../../grpc/User_pb';
 import { AnswerCard } from '../../components/question/answerCard';
 import { randomId } from '../../utils/random';
 import Modal from '../../components/modal';

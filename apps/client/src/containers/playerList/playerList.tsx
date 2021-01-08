@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Text } from 'grommet';
-import { PlayerlistRequest } from '../../grpc/broadcast_pb';
+import { PlayerlistRequest } from '../../grpc/Broadcast_pb';
 import { useBroadcastClient } from '../../hooks/useGrpcClient';
 import { Player } from '../../@types';
 

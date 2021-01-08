@@ -1,32 +1,7 @@
 import * as jspb from 'google-protobuf'
 
+import * as User_pb from './User_pb';
 
-
-export class User extends jspb.Message {
-  getId(): string;
-  setId(value: string): User;
-
-  getDisplayName(): string;
-  setDisplayName(value: string): User;
-
-  getIsHost(): boolean;
-  setIsHost(value: boolean): User;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): User.AsObject;
-  static toObject(includeInstance: boolean, msg: User): User.AsObject;
-  static serializeBinaryToWriter(message: User, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): User;
-  static deserializeBinaryFromReader(message: User, reader: jspb.BinaryReader): User;
-}
-
-export namespace User {
-  export type AsObject = {
-    id: string,
-    displayName: string,
-    isHost: boolean,
-  }
-}
 
 export class Countdown extends jspb.Message {
   getTime(): number;
@@ -50,8 +25,8 @@ export class Connection extends jspb.Message {
   getGameId(): string;
   setGameId(value: string): Connection;
 
-  getUser(): User | undefined;
-  setUser(value?: User): Connection;
+  getUser(): User_pb.User | undefined;
+  setUser(value?: User_pb.User): Connection;
   hasUser(): boolean;
   clearUser(): Connection;
 
@@ -69,7 +44,7 @@ export class Connection extends jspb.Message {
 export namespace Connection {
   export type AsObject = {
     gameId: string,
-    user?: User.AsObject,
+    user?: User_pb.User.AsObject,
     active: boolean,
   }
 }
@@ -133,13 +108,13 @@ export class Message extends jspb.Message {
   hasQuestion(): boolean;
   clearQuestion(): Message;
 
-  getNewplayer(): User | undefined;
-  setNewplayer(value?: User): Message;
+  getNewplayer(): User_pb.User | undefined;
+  setNewplayer(value?: User_pb.User): Message;
   hasNewplayer(): boolean;
   clearNewplayer(): Message;
 
-  getRemovedplayer(): User | undefined;
-  setRemovedplayer(value?: User): Message;
+  getRemovedplayer(): User_pb.User | undefined;
+  setRemovedplayer(value?: User_pb.User): Message;
   hasRemovedplayer(): boolean;
   clearRemovedplayer(): Message;
 
@@ -158,8 +133,8 @@ export namespace Message {
   export type AsObject = {
     time: number,
     question?: Question.AsObject,
-    newplayer?: User.AsObject,
-    removedplayer?: User.AsObject,
+    newplayer?: User_pb.User.AsObject,
+    removedplayer?: User_pb.User.AsObject,
     end: boolean,
   }
 }
@@ -257,10 +232,10 @@ export namespace PlayerlistRequest {
 }
 
 export class PlayerListResponse extends jspb.Message {
-  getPlayersList(): Array<User>;
-  setPlayersList(value: Array<User>): PlayerListResponse;
+  getPlayersList(): Array<User_pb.User>;
+  setPlayersList(value: Array<User_pb.User>): PlayerListResponse;
   clearPlayersList(): PlayerListResponse;
-  addPlayers(value?: User, index?: number): User;
+  addPlayers(value?: User_pb.User, index?: number): User_pb.User;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PlayerListResponse.AsObject;
@@ -272,7 +247,7 @@ export class PlayerListResponse extends jspb.Message {
 
 export namespace PlayerListResponse {
   export type AsObject = {
-    playersList: Array<User.AsObject>,
+    playersList: Array<User_pb.User.AsObject>,
   }
 }
 

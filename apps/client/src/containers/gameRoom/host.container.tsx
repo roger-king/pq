@@ -13,12 +13,12 @@ import { QuestionList } from '../questions/list.container';
 import {
   Connection,
   StartQuestion,
-  User,
   Question as QuestionRequest,
   QuestionOption,
   OptionKey,
   EndGame,
-} from '../../grpc/broadcast_pb';
+} from '../../grpc/Broadcast_pb';
+import { User } from '../../grpc/User_pb';
 import { useBroadcastClient } from '../../hooks/useGrpcClient';
 import { randomId } from '../../utils/random';
 import { PlayerList } from '../playerList/playerList';

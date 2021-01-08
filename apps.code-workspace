@@ -15,6 +15,12 @@
     {
       "name": "streaming",
       "path": "apps/streaming"
+    },
+    {
+      "path": "apps/gQB"
+    },
+    {
+      "path": "protos"
     }
   ]
 }

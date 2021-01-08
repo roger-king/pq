@@ -13,7 +13,7 @@
 
 import * as grpcWeb from 'grpc-web';
 
-import * as broadcast_pb from './broadcast_pb';
+import * as Broadcast_pb from './Broadcast_pb';
 
 
 export class BroadcastClient {
@@ -36,15 +36,15 @@ export class BroadcastClient {
   }
 
   methodInfoCreateStream = new grpcWeb.AbstractClientBase.MethodInfo(
-    broadcast_pb.Message,
-    (request: broadcast_pb.Connection) => {
+    Broadcast_pb.Message,
+    (request: Broadcast_pb.Connection) => {
       return request.serializeBinary();
     },
-    broadcast_pb.Message.deserializeBinary
+    Broadcast_pb.Message.deserializeBinary
   );
 
   createStream(
-    request: broadcast_pb.Connection,
+    request: Broadcast_pb.Connection,
     metadata?: grpcWeb.Metadata) {
     return this.client_.serverStreaming(
       this.hostname_ +
@@ -55,28 +55,28 @@ export class BroadcastClient {
   }
 
   methodInfoDisconnect = new grpcWeb.AbstractClientBase.MethodInfo(
-    broadcast_pb.DisconnectResponse,
-    (request: broadcast_pb.Connection) => {
+    Broadcast_pb.DisconnectResponse,
+    (request: Broadcast_pb.Connection) => {
       return request.serializeBinary();
     },
-    broadcast_pb.DisconnectResponse.deserializeBinary
+    Broadcast_pb.DisconnectResponse.deserializeBinary
   );
 
   disconnect(
-    request: broadcast_pb.Connection,
-    metadata: grpcWeb.Metadata | null): Promise<broadcast_pb.DisconnectResponse>;
+    request: Broadcast_pb.Connection,
+    metadata: grpcWeb.Metadata | null): Promise<Broadcast_pb.DisconnectResponse>;
 
   disconnect(
-    request: broadcast_pb.Connection,
+    request: Broadcast_pb.Connection,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
-               response: broadcast_pb.DisconnectResponse) => void): grpcWeb.ClientReadableStream<broadcast_pb.DisconnectResponse>;
+               response: Broadcast_pb.DisconnectResponse) => void): grpcWeb.ClientReadableStream<Broadcast_pb.DisconnectResponse>;
 
   disconnect(
-    request: broadcast_pb.Connection,
+    request: Broadcast_pb.Connection,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
-               response: broadcast_pb.DisconnectResponse) => void) {
+               response: Broadcast_pb.DisconnectResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
@@ -95,28 +95,28 @@ export class BroadcastClient {
   }
 
   methodInfoHeartbeat = new grpcWeb.AbstractClientBase.MethodInfo(
-    broadcast_pb.HeartbeatResponse,
-    (request: broadcast_pb.Connection) => {
+    Broadcast_pb.HeartbeatResponse,
+    (request: Broadcast_pb.Connection) => {
       return request.serializeBinary();
     },
-    broadcast_pb.HeartbeatResponse.deserializeBinary
+    Broadcast_pb.HeartbeatResponse.deserializeBinary
   );
 
   heartbeat(
-    request: broadcast_pb.Connection,
-    metadata: grpcWeb.Metadata | null): Promise<broadcast_pb.HeartbeatResponse>;
+    request: Broadcast_pb.Connection,
+    metadata: grpcWeb.Metadata | null): Promise<Broadcast_pb.HeartbeatResponse>;
 
   heartbeat(
-    request: broadcast_pb.Connection,
+    request: Broadcast_pb.Connection,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
-               response: broadcast_pb.HeartbeatResponse) => void): grpcWeb.ClientReadableStream<broadcast_pb.HeartbeatResponse>;
+               response: Broadcast_pb.HeartbeatResponse) => void): grpcWeb.ClientReadableStream<Broadcast_pb.HeartbeatResponse>;
 
   heartbeat(
-    request: broadcast_pb.Connection,
+    request: Broadcast_pb.Connection,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
-               response: broadcast_pb.HeartbeatResponse) => void) {
+               response: Broadcast_pb.HeartbeatResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
@@ -135,15 +135,15 @@ export class BroadcastClient {
   }
 
   methodInfoStart = new grpcWeb.AbstractClientBase.MethodInfo(
-    broadcast_pb.Message,
-    (request: broadcast_pb.StartQuestion) => {
+    Broadcast_pb.Message,
+    (request: Broadcast_pb.StartQuestion) => {
       return request.serializeBinary();
     },
-    broadcast_pb.Message.deserializeBinary
+    Broadcast_pb.Message.deserializeBinary
   );
 
   start(
-    request: broadcast_pb.StartQuestion,
+    request: Broadcast_pb.StartQuestion,
     metadata?: grpcWeb.Metadata) {
     return this.client_.serverStreaming(
       this.hostname_ +
@@ -154,15 +154,15 @@ export class BroadcastClient {
   }
 
   methodInfoEnd = new grpcWeb.AbstractClientBase.MethodInfo(
-    broadcast_pb.Message,
-    (request: broadcast_pb.EndGame) => {
+    Broadcast_pb.Message,
+    (request: Broadcast_pb.EndGame) => {
       return request.serializeBinary();
     },
-    broadcast_pb.Message.deserializeBinary
+    Broadcast_pb.Message.deserializeBinary
   );
 
   end(
-    request: broadcast_pb.EndGame,
+    request: Broadcast_pb.EndGame,
     metadata?: grpcWeb.Metadata) {
     return this.client_.serverStreaming(
       this.hostname_ +
@@ -173,28 +173,28 @@ export class BroadcastClient {
   }
 
   methodInfoGetPlayerList = new grpcWeb.AbstractClientBase.MethodInfo(
-    broadcast_pb.PlayerListResponse,
-    (request: broadcast_pb.PlayerlistRequest) => {
+    Broadcast_pb.PlayerListResponse,
+    (request: Broadcast_pb.PlayerlistRequest) => {
       return request.serializeBinary();
     },
-    broadcast_pb.PlayerListResponse.deserializeBinary
+    Broadcast_pb.PlayerListResponse.deserializeBinary
   );
 
   getPlayerList(
-    request: broadcast_pb.PlayerlistRequest,
-    metadata: grpcWeb.Metadata | null): Promise<broadcast_pb.PlayerListResponse>;
+    request: Broadcast_pb.PlayerlistRequest,
+    metadata: grpcWeb.Metadata | null): Promise<Broadcast_pb.PlayerListResponse>;
 
   getPlayerList(
-    request: broadcast_pb.PlayerlistRequest,
+    request: Broadcast_pb.PlayerlistRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
-               response: broadcast_pb.PlayerListResponse) => void): grpcWeb.ClientReadableStream<broadcast_pb.PlayerListResponse>;
+               response: Broadcast_pb.PlayerListResponse) => void): grpcWeb.ClientReadableStream<Broadcast_pb.PlayerListResponse>;
 
   getPlayerList(
-    request: broadcast_pb.PlayerlistRequest,
+    request: Broadcast_pb.PlayerlistRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
-               response: broadcast_pb.PlayerListResponse) => void) {
+               response: Broadcast_pb.PlayerListResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
