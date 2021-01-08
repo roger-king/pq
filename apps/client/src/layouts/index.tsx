@@ -4,7 +4,7 @@ import React, { PropsWithChildren } from 'react';
 import { Grommet } from 'grommet';
 import { QueryCache, ReactQueryCacheProvider } from 'react-query';
 
-import { theme } from '../constants';
+import { STREAMING_URL, theme } from '../constants';
 import { GlobalStateProvider } from '../context/global.provider';
 import { GRPCProvider } from '../context/streaming.provider';
 
@@ -16,7 +16,7 @@ export const Root = (props: PropsWithChildren<{}>) => {
   return (
     <ReactQueryCacheProvider queryCache={queryCache}>
       <GlobalStateProvider room="" isPlaying={false}>
-        <GRPCProvider host="http://localhost:9001" isPlaying={false}>
+        <GRPCProvider host={STREAMING_URL} isPlaying={false}>
           <Grommet theme={theme} full>
             {children}
           </Grommet>

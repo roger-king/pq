@@ -95,3 +95,4 @@ export const theme: ThemeType = deepMerge(base, {
 
 export const REDIRECT_URL = 'session_redirect_url';
 export const API_URL = process.env.API_URL ? process.env.API_URL : 'http://localhost:8000/api/qb/v1';
+export const STREAMING_URL = process.env.STREAMING_URL ? process.env.STREAMING_URL : 'http://localhost:9001';
