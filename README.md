@@ -1,6 +1,8 @@
 # PQ
 
-PQ (POP quiz) is an interactive trivia application.
+PQ is a trivia game management application. Be a host or join a game.
+
+_Inspiration from HQ_
 
 ## Documentation
 
