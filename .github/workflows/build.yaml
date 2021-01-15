@@ -7,21 +7,22 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      # - name: Run Client build
-      #   env:
-      #     DEFAULT_BRANCH: master
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   run: |
-      #     docker --version
-      #     docker build -f apps/client/Dockerfile -t client .
-      #     docker images
+      - name: Run Client build
+        env:
+          DEFAULT_BRANCH: master
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd apps/client
+          docker --version
+          docker build -f Dockerfile -t client .
+          docker images
       - name: Run Streaming build
         env:
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          docker --version
           cd apps/streaming
+          docker --version
           docker build -f Dockerfile -t streaming .
           docker images
     
