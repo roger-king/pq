@@ -2,12 +2,12 @@ name: build
 on: [push, pull_request]
 jobs:
   build:
-    name: build-client
+    name: docker_build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Run build
+      - name: Run Client build
         env:
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -15,3 +15,12 @@ jobs:
           docker --version
           docker build -f apps/client/Dockerfile -t client .
           docker images
+      - name: Run Streaming build
+        env:
+          DEFAULT_BRANCH: master
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          docker --version
+          docker build -f apps/streaming/Dockerfile -t streaming .
+          docker images
+    
