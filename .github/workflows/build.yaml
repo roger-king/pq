@@ -21,6 +21,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           docker --version
-          docker build -f apps/streaming/Dockerfile -t streaming .
+          cd apps/streaming
+          docker build -f Dockerfile -t streaming .
           docker images
     
