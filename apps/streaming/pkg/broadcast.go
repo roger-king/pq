@@ -26,29 +26,30 @@ func NewLiveServer() *LiveServer {
 
 // CreateStream -
 func (s *LiveServer) CreateStream(req *server.Connection, stream server.Broadcast_CreateStreamServer) error {
-	now := time.Now() 
+	now := time.Now()
 	conn := &models.UserConnection{
-		ID: req.User.Id,
-		Stream: stream,
-		GameID: req.GameId,
-		DisplayName: req.User.DisplayName,
-		IsHost: req.User.IsHost,
+		ID:            req.User.Id,
+		Stream:        stream,
+		GameID:        req.GameId,
+		DisplayName:   req.User.DisplayName,
+		IsHost:        req.User.IsHost,
 		LastConnected: now.Unix(),
-		Active: true,
-		Error:  make(chan error),
+		Active:        true,
+		Error:         make(chan error),
 	}
 
 	if pool, ok := s.Connections[req.GameId]; ok {
-		log.Printf("Found Connection %v", pool)
 		alreadyConnected := false
 		connections := pool.All()
+		isNewPlayer := true
 		for _, c := range connections {
 			if c.ID == req.User.Id {
-				alreadyConnected = true;
+				alreadyConnected = true
 				c.SetLastConnected(now)
+				isNewPlayer = false
 			}
 
-			if c.IsHost {
+			if c.IsHost && isNewPlayer {
 				log.Print("Sending new player")
 				c.Stream.Send(&server.Message{Time: int64(60), NewPlayer: &server.User{Id: conn.ID, DisplayName: conn.DisplayName, IsHost: false}})
 			}
@@ -66,7 +67,7 @@ func (s *LiveServer) CreateStream(req *server.Connection, stream server.Broadcas
 		s.Connections[req.GameId].Add(conn)
 	}
 
-	// Send to 
+	// Send to
 	err := stream.Send(&server.Message{Time: int64(60), NewPlayer: nil, RemovedPlayer: nil, Question: nil})
 
 	if err != nil {
@@ -87,20 +88,20 @@ func (s *LiveServer) Start(req *server.StartQuestion, stream server.Broadcast_St
 			go func(req *server.StartQuestion, stream server.Broadcast_StartServer) {
 				defer wait.Done()
 				log.Printf("Starting counddown: %v", conn.ID)
-				if req.GameId == conn.GameID && conn.Active  {
-	
+				if req.GameId == conn.GameID && conn.Active {
+
 					countdown := 10
 					// Send question to players
 					err := conn.Stream.Send(&server.Message{Question: req.Question, Time: int64(countdown)})
 					if err != nil {
 						fmt.Errorf("Failed to send question: %v", err)
 					}
-					
+
 					// Starting countdown
 					for countdown != 0 {
 						countdown--
 						time.Sleep(time.Second * 1)
-						
+
 						err := conn.Stream.Send(&server.Message{Time: int64(countdown), Question: req.Question})
 						if req.IsHost {
 							// ToDO: look into why the connection stream doesnt send to the host too.
@@ -113,7 +114,7 @@ func (s *LiveServer) Start(req *server.StartQuestion, stream server.Broadcast_St
 					}
 				}
 			}(req, stream)
-	
+
 		}
 	}
 
@@ -138,7 +139,7 @@ func (s *LiveServer) End(req *server.EndGame, stream server.Broadcast_EndServer)
 			go func(req *server.EndGame, stream server.Broadcast_EndServer) {
 				defer wait.Done()
 				log.Printf("Signalling end of game to: %v", conn.ID)
-				if req.GameId == conn.GameID  {
+				if req.GameId == conn.GameID {
 					didEnd = true
 					err := conn.Stream.Send(&server.Message{End: true})
 					if err != nil {
@@ -181,7 +182,6 @@ func (s *LiveServer) Disconnect(ctx context.Context, conn *server.Connection) (*
 	return &server.DisconnectResponse{}, nil
 }
 
-
 // AuditConnections - audits the active connections
 // Client should be sending a heartbeat request every 3 seconds.
 func (s *LiveServer) AuditConnections() {
@@ -193,7 +193,7 @@ func (s *LiveServer) AuditConnections() {
 			for key, conns := range s.Connections {
 				wait.Add(1)
 
-				go func (gameID string, pool services.ConnectionPool) {
+				go func(gameID string, pool services.ConnectionPool) {
 					defer wait.Done()
 					idsToRemove := []string{}
 					var hostStream server.Broadcast_CreateStreamServer
@@ -201,21 +201,21 @@ func (s *LiveServer) AuditConnections() {
 					for _, c := range connections {
 						if c.IsActive() {
 							log.Printf("%s is inactive.", c.ID)
-							idsToRemove = append(idsToRemove, c.ID);
+							idsToRemove = append(idsToRemove, c.ID)
 							c.SetActive(false)
 						}
-	
+
 						if c.IsHost {
 							hostStream = c.Stream
 						}
 					}
-	
+
 					for _, id := range idsToRemove {
 						if hostStream != nil {
 							hostStream.Send(&server.Message{RemovedPlayer: &server.User{Id: id}})
 						}
 					}
-	
+
 					if len(idsToRemove) > 0 {
 						idsToRemove = []string{}
 					}
@@ -228,16 +228,19 @@ func (s *LiveServer) AuditConnections() {
 
 // Heartbeat -
 func (s *LiveServer) Heartbeat(ctx context.Context, conn *server.Connection) (*server.HeartbeatResponse, error) {
-	connections := s.Connections[conn.GameId].All()
-	for _, c := range connections {
-		if c.ID == conn.User.Id {
-			now := time.Now()
-			c.SetLastConnected(now)
-			break;
+	if game, ok := s.Connections[conn.GameId]; ok {
+		connections := game.All()
+		for _, c := range connections {
+			if c.ID == conn.User.Id {
+				now := time.Now()
+				c.SetLastConnected(now)
+				break
+			}
 		}
+		return &server.HeartbeatResponse{}, nil
 	}
 
-	return &server.HeartbeatResponse{}, nil
+	return nil, nil
 }
 
 // GetPlayerList -
@@ -247,8 +250,8 @@ func (s *LiveServer) GetPlayerList(ctx context.Context, req *server.PlayerlistRe
 	for _, c := range pool.All() {
 		playerList.Players = append(playerList.Players, &server.User{
 			DisplayName: c.DisplayName,
-			Id: c.ID,
-			IsHost: c.IsHost,
+			Id:          c.ID,
+			IsHost:      c.IsHost,
 		})
 	}
 
