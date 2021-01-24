@@ -30,6 +30,13 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
           <OptionForm key={`question-option-form-${o.currentIndex}`} {...o} />
         ))}
         {options.length < maxNumOptions && (
+          /**
+           * NOTE: the button is disabled because there is a bug.
+           * When the first option field is completely blank (no answer or title) and we add another option
+           * the two option field onchange events are bound together. This means, when typing the title or
+           * checking the answer checkbox both options will reflect the same changes.
+           * The disable check is a quick workaround this bug.
+           */
           <Button icon={<AddCircle />} onClick={addOption} disabled={options[options.length - 1].title.length === 0} />
         )}
       </Box>
