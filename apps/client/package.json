@@ -32,7 +32,7 @@
     "grpc-web": "^1.2.1",
     "isomorphic-unfetch": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
-    "next": "9.5.3",
+    "next": "9.5.4",
     "react": "16.13.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "16.13.1",
