@@ -74,6 +74,7 @@ exports[`<QuestionForm /> should display QuestionForm 1`] = `
     />
     <button
       className="StyledButton-sc-323bzc-0 hiyJPE"
+      disabled={false}
       onBlur={[Function]}
       onClick={[Function]}
       onFocus={[Function]}
