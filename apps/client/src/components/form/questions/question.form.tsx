@@ -29,7 +29,9 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
         {options.map((o) => (
           <OptionForm key={`question-option-form-${o.currentIndex}`} {...o} />
         ))}
-        {options.length < maxNumOptions && <Button icon={<AddCircle />} onClick={addOption} disabled={options[options.length - 1].title.length === 0}/>}
+        {options.length < maxNumOptions && (
+          <Button icon={<AddCircle />} onClick={addOption} disabled={options[options.length - 1].title.length === 0} />
+        )}
       </Box>
     </QuestionCard>
   );
